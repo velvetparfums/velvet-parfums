@@ -362,7 +362,7 @@
     </div>
 
     <footer>
-        <p>© VELVET PARFUMS - جميع الحقوق محفوظة لمتجر عطور فيلقيت</p>
+        <p>© VELVET PARFUMS | جميع الحقوق محفوظة وتطوير VELVET PARFUMS</p>
     </footer>
 
     <script>
