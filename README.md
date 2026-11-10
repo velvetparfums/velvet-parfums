@@ -95,7 +95,7 @@
 
         /* لوحة التحكم والإضافة السريعة */
         .admin-banner {
-            display: none; /* تظهر فقط عند الضغط على الزر */
+            display: none;
             background: #ffffff;
             border: 2px solid var(--accent-gold);
             border-radius: 12px;
@@ -382,14 +382,9 @@
 
         let selectedCart = [];
 
-        // إظهار وإخفاء لوحة الإدارة عند الضغط على زر القفل
         function toggleAdminPanel() {
             const panel = document.getElementById('admin-panel');
-            if (panel.style.display === 'block') {
-                panel.style.display = 'none';
-            } else {
-                panel.style.display = 'block';
-            }
+            panel.style.display = (panel.style.display === 'block') ? 'none' : 'block';
         }
 
         function displayPerfumes(items) {
@@ -415,7 +410,6 @@
             });
         }
 
-        // دالة ضغط الصورة أوتوماتيكياً وتحويلها
         function compressAndProcessImage(file, callback) {
             const reader = new FileReader();
             reader.readAsDataURL(file);
@@ -432,14 +426,12 @@
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                     
-                    // تحويل الصورة لمضغوطة خفيفة جداً
                     const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.7);
                     callback(compressedDataUrl);
                 }
             }
         }
 
-        // دالة إضافة عطر جديد
         function addNewPerfume() {
             const name = document.getElementById('new-name').value.trim();
             const price = document.getElementById('new-price').value.trim();
@@ -478,7 +470,6 @@
             perfumesList.unshift(newItem);
             displayPerfumes(perfumesList);
             
-            // تفريغ الخانات وإغلاق اللوحة
             document.getElementById('new-name').value = '';
             document.getElementById('new-price').value = '';
             document.getElementById('new-notes').value = '';
