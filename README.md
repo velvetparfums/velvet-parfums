@@ -268,10 +268,16 @@
             gap: 8px;
         }
 
-        .product-price {
-            font-size: 18px;
-            font-weight: 700;
+        .product-price-input {
+            width: 75px;
+            padding: 4px 6px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
             color: var(--accent-gold);
+            outline: none;
+            background: var(--bg-color);
         }
 
         .actions-group {
@@ -306,7 +312,6 @@
             color: white;
         }
 
-        /* شريط السلة الدائم في الأسفل */
         .cart-bar {
             position: fixed;
             bottom: 15px;
@@ -405,7 +410,7 @@
 
     </div>
 
-    <!-- شريط السلة الدائم في الأسفل (يظهر دائماً بوضوح) -->
+    <!-- شريط السلة الدائم -->
     <div class="cart-bar" onclick="sendCartToMessenger()">
         <span>🛒 إرسال الطلب عبر Facebook Messenger</span>
         <div class="cart-count" id="cart-count">0</div>
@@ -418,7 +423,152 @@
     <script>
         const FB_PAGE_ID = "61596110442092";
 
-        let perfumesList = [];
+        // تشكيلة خطوط عطور النيش والماركات المميزة من بحر العطور (Gerini)
+        let perfumesList = [
+            // قسم النيش (Gerini & Niche)
+            {
+                id: 1,
+                name: "جريني ميرال (Gerini Miral)",
+                price: 0,
+                category: "نيش",
+                desc: "مزيج نيش فاخر يجمع الفواكه الاستوائية بلمسة مسك عنبرية جذابة.",
+                notes: "فواكه استوائية | عنبر | مسك فاخر",
+                img: "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=600"
+            },
+            {
+                id: 2,
+                name: "جريني فيلفت (Gerini Velvet)",
+                price: 0,
+                category: "نيش",
+                desc: "عطر مخملي راقٍ يمزج بين الأخشاب النادرة والزهور الناعمة الأنيقة.",
+                notes: "أخشاب نادرة | زهور ناعمة | فانيليا",
+                img: "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&q=80&w=600"
+            },
+            {
+                id: 3,
+                name: "جريني رويال عود (Gerini Royal Oud)",
+                price: 0,
+                category: "نيش",
+                desc: "عبير العود الملكي الممزوج بلمسات التوابل الشرقية الفاخرة والثابتة.",
+                notes: "عود ملكي | توابل شرقية | عنبر",
+                img: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&q=80&w=600"
+            },
+            {
+                id: 4,
+                name: "باكارات روج 540 (Baccarat Rouge)",
+                price: 0,
+                category: "نيش",
+                desc: "أيقونة النيش الفاخرة بنوتات الزعفران والياسمين وخشب الأرز الدافئ.",
+                notes: "زعفران | ياسمين | خشب الأرز",
+                img: "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=600"
+            },
+            {
+                id: 5,
+                name: "مارلي أليثان (Parfums de Marly)",
+                price: 0,
+                category: "نيش",
+                desc: "عطر نيش أسطوري يجمع الفانيليا بالتفاح واللافندر الثابت جداً.",
+                notes: "تفاح | لافندر | فانيليا دافئة",
+                img: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=600"
+            },
+
+            // قسم الرجالي
+            {
+                id: 6,
+                name: "كريد أفينتوس (Creed Aventus)",
+                price: 0,
+                category: "رجالي",
+                desc: "عطر الفخامة والرجولة بنوتات الأناناس والأخشاب والدخان الساحر.",
+                notes: "أناناس | أخشاب الأرز | مسك",
+                img: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&q=80&w=600"
+            },
+            {
+                id: 7,
+                name: "بلو ديشانيل (Bleu de Chanel)",
+                price: 0,
+                category: "رجالي",
+                desc: "عبير الحمضيات والأخشاب العطرية لإطلالة رجالية جذابة ومفعمة بالحيوية.",
+                notes: "حمضيات | بخور | أخشاب صندل",
+                img: "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=600"
+            },
+            {
+                id: 8,
+                name: "ديور سوڤاج (Dior Sauvage)",
+                price: 0,
+                category: "رجالي",
+                desc: "نفحات البرغموت والأنبروكسان الثابتة المستوحاة من المساحات الصحراوية المفتوحة.",
+                notes: "برغموت | فلفل أسود | أمبروكسان",
+                img: "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&q=80&w=600"
+            },
+            {
+                id: 9,
+                name: "توم فورد أومبر ليذر (Ombré Leather)",
+                price: 0,
+                category: "رجالي",
+                desc: "عطر الجلود الفاخرة مع النوتات الزهرية والدافئة لإحساس استثنائي.",
+                notes: "جلد فاخر | هيل | ياسمين",
+                img: "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=600"
+            },
+
+            // قسم النسائي
+            {
+                id: 10,
+                name: "ديور جادور (Dior J'adore)",
+                price: 0,
+                category: "نسائي",
+                desc: "باقة زهرية أنثوية فاخرة تجمع الياسمين مع الورد والكمثرى.",
+                notes: "ياسمين | ورد جوري | كمثرى",
+                img: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=600"
+            },
+            {
+                id: 11,
+                name: "إيف سان لوران ليبر (YSL Libre)",
+                price: 0,
+                category: "نسائي",
+                desc: "مزيج زهر البرتقال مع اللافندر الأنيق لإطلالة أنثوية حرة ومميزة.",
+                notes: "زهر البرتقال | لافندر | فانيليا",
+                img: "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&q=80&w=600"
+            },
+            {
+                id: 12,
+                name: "شانيل كوكو ماديلوان (Coco Mademoiselle)",
+                price: 0,
+                category: "نسائي",
+                desc: "عطر كلاسيكي راقٍ ينبض بالبرتقال والورد والباتشولي النقي الجذاب.",
+                notes: "برتقال | ورد | باتشولي",
+                img: "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=600"
+            },
+
+            // قسم الشرقي
+            {
+                id: 13,
+                name: "دهن العود المعتق (Aged Oud)",
+                price: 0,
+                category: "شرقي",
+                desc: "أصالة العود الكمبودي المعتق بأعلى درجات الثبات والفوحان الشرقي.",
+                notes: "عود كمبودي | خشب الصندل | عنبر",
+                img: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&q=80&w=600"
+            },
+            {
+                id: 14,
+                name: "مسك ختام الملكي (Royal Musk)",
+                price: 0,
+                category: "شرقي",
+                desc: "نفحات المسك الأبيض النقي والبودري المخملي للنظافة والتميز الشرقي.",
+                notes: "مسك أبيض | بودرة | ورد ناعم",
+                img: "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=600"
+            },
+            {
+                id: 15,
+                name: "عنبر الملوك (Royal Amber)",
+                price: 0,
+                category: "شرقي",
+                desc: "دفء العنبر الأصيل الممزوج بلمسات التوابل الشرقية العريقة والثابتة.",
+                notes: "عنبر دافئ | توابل | زعفران",
+                img: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=600"
+            }
+        ];
+
         let currentFilter = 'الكل';
         let selectedCart = [];
 
@@ -457,7 +607,7 @@
                         <div class="product-desc">${item.desc}</div>
                         <div class="product-notes">${item.notes}</div>
                         
-                        <!-- تغيير التصنيف مباشرة من بطاقة العطر -->
+                        <!-- تغيير التصنيف مباشرة -->
                         <div style="margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
                             <span style="font-size: 11px; color: var(--text-muted);">التصنيف:</span>
                             <select onchange="changePerfumeCategory(${item.id}, this.value)" style="font-size: 12px; padding: 3px 6px; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-color); outline: none; cursor: pointer;">
@@ -469,9 +619,12 @@
                         </div>
 
                         <div class="product-footer">
-                            <div class="product-price">${item.price} د.ل</div>
+                            <div style="display: flex; align-items: center; gap: 4px;">
+                                <input type="number" class="product-price-input" value="${item.price}" onchange="updatePerfumePrice(${item.id}, this.value)" title="تعديل السعر د.ل">
+                                <span style="font-size: 12px; font-weight: bold; color: var(--accent-gold);">د.ل</span>
+                            </div>
                             <div class="actions-group">
-                                <button class="btn-order" onclick="addToCart('${item.name}', ${item.price})">+ طلب</button>
+                                <button class="btn-order" onclick="addToCart(${item.id})">+ طلب</button>
                                 <button class="btn-delete" onclick="deletePerfume(${item.id})" title="حذف العطر">حذف</button>
                             </div>
                         </div>
@@ -505,14 +658,14 @@
 
         function addNewPerfume() {
             const name = document.getElementById('new-name').value.trim();
-            const price = document.getElementById('new-price').value.trim();
+            const price = document.getElementById('new-price').value.trim() || 0;
             const cat = document.getElementById('new-cat').value;
             const notes = document.getElementById('new-notes').value.trim() || "تركيبة عطرة مميزة";
             const desc = document.getElementById('new-desc').value.trim() || "عطر فاخر ومميز من تشكيلة فيلقيت.";
             const fileInput = document.getElementById('new-img-file');
 
-            if(!name || !price) {
-                alert('الرجاء كتابة اسم العطر والسعر على الأقل.');
+            if(!name) {
+                alert('الرجاء كتابة اسم العطر على الأقل.');
                 return;
             }
 
@@ -551,6 +704,13 @@
             alert(`تمت إضافة عطر "${name}" بنجاح!`);
         }
 
+        function updatePerfumePrice(id, newPrice) {
+            const item = perfumesList.find(p => p.id === id);
+            if(item) {
+                item.price = parseFloat(newPrice) || 0;
+            }
+        }
+
         function deletePerfume(id) {
             if (confirm('هل أنت متأكد من حذف هذا العطر نهائياً؟')) {
                 perfumesList = perfumesList.filter(p => p.id !== id);
@@ -573,9 +733,12 @@
             displayPerfumes(perfumesList);
         }
 
-        function addToCart(name, price) {
-            selectedCart.push({ name, price });
-            document.getElementById('cart-count').innerText = selectedCart.length;
+        function addToCart(id) {
+            const item = perfumesList.find(p => p.id === id);
+            if(item) {
+                selectedCart.push({ name: item.name, price: item.price });
+                document.getElementById('cart-count').innerText = selectedCart.length;
+            }
         }
 
         function sendCartToMessenger() {
