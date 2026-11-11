@@ -212,13 +212,23 @@
 
         .product-img {
             width: 100%;
-            height: 240px;
-            object-fit: cover;
-            background-color: #f2eee9;
+            height: 220px;
+            object-fit: contain;
+            background-color: #f7f5f0;
+            padding: 10px;
+        }
+
+        /* صندوق رفع وتعديل الصورة لكل عطر مباشرة */
+        .img-update-box {
+            padding: 8px;
+            background: #f2eee9;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
         }
 
         .product-info {
-            padding: 18px;
+            padding: 15px;
             display: flex;
             flex-direction: column;
             flex-grow: 1;
@@ -234,28 +244,29 @@
             border-radius: 20px;
             font-size: 11px;
             font-weight: bold;
+            z-index: 10;
         }
 
         .product-title {
-            font-size: 17px;
+            font-size: 16px;
             font-weight: 700;
             color: var(--text-dark);
             margin-bottom: 5px;
         }
 
         .product-desc {
-            font-size: 13px;
+            font-size: 12px;
             color: var(--text-muted);
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .product-notes {
             background: var(--bg-color);
-            padding: 6px 10px;
+            padding: 5px 8px;
             border-radius: 6px;
-            font-size: 12px;
+            font-size: 11px;
             color: var(--accent-gold);
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .product-footer {
@@ -263,14 +274,14 @@
             align-items: center;
             justify-content: space-between;
             margin-top: auto;
-            padding-top: 10px;
+            padding-top: 8px;
             border-top: 1px solid var(--border-color);
-            gap: 8px;
+            gap: 6px;
         }
 
         .product-price-input {
-            width: 75px;
-            padding: 4px 6px;
+            width: 70px;
+            padding: 4px;
             border: 1px solid var(--border-color);
             border-radius: 4px;
             font-size: 14px;
@@ -278,18 +289,19 @@
             color: var(--accent-gold);
             outline: none;
             background: var(--bg-color);
+            text-align: center;
         }
 
         .actions-group {
             display: flex;
-            gap: 5px;
+            gap: 4px;
         }
 
         .btn-order {
             background-color: var(--accent-gold);
             color: white;
             border: none;
-            padding: 8px 12px;
+            padding: 6px 10px;
             border-radius: 6px;
             font-size: 12px;
             font-weight: bold;
@@ -300,9 +312,9 @@
             background-color: #fae1dd;
             color: var(--danger-color);
             border: 1px solid var(--danger-color);
-            padding: 8px 10px;
+            padding: 6px 8px;
             border-radius: 6px;
-            font-size: 12px;
+            font-size: 11px;
             cursor: pointer;
             font-weight: bold;
         }
@@ -387,7 +399,7 @@
                 <textarea id="new-desc" placeholder="الوصف والمواصفات الكاملة للعطر..." style="grid-column: 1 / -1; height: 60px;"></textarea>
                 
                 <div class="file-input-wrapper">
-                    <label style="display: block; margin-bottom: 5px; font-weight: bold; color: var(--accent-gold);">📷 اختر صورة العطر من هاتفك (سيتم ضغطها أوتوماتيكياً):</label>
+                    <label style="display: block; margin-bottom: 5px; font-weight: bold; color: var(--accent-gold);">📷 اختر صورة العطر من هاتفك:</label>
                     <input type="file" id="new-img-file" accept="image/*">
                 </div>
             </div>
@@ -422,115 +434,115 @@
     <script>
         const FB_PAGE_ID = "61596110442092";
 
-        // قاعدة بيانات ضخمة تضم 100 عطر عالمي ومطلوب في السوق الليبي
+        // قاعدة بيانات تضم 100 عطر عالمي جاهزة بالأسماء والوصف والنوتات (جاهزة لإضافة صورك وأسعارك)
         let perfumesList = [
             // --- قسم النيش الفاخر (Niche) ---
-            { id: 1, name: "Baccarat Rouge 540 Extrait", price: 0, category: "نيش", desc: "أيقونة النيش الفاخرة بنوتات الزعفران والياسمين الثابتة.", notes: "زعفران | لوز مر | ياسمين", img: "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=600" },
-            { id: 2, name: "Parfums de Marly Layton", price: 0, category: "نيش", desc: "توليفة ملكية دافئة تجمع التفاح واللافندر والفانيليا الساحرة.", notes: "تفاح | لافندر | فانيليا دافئة", img: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=600" },
-            { id: 3, name: "Parfums de Marly Herod", price: 0, category: "نيش", desc: "عطر التبغ الفاخر الممزوج بالقرفة والفانيليا الشرقية.", notes: "تبغ | قرفة | فانيليا", img: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&q=80&w=600" },
-            { id: 4, name: "Parfums de Marly Pegasus", price: 0, category: "نيش", desc: "نفحات اللوز البودري والفانيليا لإطلالة نيش راقية وجذابة.", notes: "لوز مر | فانيليا | خشب صندل", img: "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&q=80&w=600" },
-            { id: 5, name: "Parfums de Marly Sedley", price: 0, category: "نيش", desc: "انتعاش الحمضيات والنعناع الأخضر لأيام الصيف الحارة.", notes: "نعناع | حمضيات | خشب أرز", img: "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=600" },
-            { id: 6, name: "Kilian Angel's Share", price: 0, category: "نيش", desc: "رائحة الكونياك الفاخرة الممزوجة بالقرفة والبلوط الدافئ.", notes: "كونياك | قرفة | بلوط", img: "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=600" },
-            { id: 7, name: "Kilian Good Girl Gone Bad", price: 0, category: "نيش", desc: "عاصفة زهرية بيضاء مغرية من الياسمين ومسك الروم.", notes: "ياسمين | مسك رومي | ورد", img: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=600" },
-            { id: 8, name: "Tom Ford Lost Cherry", price: 0, category: "نيش", desc: "عبق الكرز الأسود الشهواني مع اللوز المر واللوز.", notes: "كرز أسود | لوز مر | حبوب تونس", img: "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&q=80&w=600" },
-            { id: 9, name: "Tom Ford Tobacco Vanille", price: 0, category: "نيش", desc: "دفء أوراق التبغ العتيقة مع فانيليا بوربون الغنية.", notes: "تبغ فاخر | فانيليا | أخشاب", img: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&q=80&w=600" },
-            { id: 10, name: "Tom Ford Oud Wood", price: 0, category: "نيش", desc: "أفخم أخشاب العود المدخنة بلمسات الهيل وخشب الأرز.", notes: "عود | هيل | خشب أرز", img: "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=600" },
-            { id: 11, name: "Tom Ford Bitter Peach", price: 0, category: "نيش", desc: "خوخ غني وناضج بلمسات دافئة من الروم ومسك الروم.", notes: "خوخ | برتقال دموي | باتشولي", img: "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=600" },
-            { id: 12, name: "Xerjoff Erba Pura", price: 0, category: "نيش", desc: "قنبلة الفواكه الاستوائية المنعشة مع المسك الأبيض الثابت.", notes: "فواكه استوائية | برتقال صقلي | مسك أبيض", img: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=600" },
-            { id: 13, name: "Xerjoff Naxos", price: 0, category: "نيش", desc: "لوحة فنية تجمع العسل الفاخر والتبغ وأزهار اللافندر.", notes: "عسل | تبغ | لافندر | قرفة", img: "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&q=80&w=600" },
-            { id: 14, name: "Xerjoff Accento", price: 0, category: "نيش", desc: "أناقة الأناناس والصفير والمسك الثابت المليء بالحيوية.", notes: "أناناس | صفير | مسك | فانيليا", img: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&q=80&w=600" },
-            { id: 15, name: "Maison Francis Kurkdjian Grand Soir", price: 0, category: "نيش", desc: "عنبر ملكي دافئ وفخم يناسب السهرات والأجواء الباردة.", notes: "عنبر | فانيليا | لاباندا", img: "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=600" },
-            { id: 16, name: "Maison Francis Kurkdjian Aqua Universalis", price: 0, category: "نيش", desc: "رائحة النظافة المطلقة والمنعشة كالقميص الأبيض الجديد.", notes: "حمضيات | زنابق الوادي | زهور بيضاء", img: "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=600" },
-            { id: 17, name: "Creed Silver Mountain Water", price: 0, category: "نيش", desc: "انتعاش الجبال الثلجية والشاي الأخضر والكشمش الأسود.", notes: "شاي أخضر | كشمش | مسك", img: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=600" },
-            { id: 18, name: "Creed Millesime Imperial", price: 0, category: "نيش", desc: "فخامة الفواكه البحرية المالحة والأخشاب الصيفية المنعشة.", notes: "ملح بحري | فواكه | خشب صندل", img: "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&q=80&w=600" },
-            { id: 19, name: "Creed Green Irish Tweed", price: 0, category: "نيش", desc: "كلاسيكية الريف الإنجليزي الأخضر بنوتات الفريزيا والسوسن.", notes: "إريش | لويزة | خشب ساج", img: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&q=80&w=600" },
-            { id: 20, name: "Initio Oud for Greatness", price: 0, category: "نيش", desc: "قوة العود الطبيعي الممزوج بالزعفران وجوزة الطيب الأسطورية.", notes: "عود طبيعي | زعفران | جوزة الطيب", img: "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=600" },
-            { id: 21, name: "Initio Side Effect", price: 0, category: "نيش", desc: "مزيج مسكر ومدمن من الروم والفانيليا والتبغ والقرفة.", notes: "روم | فانيليا | تبغ | قرفة", img: "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=600" },
-            { id: 22, name: "Byredo Gypsy Water", price: 0, category: "نيش", desc: "روح الطبيعة الحرة بنوتات الصنوبر والبرغموت والفانيليا الناعمة.", notes: "صنوبر | برغموت | فانيليا خشبية", img: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=600" },
-            { id: 23, name: "Byredo Bal d'Afrique", price: 0, category: "نيش", desc: "لوحة عطرية دافئة تمزج زهر البرتقال بأخشاب الأرز والعنبر.", notes: "زهر برتقال | ليمون | عنبر", img: "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&q=80&w=600" },
-            { id: 24, name: "Mancera Cedrat Boise", price: 0, category: "نيش", desc: "انتعاش الليمون والحمضيات مع قاعدة خشبية دخانية مميزة.", notes: "ليمون | كشمش أسود | أخشاب", img: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&q=80&w=600" },
-            { id: 25, name: "Mancera Red Tobacco", price: 0, category: "نيش", desc: "تبغ أحمر ناري قوي وثابت جداً مع التوابل الحارة.", notes: "تبغ | قرفة | العود الأبيض", img: "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=600" },
-            { id: 26, name: "Montale Intense Cafe", price: 0, category: "نيش", desc: "قهوة عربية دافئة ممزوجة بعبق الورد التركي والفانيليا.", notes: "قهوة | ورد تركي | فانيليا مسك", img: "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=600" },
-            { id: 27, name: "Orto Parisi Megamare", price: 0, category: "نيش", desc: "عطر بحري عمودق ومالح ذو ثبات وفوحان خارق.", notes: "نوتات بحرية | أعشاب بحرية | طحالب", img: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=600" },
-            { id: 28, name: "Nasomatto Black Afgano", price: 0, category: "نيش", desc: "الغموض الشرقي الداكن بنوتات الحشيش الفاخر والأخشاب المدخنة.", notes: "حشيش فاخر | تبغ | أخشاب العود", img: "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&q=80&w=600" },
-            { id: 29, name: "Tiziana Terenzi Kirke", price: 0, category: "نيش", desc: "فاكهة العاطفة الاستوائية الساحرة مع المسك الدافئ الجذاب.", notes: "فاكهة العاطفة | خوخ | مسك", img: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&q=80&w=600" },
-            { id: 30, name: "Amouage Interlude Man", price: 0, category: "نيش", desc: "عطر الأساطير والدخان والبخور والأخشاب الشرقية الثابتة.", notes: "بخور | أوريجانو | عود | جلد", img: "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=600" },
+            { id: 1, name: "Baccarat Rouge 540 Extrait", price: 0, category: "نيش", desc: "أيقونة النيش الفاخرة بنوتات الزعفران والياسمين الثابتة.", notes: "زعفران | لوز مر | ياسمين", img: "" },
+            { id: 2, name: "Parfums de Marly Layton", price: 0, category: "نيش", desc: "توليفة ملكية دافئة تجمع التفاح واللافندر والفانيليا الساحرة.", notes: "تفاح | لافندر | فانيليا دافئة", img: "" },
+            { id: 3, name: "Parfums de Marly Herod", price: 0, category: "نيش", desc: "عطر التبغ الفاخر الممزوج بالقرفة والفانيليا الشرقية.", notes: "تبغ | قرفة | فانيليا", img: "" },
+            { id: 4, name: "Parfums de Marly Pegasus", price: 0, category: "نيش", desc: "نفحات اللوز البودري والفانيليا لإطلالة نيش راقية وجذابة.", notes: "لوز مر | فانيليا | خشب صندل", img: "" },
+            { id: 5, name: "Parfums de Marly Sedley", price: 0, category: "نيش", desc: "انتعاش الحمضيات والنعناع الأخضر لأيام الصيف الحارة.", notes: "نعناع | حمضيات | خشب أرز", img: "" },
+            { id: 6, name: "Kilian Angel's Share", price: 0, category: "نيش", desc: "رائحة الكونياك الفاخرة الممزوجة بالقرفة والبلوط الدافئ.", notes: "كونياك | قرفة | بلوط", img: "" },
+            { id: 7, name: "Kilian Good Girl Gone Bad", price: 0, category: "نيش", desc: "عاصفة زهرية بيضاء مغرية من الياسمين ومسك الروم.", notes: "ياسمين | مسك رومي | ورد", img: "" },
+            { id: 8, name: "Tom Ford Lost Cherry", price: 0, category: "نيش", desc: "عبق الكرز الأسود الشهواني مع اللوز المر واللوز.", notes: "كرز أسود | لوز مر | حبوب تونس", img: "" },
+            { id: 9, name: "Tom Ford Tobacco Vanille", price: 0, category: "نيش", desc: "دفء أوراق التبغ العتيقة مع فانيليا بوربون الغنية.", notes: "تبغ فاخر | فانيليا | أخشاب", img: "" },
+            { id: 10, name: "Tom Ford Oud Wood", price: 0, category: "نيش", desc: "أفخم أخشاب العود المدخنة بلمسات الهيل وخشب الأرز.", notes: "عود | هيل | خشب أرز", img: "" },
+            { id: 11, name: "Tom Ford Bitter Peach", price: 0, category: "نيش", desc: "خوخ غني وناضج بلمسات دافئة من الروم ومسك الروم.", notes: "خوخ | برتقال دموي | باتشولي", img: "" },
+            { id: 12, name: "Xerjoff Erba Pura", price: 0, category: "نيش", desc: "قنبلة الفواكه الاستوائية المنعشة مع المسك الأبيض الثابت.", notes: "فواكه استوائية | برتقال صقلي | مسك أبيض", img: "" },
+            { id: 13, name: "Xerjoff Naxos", price: 0, category: "نيش", desc: "لوحة فنية تجمع العسل الفاخر والتبغ وأزهار اللافندر.", notes: "عسل | تبغ | لافندر | قرفة", img: "" },
+            { id: 14, name: "Xerjoff Accento", price: 0, category: "نيش", desc: "أناقة الأناناس والصفير والمسك الثابت المليء بالحيوية.", notes: "أناناس | صفير | مسك | فانيليا", img: "" },
+            { id: 15, name: "Maison Francis Kurkdjian Grand Soir", price: 0, category: "نيش", desc: "عنبر ملكي دافئ وفخم يناسب السهرات والأجواء الباردة.", notes: "عنبر | فانيليا | لاباندا", img: "" },
+            { id: 16, name: "Maison Francis Kurkdjian Aqua Universalis", price: 0, category: "نيش", desc: "رائحة النظافة المطلقة والمنعشة كالقميص الأبيض الجديد.", notes: "حمضيات | زنابق الوادي | زهور بيضاء", img: "" },
+            { id: 17, name: "Creed Silver Mountain Water", price: 0, category: "نيش", desc: "انتعاش الجبال الثلجية والشاي الأخضر والكشمش الأسود.", notes: "شاي أخضر | كشمش | مسك", img: "" },
+            { id: 18, name: "Creed Millesime Imperial", price: 0, category: "نيش", desc: "فخامة الفواكه البحرية المالحة والأخشاب الصيفية المنعشة.", notes: "ملح بحري | فواكه | خشب صندل", img: "" },
+            { id: 19, name: "Creed Green Irish Tweed", price: 0, category: "نيش", desc: "كلاسيكية الريف الإنجليزي الأخضر بنوتات الفريزيا والسوسن.", notes: "إريش | لويزة | خشب ساج", img: "" },
+            { id: 20, name: "Initio Oud for Greatness", price: 0, category: "نيش", desc: "قوة العود الطبيعي الممزوج بالزعفران وجوزة الطيب الأسطورية.", notes: "عود طبيعي | زعفران | جوزة الطيب", img: "" },
+            { id: 21, name: "Initio Side Effect", price: 0, category: "نيش", desc: "مزيج مسكر ومدمن من الروم والفانيليا والتبغ والقرفة.", notes: "روم | فانيليا | تبغ | قرفة", img: "" },
+            { id: 22, name: "Byredo Gypsy Water", price: 0, category: "نيش", desc: "روح الطبيعة الحرة بنوتات الصنوبر والبرغموت والفانيليا الناعمة.", notes: "صنوبر | برغموت | فانيليا خشبية", img: "" },
+            { id: 23, name: "Byredo Bal d'Afrique", price: 0, category: "نيش", desc: "لوحة عطرية دافئة تمزج زهر البرتقال بأخشاب الأرز والعنبر.", notes: "زهر برتقال | ليمون | عنبر", img: "" },
+            { id: 24, name: "Mancera Cedrat Boise", price: 0, category: "نيش", desc: "انتعاش الليمون والحمضيات مع قاعدة خشبية دخانية مميزة.", notes: "ليمون | كشمش أسود | أخشاب", img: "" },
+            { id: 25, name: "Mancera Red Tobacco", price: 0, category: "نيش", desc: "تبغ أحمر ناري قوي وثابت جداً مع التوابل الحارة.", notes: "تبغ | قرفة | العود الأبيض", img: "" },
+            { id: 26, name: "Montale Intense Cafe", price: 0, category: "نيش", desc: "قهوة عربية دافئة ممزوجة بعبق الورد التركي والفانيليا.", notes: "قهوة | ورد تركي | فانيليا مسك", img: "" },
+            { id: 27, name: "Orto Parisi Megamare", price: 0, category: "نيش", desc: "عطر بحري عمودق ومالح ذو ثبات وفوحان خارق.", notes: "نوتات بحرية | أعشاب بحرية | طحالب", img: "" },
+            { id: 28, name: "Nasomatto Black Afgano", price: 0, category: "نيش", desc: "الغموض الشرقي الداكن بنوتات الحشيش الفاخر والأخشاب المدخنة.", notes: "حشيش فاخر | تبغ | أخشاب العود", img: "" },
+            { id: 29, name: "Tiziana Terenzi Kirke", price: 0, category: "نيش", desc: "فاكهة العاطفة الاستوائية الساحرة مع المسك الدافئ الجذاب.", notes: "فاكهة العاطفة | خوخ | مسك", img: "" },
+            { id: 30, name: "Amouage Interlude Man", price: 0, category: "نيش", desc: "عطر الأساطير والدخان والبخور والأخشاب الشرقية الثابتة.", notes: "بخور | أوريجانو | عود | جلد", img: "" },
 
             // --- قسم العطور الرجالية (Men) ---
-            { id: 31, name: "Creed Aventus", price: 0, category: "رجالي", desc: "ملك العطور الرجالية بنوتات الأناناس والأخشاب والدخان.", notes: "أناناس | أخشاب الأرز | مسك", img: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&q=80&w=600" },
-            { id: 32, name: "Bleu de Chanel EDP", price: 0, category: "رجالي", desc: "أناقة الحمضيات والبخور والأخشاب العطرية الساحرة.", notes: "حمضيات | بخور | أخشاب صندل", img: "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=600" },
-            { id: 33, name: "Dior Sauvage Elixir", price: 0, category: "رجالي", desc: "تركيز مكثف وتوابل حارة فاخرة مع الخزامى واللافندر.", notes: "قرفة | جوزة الطيب | خزامى", img: "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&q=80&w=600" },
-            { id: 34, name: "Dior Sauvage EDT", price: 0, category: "رجالي", desc: "البرغموت المنعش والأمبروكسان الجذاب لكل الأوقات.", notes: "برغموت | فلفل أسود | أمبروكسان", img: "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=600" },
-            { id: 35, name: "Giorgio Armani Acqua Di Gio Parfum", price: 0, category: "رجالي", desc: "انتعاش أمواج البحر العميقة مع البخور والأخشاب المعدنية.", notes: "نوتات بحرية | إكليل الجبل | بخور", img: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=600" },
-            { id: 36, name: "Armani Code Parfum", price: 0, category: "رجالي", desc: "فول التونكا الدافئ مع السوسن وأخشاب الأرز العميقة.", notes: "سوسن | فول تونكا | أخشاب أرز", img: "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&q=80&w=600" },
-            { id: 37, name: "Versace Eros EDP", price: 0, category: "رجالي", desc: "نعناع منعش مع التفاح الفانيليا وحبوب التونكا الجذابة.", notes: "نعناع | تفاح حامض | فانيليا", img: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&q=80&w=600" },
-            { id: 38, name: "Versace Dylan Blue", price: 0, category: "رجالي", desc: "حمضيات متوسطية منعشة مع البخور والمسك والأعشاب.", notes: "برغموت | جريب فروت | بخور", img: "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=600" },
-            { id: 39, name: "Paco Rabanne 1 Million Elixir", price: 0, category: "رجالي", desc: "مزيج غني من الفانيليا والورد التركي وحبوب التونكا الحشوية.", notes: "فانيليا | ورد تركي | تونكا", img: "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=600" },
-            { id: 40, name: "Paco Rabanne Invictus Victory", price: 0, category: "رجالي", desc: "انتعاش الليمون الحامض مع قوة الفانيليا والعنبر.", notes: "ليمون | فلفل وردي | فانيليا", img: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=600" },
-            { id: 41, name: "Jean Paul Gaultier Le Male Le Parfum", price: 0, category: "رجالي", desc: "هال وهيل وزهور السوسن مع الفانيليا الشرقية الدافئة.", notes: "هيل | لافندر | فانيليا شرقية", img: "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&q=80&w=600" },
-            { id: 42, name: "Jean Paul Gaultier Scandal Pour Homme", price: 0, category: "رجالي", desc: "كراميل حلو مع الميرمية والماندرين لإطلالة جريئة.", notes: "كراميل | ميرمية | نجيل الهند", img: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&q=80&w=600" },
-            { id: 43, name: "Tom Ford Ombre Leather", price: 0, category: "رجالي", desc: "عبير الجلود الفاخرة النقية مع الهيل والياسمين البري.", notes: "جلد أسود | هيل | ياسمين بري", img: "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=600" },
-            { id: 44, name: "Tom Ford Noir Extreme", price: 0, category: "رجالي", desc: "توابل هندية وفانيليا غنية مع كولفي الحليب الساحر.", notes: "كولفي | توابل | فانيليا خشبية", img: "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=600" },
-            { id: 45, name: "Hermes Terre d'Hermes", price: 0, category: "رجالي", desc: "رائحة الأرض والمعادن وأشجار البرتقال والفلفل الحار.", notes: "برتقال | فلفل | أخشاب الأرز", img: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=600" },
-            { id: 46, name: "Bleu de Chanel Parfum", price: 0, category: "رجالي", desc: "أعلى درجات الفخامة الخشبية العطرية الناعمة والثابتة.", notes: "قشر ليمون | خشب صندل | أرز", img: "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&q=80&w=600" },
-            { id: 47, name: "Yves Saint Laurent Y EDP", price: 0, category: "رجالي", desc: "تفاح مقرمش مع الميرمية والزنجبيل لإطلالة شبابية حيوية.", notes: "تفاح | زنجبيل | ميرمية | ميرمية", img: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&q=80&w=600" },
-            { id: 48, name: "Yves Saint Laurent La Nuit de L'Homme", price: 0, category: "رجالي", desc: "عطر السهرات الرومانسي بالهيل واللافندر والأخشاب الدافئة.", notes: "هيل | لافندر | خشب الأرز", img: "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=600" },
-            { id: 49, name: "Dolce & Gabbana The One EDP", price: 0, category: "رجالي", desc: "دفء التبغ والعنبر والجريب فروت لإطلالة أنيقة للغاية.", notes: "جريب فروت | كزبرة | تبغ وعنبر", img: "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=600" },
-            { id: 50, name: "Dolce & Gabbana Light Blue Eau Intense", price: 0, category: "رجالي", desc: "انتعاش مياه البحر المتوسط الحامضة والمنعشة بصيف ليبيا.", notes: "جريب فروت | مياه بحر | مسك", img: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=600" },
-            { id: 51, name: "Prada Luna Rossa Carbon", price: 0, category: "رجالي", desc: "معادن باردة ومعدنية مع اللافندر والخزامى الأنيق.", notes: "لافندر | فلفل معدني | باتشولي", img: "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&q=80&w=600" },
-            { id: 52, name: "Bvlgari Man In Black", price: 0, category: "رجالي", desc: "توابل داكنة وجلود فاخرة مع الروم والعنبر الشرقي.", notes: "روم | توابل | جلد وعنبر", img: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&q=80&w=600" },
-            { id: 53, name: "Montblanc Explorer", price: 0, category: "رجالي", desc: "برغموت إيطالي منعش مع نجيل الهند والأخشاب الرجولية.", notes: "برغموت | نجيل الهند | جلد الكاكاو", img: "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=600" },
-            { id: 54, name: "Azzaro The Most Wanted Parfum", price: 0, category: "رجالي", desc: "زنجبيل حار مع الشوكولاتة وفانيليا البوربون الدافئة.", notes: "زنجبيل | روائح خشبية | فانيليا", img: "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=600" },
-            { id: 55, name: "Carolina Herrera Bad Boy Le Parfum", price: 0, category: "رجالي", desc: "القنب والمريمية والجلود في توليفة عطرية عصرية جريئة.", notes: "قنب | مريمية | جلود سوداء", img: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=600" },
-            { id: 56, name: "Lalique Encre Noire", price: 0, category: "رجالي", desc: "سيد النوتات الخشبية والنجيل الهند الداكن والغامض.", notes: "نجيل هندي | سرو | مسك أخشاب", img: "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&q=80&w=600" },
-            { id: 57, name: "Davidoff Cool Water", price: 0, category: "رجالي", desc: "الكلاسيكية المنعشة بنوتات النعناع ومياه البحر الخالدة.", notes: "نعناع | ماء البحر | لافندر", img: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&q=80&w=600" },
-            { id: 58, name: "Issey Miyake L'Eau d'Issey Pour Homme", price: 0, category: "رجالي", desc: "يوسوكي ياباني وحمضيات خفيفة مع نوتات خشبية صيفية.", notes: "يوسو | ليمون | توابل مائية", img: "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=600" },
-            { id: 59, name: "Burberry Hero EDP", price: 0, category: "رجالي", desc: "أرز أطلسي دافئ مع إبرة الصقنوبر والجاوي الفاخر.", notes: "أرز الأطلس | صنوبر | جاوي", img: "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=600" },
-            { id: 60, name: "Ralph Lauren Polo Blue Parfum", price: 0, category: "رجالي", desc: "يوسفي ونوتات أكسجين بحرية مع نجيل الهند الفاخر.", notes: "يوسفي | مريمية | نجيل الهند", img: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=600" },
+            { id: 31, name: "Creed Aventus", price: 0, category: "رجالي", desc: "ملك العطور الرجالية بنوتات الأناناس والأخشاب والدخان.", notes: "أناناس | أخشاب الأرز | مسك", img: "" },
+            { id: 32, name: "Bleu de Chanel EDP", price: 0, category: "رجالي", desc: "أناقة الحمضيات والبخور والأخشاب العطرية الساحرة.", notes: "حمضيات | بخور | أخشاب صندل", img: "" },
+            { id: 33, name: "Dior Sauvage Elixir", price: 0, category: "رجالي", desc: "تركيز مكثف وتوابل حارة فاخرة مع الخزامى واللافندر.", notes: "قرفة | جوزة الطيب | خزامى", img: "" },
+            { id: 34, name: "Dior Sauvage EDT", price: 0, category: "رجالي", desc: "البرغموت المنعش والأمبروكسان الجذاب لكل الأوقات.", notes: "برغموت | فلفل أسود | أمبروكسان", img: "" },
+            { id: 35, name: "Giorgio Armani Acqua Di Gio Parfum", price: 0, category: "رجالي", desc: "انتعاش أمواج البحر العميقة مع البخور والأخشاب المعدنية.", notes: "نوتات بحرية | إكليل الجبل | بخور", img: "" },
+            { id: 36, name: "Armani Code Parfum", price: 0, category: "رجالي", desc: "فول التونكا الدافئ مع السوسن وأخشاب الأرز العميقة.", notes: "سوسن | فول تونكا | أخشاب أرز", img: "" },
+            { id: 37, name: "Versace Eros EDP", price: 0, category: "رجالي", desc: "نعناع منعش مع التفاح الفانيليا وحبوب التونكا الجذابة.", notes: "نعناع | تفاح حامض | فانيليا", img: "" },
+            { id: 38, name: "Versace Dylan Blue", price: 0, category: "رجالي", desc: "حمضيات متوسطية منعشة مع البخور والمسك والأعشاب.", notes: "برغموت | جريب فروت | بخور", img: "" },
+            { id: 39, name: "Paco Rabanne 1 Million Elixir", price: 0, category: "رجالي", desc: "مزيج غني من الفانيليا والورد التركي وحبوب التونكا الحشوية.", notes: "فانيليا | ورد تركي | تونكا", img: "" },
+            { id: 40, name: "Paco Rabanne Invictus Victory", price: 0, category: "رجالي", desc: "انتعاش الليمون الحامض مع قوة الفانيليا والعنبر.", notes: "ليمون | فلفل وردي | فانيليا", img: "" },
+            { id: 41, name: "Jean Paul Gaultier Le Male Le Parfum", price: 0, category: "رجالي", desc: "هال وهيل وزهور السوسن مع الفانيليا الشرقية الدافئة.", notes: "هيل | لافندر | فانيليا شرقية", img: "" },
+            { id: 42, name: "Jean Paul Gaultier Scandal Pour Homme", price: 0, category: "رجالي", desc: "كراميل حلو مع الميرمية والماندرين لإطلالة جريئة.", notes: "كراميل | ميرمية | نجيل الهند", img: "" },
+            { id: 43, name: "Tom Ford Ombre Leather", price: 0, category: "رجالي", desc: "عبير الجلود الفاخرة النقية مع الهيل والياسمين البري.", notes: "جلد أسود | هيل | ياسمين بري", img: "" },
+            { id: 44, name: "Tom Ford Noir Extreme", price: 0, category: "رجالي", desc: "توابل هندية وفانيليا غنية مع كولفي الحليب الساحر.", notes: "كولفي | توابل | فانيليا خشبية", img: "" },
+            { id: 45, name: "Hermes Terre d'Hermes", price: 0, category: "رجالي", desc: "رائحة الأرض والمعادن وأشجار البرتقال والفلفل الحار.", notes: "برتقال | فلفل | أخشاب الأرز", img: "" },
+            { id: 46, name: "Bleu de Chanel Parfum", price: 0, category: "رجالي", desc: "أعلى درجات الفخامة الخشبية العطرية الناعمة والثابتة.", notes: "قشر ليمون | خشب صندل | أرز", img: "" },
+            { id: 47, name: "Yves Saint Laurent Y EDP", price: 0, category: "رجالي", desc: "تفاح مقرمش مع الميرمية والزنجبيل لإطلالة شبابية حيوية.", notes: "تفاح | زنجبيل | ميرمية", img: "" },
+            { id: 48, name: "Yves Saint Laurent La Nuit de L'Homme", price: 0, category: "رجالي", desc: "عطر السهرات الرومانسي بالهيل واللافندر والأخشاب الدافئة.", notes: "هيل | لافندر | خشب الأرز", img: "" },
+            { id: 49, name: "Dolce & Gabbana The One EDP", price: 0, category: "رجالي", desc: "دفء التبغ والعنبر والجريب فروت لإطلالة أنيقة للغاية.", notes: "جريب فروت | كزبرة | تبغ وعنبر", img: "" },
+            { id: 50, name: "Dolce & Gabbana Light Blue Eau Intense", price: 0, category: "رجالي", desc: "انتعاش مياه البحر المتوسط الحامضة والمنعشة بصيف ليبيا.", notes: "جريب فروت | مياه بحر | مسك", img: "" },
+            { id: 51, name: "Prada Luna Rossa Carbon", price: 0, category: "رجالي", desc: "معادن باردة ومعدنية مع اللافندر والخزامى الأنيق.", notes: "لافندر | فلفل معدني | باتشولي", img: "" },
+            { id: 52, name: "Bvlgari Man In Black", price: 0, category: "رجالي", desc: "توابل داكنة وجلود فاخرة مع الروم والعنبر الشرقي.", notes: "روم | توابل | جلد وعنبر", img: "" },
+            { id: 53, name: "Montblanc Explorer", price: 0, category: "رجالي", desc: "برغموت إيطالي منعش مع نجيل الهند والأخشاب الرجولية.", notes: "برغموت | نجيل الهند | جلد الكاكاو", img: "" },
+            { id: 54, name: "Azzaro The Most Wanted Parfum", price: 0, category: "رجالي", desc: "زنجبيل حار مع الشوكولاتة وفانيليا البوربون الدافئة.", notes: "زنجبيل | روائح خشبية | فانيليا", img: "" },
+            { id: 55, name: "Carolina Herrera Bad Boy Le Parfum", price: 0, category: "رجالي", desc: "القنب والمريمية والجلود في توليفة عطرية عصرية جريئة.", notes: "قنب | مريمية | جلود سوداء", img: "" },
+            { id: 56, name: "Lalique Encre Noire", price: 0, category: "رجالي", desc: "سيد النوتات الخشبية والنجيل الهند الداكن والغامض.", notes: "نجيل هندي | سرو | مسك أخشاب", img: "" },
+            { id: 57, name: "Davidoff Cool Water", price: 0, category: "رجالي", desc: "الكلاسيكية المنعشة بنوتات النعناع ومياه البحر الخالدة.", notes: "نعناع | ماء البحر | لافندر", img: "" },
+            { id: 58, name: "Issey Miyake L'Eau d'Issey Pour Homme", price: 0, category: "رجالي", desc: "يوسوكي ياباني وحمضيات خفيفة مع نوتات خشبية صيفية.", notes: "يوسو | ليمون | توابل مائية", img: "" },
+            { id: 59, name: "Burberry Hero EDP", price: 0, category: "رجالي", desc: "أرز أطلسي دافئ مع إبرة الصقنوبر والجاوي الفاخر.", notes: "أرز الأطلس | صنوبر | جاوي", img: "" },
+            { id: 60, name: "Ralph Lauren Polo Blue Parfum", price: 0, category: "رجالي", desc: "يوسفي ونوتات أكسجين بحرية مع نجيل الهند الفاخر.", notes: "يوسفي | مريمية | نجيل الهند", img: "" },
 
             // --- قسم العطور النسائية (Women) ---
-            { id: 61, name: "Dior J'adore EDP", price: 0, category: "نسائي", desc: "باقة زهرية أنثوية خالدة من الياسمين والورد والكمثرى.", notes: "ياسمين | ورد جوري | كمثرى", img: "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=600" },
-            { id: 62, name: "Yves Saint Laurent Libre Intense", price: 0, category: "نسائي", desc: "لافندر فرنسي ناعم مع أوركيد الفانيليا الدافئة والجذابة.", notes: "لافندر | أوركيد | فانيليا مدغشقر", img: "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=600" },
-            { id: 63, name: "Chanel Coco Mademoiselle", price: 0, category: "نسائي", desc: "أناقة البرتقال المنعش مع الورد التركي والباتشولي النقي.", notes: "برتقال | ورد | باتشولي", img: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=600" },
-            { id: 64, name: "Chanel No. 5", price: 0, category: "نسائي", desc: "عطر الأساطير الألدهيدي الزهري الخالد والفاخر.", notes: "ألدهيدات | ياسمين | ورد | مسك", img: "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&q=80&w=600" },
-            { id: 65, name: "Carolina Herrera Good Girl", price: 0, category: "نسائي", desc: "توليفة اللوز والقهوة ومسك الروم في زجاجة الحذاء الأيقونية.", notes: "لوز | قهوة | مسك رومي | كاكاو", img: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&q=80&w=600" },
-            { id: 66, name: "Lancome La Vie Est Belle", price: 0, category: "نسائي", desc: "سعادة السوسن والياسمين مع حلاوة الباتشولي والفانيليا.", notes: "سوسن | ياسمين | برالين وفانيليا", img: "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=600" },
-            { id: 67, name: "Lancome Idole", price: 0, category: "نسائي", desc: "ورد نقي مع الياسمين والكمثرى لإطلالة عصرية مشرقة.", notes: "ورد أخضر | ياسمين | كمثرى", img: "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=600" },
-            { id: 68, name: "Giorgio Armani My Way", price: 0, category: "نسائي", desc: "زهر البرتقال ومسك الروم الهندي مع فانيليا مدغشقر.", notes: "زهر برتقال | مسك رومي | فانيليا", img: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=600" },
-            { id: 69, name: "Giorgio Armani Si EDP", price: 0, category: "نسائي", desc: "رحيق الكشمش الأسود مع الورد وخشب الأرز الراقي.", notes: "كشمش أسود | ورد فريزيا | باتشولي", img: "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&q=80&w=600" },
-            { id: 70, name: "Valentino Donna Born In Roma", price: 0, category: "نسائي", desc: "ياسمين فاخر مع فانيليا دافئة ولمسات خشبية عصرية.", notes: "ياسمين | فانيليا بوربون | أخشاب", img: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&q=80&w=600" },
-            { id: 71, name: "Marc Jacobs Daisy", price: 0, category: "نسائي", desc: "فراولة برية وفريزيا وبنفسج لعطر صيفي مرح ومنعش.", notes: "فراولة | بنفسج | أوراق ياسمين", img: "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=600" },
-            { id: 72, name: "Gucci Bloom", price: 0, category: "نسائي", desc: "حديقة أزهار بيضاء غنية بعبق مسك الروم والياسمين البري.", notes: "مسك رومي | ياسمين | زهر رانجون", img: "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=600" },
-            { id: 73, name: "Gucci Flora Gorgeous Gardenia", price: 0, category: "نسائي", desc: "زهرة الغاردينيا البيضاء مع زهر الكمثرى والسكر البني.", notes: "غاردينيا | زهر كمثرى | سكر بني", img: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=600" },
-            { id: 74, name: "Paco Rabanne Olympéa", price: 0, category: "نسائي", desc: "فانيليا مالحة فريدة مع زهر الياسمين واليوسفي الأخضر.", notes: "فانيليا مالحة | ياسمين مائي | زنجبيل", img: "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&q=80&w=600" },
-            { id: 75, name: "Viktor & Rolf Flowerbomb", price: 0, category: "نسائي", desc: "قنبلة أزهار مذهلة من الشاي والياسمين والورد والباتشولي.", notes: "شاي | ياسمين | ورد | باتشولي", img: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&q=80&w=600" },
-            { id: 76, name: "Tom Ford Black Orchid", price: 0, category: "نسائي", desc: "أوركيد سوداء داكنة مع الشوكولاتة والتوابل والكمأة الفاخرة.", notes: "أوركيد سوداء | شوكولاتة | كمأة", img: "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=600" },
-            { id: 77, name: "Tom Ford Velvet Orchid", price: 0, category: "نسائي", desc: "زهور أوركيد مخملية مع العسل والروم والفانيليا الدافئة.", notes: "عسل | روم | أوركيد مخملي", img: "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=600" },
-            { id: 78, name: "Burberry Her EDP", price: 0, category: "نسائي", desc: "توت بري وفراولة مقرمشة مع قاعدة مسكية خشبية ناعمة.", notes: "توت بري | فراولة | مسك وعنبر", img: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=600" },
-            { id: 79, name: "Versace Bright Crystal", price: 0, category: "نسائي", desc: "رمان منعش مع زهر الياسمين والفاوانيا الصيفية الرقيقة.", notes: "رمان | فاوانيا | مسك وعنبر", img: "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&q=80&w=600" },
-            { id: 80, name: "Jean Paul Gaultier La Belle", price: 0, category: "نسائي", desc: "كمثرى ناضجة وحسية مع فانيليا ونوتات شرقية دافئة.", notes: "كمثرى | نجيل الهند | فانيليا", img: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&q=80&w=600" },
-            { id: 81, name: "Prada Paradoxe", price: 0, category: "نسائي", desc: "زهر البرتقال والعنبر الأبيض في زجاجة مثلثة عصرية فريدة.", notes: "زهر برتقال | عنبر أبيض | مسك", img: "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=600" },
-            { id: 82, name: "Hermes Twilly d'Hermes", price: 0, category: "نسائي", desc: "زنجبيل منعش مع مسروب التوليب وخشب الصندل الشبابي.", notes: "زنجبيل | مسك رومي | خشب صندل", img: "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=600" },
-            { id: 83, name: "Narciso Rodriguez For Her", price: 0, category: "نسائي", desc: "مسك مصري ساحر مع زهر البرتقال والأوسمانثوس الناعم.", notes: "مسك | زهر برتقال | أوسمانثوس", img: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=600" },
-            { id: 84, name: "Calvin Klein Euphoria", price: 0, category: "نسائي", desc: "رمان وأوركيد أسود مع الماهوجني لإطلالة شرقية غامضة.", notes: "رمان | أوركيد أسود | ماهوجني", img: "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&q=80&w=600" },
-            { id: 85, name: "Jo Malone English Pear & Freesia", price: 0, category: "نسائي", desc: "كمثرى إنجليزية ناضجة مع فريزيا بيضاء وأخشاب العنبر.", notes: "كمثرى | فريزيا | باتشولي", img: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&q=80&w=600" },
-            { id: 86, name: "Chloe EDP", price: 0, category: "نسائي", desc: "ورد بلغاري فاخر وبودرة ناعمة مع الفاوانيا واللوز.", notes: "ورد بلغاري | فاوانيا | عسل", img: "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=600" },
-            { id: 87, name: "DKNY Be Delicious", price: 0, category: "نسائي", desc: "تفاح أخضر مقرمش ومنعش للغاية لأجواء الصيف الحيوية.", notes: "تفاح أخضر | خيار | ماغنوليا", img: "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=600" },
-            { id: 88, name: "Alien Mugler", price: 0, category: "نسائي", desc: "ياسمين سامباك غامض وعميق مع أخشاب الكشمير والعنبر.", notes: "ياسمين | أخشاب كشمير | عنبر أبيض", img: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=600" },
-            { id: 89, name: "Angel Mugler", price: 0, category: "نسائي", desc: "شوكولاتة داكنة وباتشولي وفواكه حمراء في عطر أيقوني مميز.", notes: "باتشولي | شوكولاتة | توت بري", img: "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&q=80&w=600" },
-            { id: 90, name: "Salvatore Ferragamo Signorina", price: 0, category: "نسائي", desc: "توت رديء وفلفل وردي مع الباناكوتا والمسك الناعم.", notes: "فلفل وردي | باناكوتا | باتشولي", img: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&q=80&w=600" },
+            { id: 61, name: "Dior J'adore EDP", price: 0, category: "نسائي", desc: "باقة زهرية أنثوية خالدة من الياسمين والورد والكمثرى.", notes: "ياسمين | ورد جوري | كمثرى", img: "" },
+            { id: 62, name: "Yves Saint Laurent Libre Intense", price: 0, category: "نسائي", desc: "لافندر فرنسي ناعم مع أوركيد الفانيليا الدافئة والجذابة.", notes: "لافندر | أوركيد | فانيليا مدغشقر", img: "" },
+            { id: 63, name: "Chanel Coco Mademoiselle", price: 0, category: "نسائي", desc: "أناقة البرتقال المنعش مع الورد التركي والباتشولي النقي.", notes: "برتقال | ورد | باتشولي", img: "" },
+            { id: 64, name: "Chanel No. 5", price: 0, category: "نسائي", desc: "عطر الأساطير الألدهيدي الزهري الخالد والفاخر.", notes: "ألدهيدات | ياسمين | ورد | مسك", img: "" },
+            { id: 65, name: "Carolina Herrera Good Girl", price: 0, category: "نسائي", desc: "توليفة اللوز والقهوة ومسك الروم في زجاجة الحذاء الأيقونية.", notes: "لوز | قهوة | مسك رومي | كاكاو", img: "" },
+            { id: 66, name: "Lancome La Vie Est Belle", price: 0, category: "نسائي", desc: "سعادة السوسن والياسمين مع حلاوة الباتشولي والفانيليا.", notes: "سوسن | ياسمين | برالين وفانيليا", img: "" },
+            { id: 67, name: "Lancome Idole", price: 0, category: "نسائي", desc: "ورد نقي مع الياسمين والكمثرى لإطلالة عصرية مشرقة.", notes: "ورد أخضر | ياسمين | كمثرى", img: "" },
+            { id: 68, name: "Giorgio Armani My Way", price: 0, category: "نسائي", desc: "زهر البرتقال ومسك الروم الهندي مع فانيليا مدغشقر.", notes: "زهر برتقال | مسك رومي | فانيليا", img: "" },
+            { id: 69, name: "Giorgio Armani Si EDP", price: 0, category: "نسائي", desc: "رحيق الكشمش الأسود مع الورد وخشب الأرز الراقي.", notes: "كشمش أسود | ورد فريزيا | باتشولي", img: "" },
+            { id: 70, name: "Valentino Donna Born In Roma", price: 0, category: "نسائي", desc: "ياسمين فاخر مع فانيليا دافئة ولمسات خشبية عصرية.", notes: "ياسمين | فانيليا بوربون | أخشاب", img: "" },
+            { id: 71, name: "Marc Jacobs Daisy", price: 0, category: "نسائي", desc: "فراولة برية وفريزيا وبنفسج لعطر صيفي مرح ومنعش.", notes: "فراولة | بنفسج | أوراق ياسمين", img: "" },
+            { id: 72, name: "Gucci Bloom", price: 0, category: "نسائي", desc: "حديقة أزهار بيضاء غنية بعبق مسك الروم والياسمين البري.", notes: "مسك رومي | ياسمين | زهر رانجون", img: "" },
+            { id: 73, name: "Gucci Flora Gorgeous Gardenia", price: 0, category: "نسائي", desc: "زهرة الغاردينيا البيضاء مع زهر الكمثرى والسكر البني.", notes: "غاردينيا | زهر كمثرى | سكر بني", img: "" },
+            { id: 74, name: "Paco Rabanne Olympéa", price: 0, category: "نسائي", desc: "فانيليا مالحة فريدة مع زهر الياسمين واليوسفي الأخضر.", notes: "فانيليا مالحة | ياسمين مائي | زنجبيل", img: "" },
+            { id: 75, name: "Viktor & Rolf Flowerbomb", price: 0, category: "نسائي", desc: "قنبلة أزهار مذهلة من الشاي والياسمين والورد والباتشولي.", notes: "شاي | ياسمين | ورد | باتشولي", img: "" },
+            { id: 76, name: "Tom Ford Black Orchid", price: 0, category: "نسائي", desc: "أوركيد سوداء داكنة مع الشوكولاتة والتوابل والكمأة الفاخرة.", notes: "أوركيد سوداء | شوكولاتة | كمأة", img: "" },
+            { id: 77, name: "Tom Ford Velvet Orchid", price: 0, category: "نسائي", desc: "زهور أوركيد مخملية مع العسل والروم والفانيليا الدافئة.", notes: "عسل | روم | أوركيد مخملي", img: "" },
+            { id: 78, name: "Burberry Her EDP", price: 0, category: "نسائي", desc: "توت بري وفراولة مقرمشة مع قاعدة مسكية خشبية ناعمة.", notes: "توت بري | فراولة | مسك وعنبر", img: "" },
+            { id: 79, name: "Versace Bright Crystal", price: 0, category: "نسائي", desc: "رمان منعش مع زهر الياسمين والفاوانيا الصيفية الرقيقة.", notes: "رمان | فاوانيا | مسك وعنبر", img: "" },
+            { id: 80, name: "Jean Paul Gaultier La Belle", price: 0, category: "نسائي", desc: "كمثرى ناضجة وحسية مع فانيليا ونوتات شرقية دافئة.", notes: "كمثرى | نجيل الهند | فانيليا", img: "" },
+            { id: 81, name: "Prada Paradoxe", price: 0, category: "نسائي", desc: "زهر البرتقال والعنبر الأبيض في زجاجة مثلثة عصرية فريدة.", notes: "زهر برتقال | عنبر أبيض | مسك", img: "" },
+            { id: 82, name: "Hermes Twilly d'Hermes", price: 0, category: "نسائي", desc: "زنجبيل منعش مع مسروب التوليب وخشب الصندل الشبابي.", notes: "زنجبيل | مسك رومي | خشب صندل", img: "" },
+            { id: 83, name: "Narciso Rodriguez For Her", price: 0, category: "نسائي", desc: "مسك مصري ساحر مع زهر البرتقال والأوسمانثوس الناعم.", notes: "مسك | زهر برتقال | أوسمانثوس", img: "" },
+            { id: 84, name: "Calvin Klein Euphoria", price: 0, category: "نسائي", desc: "رمان وأوركيد أسود مع الماهوجني لإطلالة شرقية غامضة.", notes: "رمان | أوركيد أسود | ماهوجني", img: "" },
+            { id: 85, name: "Jo Malone English Pear & Freesia", price: 0, category: "نسائي", desc: "كمثرى إنجليزية ناضجة مع فريزيا بيضاء وأخشاب العنبر.", notes: "كمثرى | فريزيا | باتشولي", img: "" },
+            { id: 86, name: "Chloe EDP", price: 0, category: "نسائي", desc: "ورد بلغاري فاخر وبودرة ناعمة مع الفاوانيا واللوز.", notes: "ورد بلغاري | فاوانيا | عسل", img: "" },
+            { id: 87, name: "DKNY Be Delicious", price: 0, category: "نسائي", desc: "تفاح أخضر مقرمش ومنعش للغاية لأجواء الصيف الحيوية.", notes: "تفاح أخضر | خيار | ماغنوليا", img: "" },
+            { id: 88, name: "Alien Mugler", price: 0, category: "نسائي", desc: "ياسمين سامباك غامض وعميق مع أخشاب الكشمير والعنبر.", notes: "ياسمين | أخشاب كشمير | عنبر أبيض", img: "" },
+            { id: 89, name: "Angel Mugler", price: 0, category: "نسائي", desc: "شوكولاتة داكنة وباتشولي وفواكه حمراء في عطر أيقوني مميز.", notes: "باتشولي | شوكولاتة | توت بري", img: "" },
+            { id: 90, name: "Salvatore Ferragamo Signorina", price: 0, category: "نسائي", desc: "توت رديء وفلفل وردي مع الباناكوتا والمسك الناعم.", notes: "فلفل وردي | باناكوتا | باتشولي", img: "" },
 
             // --- قسم العطور الشرقية (Oriental) ---
-            { id: 91, name: "دهن العود المعتق الملكي", price: 0, category: "شرقي", desc: "أصالة العود الكمبودي المعتق بثبات وفوحان شرقي عالي.", notes: "عود كمبودي | عنبر | خشب صندل", img: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&q=80&w=600" },
-            { id: 92, name: "مسك الختام الأبيض", price: 0, category: "شرقي", desc: "مسك نقي وبودري مخملي يمنح شعور النظافة المطلقة.", notes: "مسك أبيض | بودرة | ورد طائفي", img: "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=600" },
-            { id: 93, name: "عنبر الملوك الخالص", price: 0, category: "شرقي", desc: "دفء العنبر الشرقي الأصيل الممزوج بالتوابل والزعفران.", notes: "عنبر دافئ | زعفران | هيل", img: "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=600" },
-            { id: 94, name: "ورد طائفي معتق", price: 0, category: "شرقي", desc: "عبير الورد الطائفي الفاخر المقطر بعناية فائقة.", notes: "ورد طائفي | دهن عود خفيف | مسك", img: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=600" },
-            { id: 95, name: "خلاصة العود الهندي", price: 0, category: "شرقي", desc: "عبق أخشاب العود الهندي القديم والثقيل للمجالس الرسمية.", notes: "عود هندي معتق | بخور | جلد", img: "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&q=80&w=600" },
-            { id: 96, name: "مسك العروس الفاخر", price: 0, category: "شرقي", desc: "مزيج كريمي أنثوي من المسك الأبيض والفانيليا الخفيفة.", notes: "مسك أبيض | فانيليا كريمية | زهور", img: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&q=80&w=600" },
-            { id: 97, name: "لبان الدكور العماني", price: 0, category: "شرقي", desc: "بخور لبان الدكور الملكي المنقى لأجواء المنازل والمجالس.", notes: "لبان عماني | صمغ طبيعي | بخور", img: "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=600" },
-            { id: 98, name: "مخلط الملك الفاخر", price: 0, category: "شرقي", desc: "توليفة متوازنة تجمع الورد والزعفران والعود والعنبر.", notes: "زعفران | ورد | عود | عنبر", img: "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=600" },
-            { id: 99, name: "مسك الرمان السحري", price: 0, category: "شرقي", desc: "انتعاش حبات الرمان الحلوة الممزوجة بعبق المسك الأبيض.", notes: "رمان أحمر | مسك أبيض | توت", img: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=600" },
-            { id: 100, name: "توليفة عطور فيلقيت الخاصة", print: 0, category: "شرقي", desc: "العطر الحصري والخاص بمتجرنا المميز في طرابلس.", notes: "توليفة سرية | عود وخشب صندل", img: "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&q=80&w=600" }
+            { id: 91, name: "دهن العود المعتق الملكي", price: 0, category: "شرقي", desc: "أصالة العود الكمبودي المعتق بثبات وفوحان شرقي عالي.", notes: "عود كمبودي | عنبر | خشب صندل", img: "" },
+            { id: 92, name: "مسك الختام الأبيض", price: 0, category: "شرقي", desc: "مسك نقي وبودري مخملي يمنح شعور النظافة المطلقة.", notes: "مسك أبيض | بودرة | ورد طائفي", img: "" },
+            { id: 93, name: "عنبر الملوك الخالص", price: 0, category: "شرقي", desc: "دفء العنبر الشرقي الأصيل الممزوج بالتوابل والزعفران.", notes: "عنبر دافئ | زعفران | هيل", img: "" },
+            { id: 94, name: "ورد طائفي معتق", price: 0, category: "شرقي", desc: "عبير الورد الطائفي الفاخر المقطر بعناية فائقة.", notes: "ورد طائفي | دهن عود خفيف | مسك", img: "" },
+            { id: 95, name: "خلاصة العود الهندي", price: 0, category: "شرقي", desc: "عبق أخشاب العود الهندي القديم والثقيل للمجالس الرسمية.", notes: "عود هندي معتق | بخور | جلد", img: "" },
+            { id: 96, name: "مسك العروس الفاخر", price: 0, category: "شرقي", desc: "مزيج كريمي أنثوي من المسك الأبيض والفانيليا الخفيفة.", notes: "مسك أبيض | فانيليا كريمية | زهور", img: "" },
+            { id: 97, name: "لبان الدكور العماني", price: 0, category: "شرقي", desc: "بخور لبان الدكور الملكي المنقى لأجواء المنازل والمجالس.", notes: "لبان عماني | صمغ طبيعي | بخور", img: "" },
+            { id: 98, name: "مخلط الملك الفاخر", price: 0, category: "شرقي", desc: "توليفة متوازنة تجمع الورد والزعفران والعود والعنبر.", notes: "زعفران | ورد | عود | عنبر", img: "" },
+            { id: 99, name: "مسك الرمان السحري", price: 0, category: "شرقي", desc: "انتعاش حبات الرمان الحلوة الممزوجة بعبق المسك الأبيض.", notes: "رمان أحمر | مسك أبيض | توت", img: "" },
+            { id: 100, name: "توليفة عطور فيلقيت الخاصة", price: 0, category: "شرقي", desc: "العطر الحصري والخاص بمتجرنا المميز في طرابلس.", notes: "توليفة سرية | عود وخشب صندل", img: "" }
         ];
 
         let currentFilter = 'الكل';
@@ -554,7 +566,6 @@
                 container.innerHTML = `
                     <div class="empty-state">
                         <p>لا توجد عطور مضافة حالياً في هذا القسم.</p>
-                        <p style="margin-top: 8px; font-size: 13px;">اضغط على زر <b>🔒 الإدارة</b> أعلى الصفحة لإضافة أول عطر!</p>
                     </div>
                 `;
                 return;
@@ -563,18 +574,31 @@
             filteredItems.forEach(item => {
                 const card = document.createElement('div');
                 card.className = 'product-card';
+                
+                // إذا لم يتم رفع صورة عطر، نضع أيقونة أو صورة افتراضية فاخرة
+                const imgSrc = item.img ? item.img : 'https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=600';
+
                 card.innerHTML = `
                     <div class="product-badge">${item.category}</div>
-                    <img src="${item.img}" class="product-img" alt="${item.name}">
+                    <img src="${imgSrc}" class="product-img" alt="${item.name}">
+                    
+                    <!-- خانة رفع أو تغيير صورة العطر مباشرة من الهاتف -->
+                    <div class="img-update-box">
+                        <label style="font-size: 11px; color: var(--accent-gold); cursor: pointer; font-weight: bold;">
+                            📷 تغيير صورة العطر
+                            <input type="file" accept="image/*" style="display: none;" onchange="updatePerfumeImage(${item.id}, this)">
+                        </label>
+                    </div>
+
                     <div class="product-info">
                         <div class="product-title">${item.name}</div>
                         <div class="product-desc">${item.desc}</div>
                         <div class="product-notes">${item.notes}</div>
                         
                         <!-- تغيير التصنيف مباشرة -->
-                        <div style="margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
+                        <div style="margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
                             <span style="font-size: 11px; color: var(--text-muted);">التصنيف:</span>
-                            <select onchange="changePerfumeCategory(${item.id}, this.value)" style="font-size: 12px; padding: 3px 6px; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-color); outline: none; cursor: pointer;">
+                            <select onchange="changePerfumeCategory(${item.id}, this.value)" style="font-size: 11px; padding: 2px 4px; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-color); outline: none; cursor: pointer;">
                                 <option value="شرقي" ${item.category === 'شرقي' ? 'selected' : ''}>شرقي</option>
                                 <option value="رجالي" ${item.category === 'رجالي' ? 'selected' : ''}>رجالي</option>
                                 <option value="نسائي" ${item.category === 'نسائي' ? 'selected' : ''}>نسائي</option>
@@ -584,12 +608,12 @@
 
                         <div class="product-footer">
                             <div style="display: flex; align-items: center; gap: 4px;">
-                                <input type="number" class="product-price-input" value="${item.price}" onchange="updatePerfumePrice(${item.id}, this.value)" title="تعديل السعر د.ل">
-                                <span style="font-size: 12px; font-weight: bold; color: var(--accent-gold);">د.ل</span>
+                                <input type="number" class="product-price-input" value="${item.price}" onchange="updatePerfumePrice(${item.id}, this.value)" title="السعر د.ل">
+                                <span style="font-size: 11px; font-weight: bold; color: var(--accent-gold);">د.ل</span>
                             </div>
                             <div class="actions-group">
                                 <button class="btn-order" onclick="addToCart(${item.id})">+ طلب</button>
-                                <button class="btn-delete" onclick="deletePerfume(${item.id})" title="حذف العطر">حذف</button>
+                                <button class="btn-delete" onclick="deletePerfume(${item.id})" title="حذف">حذف</button>
                             </div>
                         </div>
                     </div>
@@ -606,7 +630,7 @@
                 img.src = event.target.result;
                 img.onload = function() {
                     const canvas = document.createElement('canvas');
-                    const MAX_WIDTH = 600;
+                    const MAX_WIDTH = 500;
                     const scaleFactor = MAX_WIDTH / img.width;
                     canvas.width = MAX_WIDTH;
                     canvas.height = img.height * scaleFactor;
@@ -614,9 +638,22 @@
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                     
-                    const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.7);
+                    const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.75);
                     callback(compressedDataUrl);
                 }
+            }
+        }
+
+        // تحديث صورة عطر معين مباشرة
+        function updatePerfumeImage(id, inputElement) {
+            if (inputElement.files && inputElement.files[0]) {
+                compressAndProcessImage(inputElement.files[0], function(compressedImg) {
+                    const item = perfumesList.find(p => p.id === id);
+                    if (item) {
+                        item.img = compressedImg;
+                        displayPerfumes(perfumesList);
+                    }
+                });
             }
         }
 
@@ -633,14 +670,12 @@
                 return;
             }
 
-            const defaultImg = "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=600";
-
             if (fileInput.files && fileInput.files[0]) {
                 compressAndProcessImage(fileInput.files[0], function(compressedImg) {
                     savePerfumeItem(name, price, cat, notes, desc, compressedImg);
                 });
             } else {
-                savePerfumeItem(name, price, cat, notes, desc, defaultImg);
+                savePerfumeItem(name, price, cat, notes, desc, "");
             }
         }
 
@@ -715,7 +750,7 @@
             let summaryText = "أهلاً VELVET PARFUMS 👋 ، أرغب في طلب العطور التالية:\n\n";
 
             selectedCart.forEach((item, index) => {
-                summaryText += `${index + 1}. ${item.name} - ${item.price} د.ل\n`;
+                summaryTest += `${index + 1}. ${item.name} - ${item.price} د.ل\n`;
                 totalPrice += item.price;
             });
 
