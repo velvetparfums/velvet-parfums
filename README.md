@@ -33,7 +33,7 @@
             background-color: var(--bg-color);
             color: var(--text-dark);
             line-height: 1.6;
-            padding-bottom: 70px;
+            padding-bottom: 90px;
         }
 
         header {
@@ -306,9 +306,10 @@
             color: white;
         }
 
+        /* شريط السلة الدائم في الأسفل */
         .cart-bar {
             position: fixed;
-            bottom: 20px;
+            bottom: 15px;
             left: 50%;
             transform: translateX(-50%);
             background: var(--accent-gold);
@@ -321,6 +322,7 @@
             gap: 12px;
             z-index: 99;
             cursor: pointer;
+            font-weight: bold;
         }
 
         .cart-count {
@@ -333,6 +335,7 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
+            font-size: 14px;
         }
 
         footer {
@@ -402,7 +405,7 @@
 
     </div>
 
-    <!-- زر السلة المباشر للماسنجر -->
+    <!-- شريط السلة الدائم في الأسفل (يظهر دائماً بوضوح) -->
     <div class="cart-bar" onclick="sendCartToMessenger()">
         <span>🛒 إرسال الطلب عبر Facebook Messenger</span>
         <div class="cart-count" id="cart-count">0</div>
@@ -415,7 +418,6 @@
     <script>
         const FB_PAGE_ID = "61596110442092";
 
-        // قائمة العطور تبدأ فارغة لتضيفها بيديك من الصفر
         let perfumesList = [];
         let currentFilter = 'الكل';
         let selectedCart = [];
@@ -549,7 +551,6 @@
             alert(`تمت إضافة عطر "${name}" بنجاح!`);
         }
 
-        // حذف عطر نهائياً
         function deletePerfume(id) {
             if (confirm('هل أنت متأكد من حذف هذا العطر نهائياً؟')) {
                 perfumesList = perfumesList.filter(p => p.id !== id);
@@ -557,7 +558,6 @@
             }
         }
 
-        // تغيير تصنيف العطر مباشرة
         function changePerfumeCategory(id, newCat) {
             const perfume = perfumesList.find(p => p.id === id);
             if (perfume) {
@@ -580,7 +580,7 @@
 
         function sendCartToMessenger() {
             if(selectedCart.length === 0) {
-                alert('اختر عطراً أولاً لإرسال الطلب.');
+                alert('اختر عطراً أولاً لإرسال الطلب عبر الماسنجر.');
                 return;
             }
 
