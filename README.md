@@ -94,7 +94,7 @@
             padding: 20px;
         }
 
-        /* لوحة التحكم للإضافة */
+        /* لوحة التحكم المخفية للإدارة */
         .admin-banner {
             display: none;
             background: #ffffff;
@@ -116,4 +116,58 @@
         }
 
         .admin-form-grid {
-            display
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .admin-form-grid input, .admin-form-grid select, .admin-form-grid textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13px;
+            outline: none;
+            background: var(--bg-color);
+        }
+
+        .file-input-wrapper {
+            grid-column: 1 / -1;
+            background: #f2eee9;
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+            border: 1px dashed var(--accent-gold-light);
+        }
+
+        .btn-add {
+            background-color: var(--accent-gold);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        .btn-add:hover {
+            background-color: var(--accent-gold-light);
+        }
+
+        /* التصنيفات وعرض المنتجات */
+        .categories-nav {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .cat-btn {
+            background-color: transparent;
+            border: 1px solid var(--border-color);
+            padding: 8px 20px;
+            border
