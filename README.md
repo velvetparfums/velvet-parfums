@@ -20,6 +20,7 @@
             --border-color: #e8e4dc;
             --shadow: 0 6px 20px rgba(0,0,0,0.05);
             --danger-color: #c0392b;
+            --success-color: #27ae60;
         }
 
         * {
@@ -139,6 +140,13 @@
             border: 1px dashed var(--accent-gold);
         }
 
+        .admin-actions-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
         .btn-add {
             background-color: var(--accent-gold);
             color: white;
@@ -149,6 +157,28 @@
             cursor: pointer;
             width: 100%;
             font-size: 14px;
+        }
+
+        .btn-backup {
+            background-color: var(--success-color);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-restore {
+            background-color: #2980b9;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
         }
 
         .categories-nav {
@@ -388,7 +418,7 @@
     <div class="container">
 
         <div class="admin-banner" id="admin-panel">
-            <h3>✨ إضافة عطر جديد</h3>
+            <h3>✨ لوحة الإدارة الشاملة</h3>
             <div class="admin-form-grid">
                 <input type="text" id="new-name" placeholder="اسم العطر (مثال: عطر نيش فاخر)">
                 <input type="number" id="new-price" placeholder="السعر (د.ل)">
@@ -406,7 +436,15 @@
                     <input type="file" id="new-img-file" accept="image/*" style="margin-top: 5px;">
                 </div>
             </div>
+            
             <button class="btn-add" onclick="addNewPerfume()">+ نشر العطر فوراً</button>
+
+            <!-- أزرار الحفظ والاسترجاع الشامل لضمان عدم ضياع التعديلات -->
+            <div class="admin-actions-row">
+                <button class="btn-backup" onclick="exportData()">📥 حفظ وتصدير ملف التعديلات</button>
+                <button class="btn-restore" onclick="document.getElementById('import-file').click()">📤 استيراد ملف التعديلات</button>
+                <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(this)">
+            </div>
         </div>
 
         <div class="categories-nav">
@@ -536,13 +574,47 @@
             { id: 100, name: "توليفة فيلقيت الخاصة", price: 0, category: "شرقي", desc: "العطر الحصري والخاص بمتجرنا في طرابلس.", notes: "توليفة سرية | عود وخشب صندل", img: "" }
         ];
 
-        // تحميل البيانات المحفوظة تلقائياً من ذاكرة الهاتف/المتصفح LocalStorage
         let perfumesList = JSON.parse(localStorage.getItem('velvet_perfumes_db')) || defaultPerfumes;
         let currentFilter = 'الكل';
         let selectedCart = [];
 
         function saveStateToLocalStorage() {
             localStorage.setItem('velvet_perfumes_db', JSON.stringify(perfumesList));
+        }
+
+        // ميزة التصدير لملف JSON لضمان عدم ضياع التعديلات أبداً
+        function exportData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(perfumesList));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "velvet_perfumes_backup.json");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+
+        // ميزة الاستيراد من الملف المحفوظ في هاتفك
+        function importData(element) {
+            const file = element.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.readAsText(file, "UTF-8");
+                reader.onload = function (evt) {
+                    try {
+                        const importedList = JSON.parse(evt.target.result);
+                        if (Array.isArray(importedList)) {
+                            perfumesList = importedList;
+                            saveStateToLocalStorage();
+                            displayPerfumes(perfumesList);
+                            alert("تم استعادة وتحديث جميع الأسعار والصور بنجاح!");
+                        } else {
+                            alert("الملف غير صالح.");
+                        }
+                    } catch (e) {
+                        alert("حدث خطأ أثناء قراءة الملف.");
+                    }
+                }
+            }
         }
 
         function toggleAdminPanel() {
@@ -620,7 +692,7 @@
                 img.src = event.target.result;
                 img.onload = function() {
                     const canvas = document.createElement('canvas');
-                    const MAX_WIDTH = 400;
+                    const MAX_WIDTH = 350;
                     const scaleFactor = MAX_WIDTH / img.width;
                     canvas.width = MAX_WIDTH;
                     canvas.height = img.height * scaleFactor;
@@ -628,7 +700,7 @@
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                     
-                    const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.6);
+                    const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.5);
                     callback(compressedDataUrl);
                 }
             }
