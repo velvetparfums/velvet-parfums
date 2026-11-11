@@ -98,7 +98,6 @@
             padding: 12px;
         }
 
-        /* لوحة الإدارة مخصصة للهاتف */
         .admin-banner {
             display: none;
             background: #ffffff;
@@ -152,7 +151,6 @@
             font-size: 14px;
         }
 
-        /* تصنيفات أفقية سريعة باللمس */
         .categories-nav {
             display: flex;
             gap: 8px;
@@ -185,7 +183,6 @@
             font-weight: bold;
         }
 
-        /* شبكة المنتجات متجاوبة للهواتف */
         .products-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
@@ -331,11 +328,10 @@
             font-weight: bold;
         }
 
-        /* شريط سلة عائم مخصص للهاتف */
         .cart-bar {
             position: fixed;
             bottom: 12px;
-            left: 5% ;
+            left: 5%;
             width: 90%;
             background: var(--accent-gold-dark);
             color: white;
@@ -379,11 +375,8 @@
     <header>
         <div style="width: 50px;"></div>
         <div class="header-title-container">
-            <!-- SVG لشعار VELVET PARFUMS الخاص بك (حرفي V و P المتداخلين) -->
             <svg class="logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <!-- V shape -->
                 <path d="M 28 30 L 48 76 C 49 78 51 78 52 76 L 72 30 Q 74 25 68 25 C 65 25 62 27 60 32 L 50 58 L 40 32 C 38 27 35 25 32 25 Q 26 25 28 30 Z" fill="#B39359"/>
-                <!-- P loop -->
                 <path d="M 50 32 C 58 32 68 37 68 46 C 68 55 58 60 50 60 L 50 53 C 56 53 62 49 62 46 C 62 42 56 38 50 38 Z" fill="#B39359"/>
             </svg>
             <div class="brand-title">VELVET PARFUMS</div>
@@ -394,10 +387,8 @@
 
     <div class="container">
 
-        <!-- لوحة التحكم للإضافة -->
         <div class="admin-banner" id="admin-panel">
             <h3>✨ إضافة عطر جديد</h3>
-            
             <div class="admin-form-grid">
                 <input type="text" id="new-name" placeholder="اسم العطر (مثال: عطر نيش فاخر)">
                 <input type="number" id="new-price" placeholder="السعر (د.ل)">
@@ -415,11 +406,9 @@
                     <input type="file" id="new-img-file" accept="image/*" style="margin-top: 5px;">
                 </div>
             </div>
-            
             <button class="btn-add" onclick="addNewPerfume()">+ نشر العطر فوراً</button>
         </div>
 
-        <!-- التصنيفات -->
         <div class="categories-nav">
             <button class="cat-btn active" onclick="filterPerfumes('الكل', this)">الكل</button>
             <button class="cat-btn" onclick="filterPerfumes('شرقي', this)">شرقي</button>
@@ -428,12 +417,10 @@
             <button class="cat-btn" onclick="filterPerfumes('نيش', this)">نيش</button>
         </div>
 
-        <!-- شبكة العطور -->
         <div class="products-grid" id="products-container"></div>
 
     </div>
 
-    <!-- شريط السلة للهاتف -->
     <div class="cart-bar" onclick="sendCartToMessenger()">
         <span>🛒 إرسال الطلب عبر Messenger</span>
         <div class="cart-count" id="cart-count">0</div>
@@ -446,9 +433,7 @@
     <script>
         const FB_PAGE_ID = "61596110442092";
 
-        // الـ 100 عطر العالمية المتداولة في السوق الليبي
-        let perfumesList = [
-            // --- Niche ---
+        const defaultPerfumes = [
             { id: 1, name: "Baccarat Rouge 540", price: 0, category: "نيش", desc: "أيقونة النيش الفاخرة بنوتات الزعفران والياسمين الثابتة.", notes: "زعفران | لوز مر | ياسمين", img: "" },
             { id: 2, name: "Parfums de Marly Layton", price: 0, category: "نيش", desc: "توليفة ملكية دافئة تجمع التفاح واللافندر والفانيليا.", notes: "تفاح | لافندر | فانيليا", img: "" },
             { id: 3, name: "Parfums de Marly Herod", price: 0, category: "نيش", desc: "عطر التبغ الفاخر الممزوج بالقرفة والفانيليا الشرقية.", notes: "تبغ | قرفة | فانيليا", img: "" },
@@ -479,8 +464,6 @@
             { id: 28, name: "Nasomatto Black Afgano", price: 0, category: "نيش", desc: "الغموض الداكن بنوتات التبغ والأخشاب المدخنة.", notes: "تبغ فاخر | أخشاب العود", img: "" },
             { id: 29, name: "Tiziana Terenzi Kirke", price: 0, category: "نيش", desc: "فاكهة العاطفة الاستوائية الساحرة مع المسك.", notes: "فاكهة العاطفة | خوخ | مسك", img: "" },
             { id: 30, name: "Amouage Interlude Man", price: 0, category: "نيش", desc: "عطر الأساطير والدخان والبخور والأخشاب الشرقية.", notes: "بخور | عود | جلد", img: "" },
-
-            // --- Men ---
             { id: 31, name: "Creed Aventus", price: 0, category: "رجالي", desc: "ملك العطور الرجالية بنوتات الأناناس والأخشاب.", notes: "أناناس | أخشاب الأرز | مسك", img: "" },
             { id: 32, name: "Bleu de Chanel EDP", price: 0, category: "رجالي", desc: "أناقة الحمضيات والبخور والأخشاب العطرية.", notes: "حمضيات | بخور | أخشاب صندل", img: "" },
             { id: 33, name: "Dior Sauvage Elixir", price: 0, category: "رجالي", desc: "تركيز مكثف وتوابل حارة فاخرة مع الخزامى.", notes: "قرفة | جوزة الطيب | خزامى", img: "" },
@@ -511,8 +494,6 @@
             { id: 58, name: "L'Eau d'Issey Pour Homme", price: 0, category: "رجالي", desc: "يوسوكي ياباني وحمضيات خفيفة مع نوتات خشبية.", notes: "يوسو | ليمون | توابل مائية", img: "" },
             { id: 59, name: "Burberry Hero EDP", price: 0, category: "رجالي", desc: "أرز أطلسي دافئ مع إبرة الصقنوبر والجاوي.", notes: "أرز الأطلس | صنوبر | جاوي", img: "" },
             { id: 60, name: "Polo Blue Parfum", price: 0, category: "رجالي", desc: "يوسفي ونوتات أكسجين بحرية مع نجيل الهند.", notes: "يوسفي | مريمية | نجيل الهند", img: "" },
-
-            // --- Women ---
             { id: 61, name: "Dior J'adore EDP", price: 0, category: "نسائي", desc: "باقة زهرية أنثوية خالدة من الياسمين والورد.", notes: "ياسمين | ورد جوري | كمثرى", img: "" },
             { id: 62, name: "YSL Libre Intense", price: 0, category: "نسائي", desc: "لافندر فرنسي ناعم مع أوركيد الفانيليا الدافئة.", notes: "لافندر | أوركيد | فانيليا", img: "" },
             { id: 63, name: "Chanel Coco Mademoiselle", price: 0, category: "نسائي", desc: "أناقة البرتقال المنعش مع الورد والباتشولي.", notes: "برتقال | ورد | باتشولي", img: "" },
@@ -543,8 +524,6 @@
             { id: 88, name: "Alien Mugler", price: 0, category: "نسائي", desc: "ياسمين غامض وعميق مع أخشاب الكشمير والعنبر.", notes: "ياسمين | أخشاب كشمير | عنبر", img: "" },
             { id: 89, name: "Angel Mugler", price: 0, category: "نسائي", desc: "شوكولاتة داكنة وباتشولي وفواكه حمراء.", notes: "باتشولي | شوكولاتة | توت بري", img: "" },
             { id: 90, name: "Signorina EDP", price: 0, category: "نسائي", desc: "توت وفلفل وردي مع الباناكوتا والمسك الناعم.", notes: "فلفل وردي | باناكوتا | باتشولي", img: "" },
-
-            // --- Oriental ---
             { id: 91, name: "دهن العود المعتق الملكي", price: 0, category: "شرقي", desc: "أصالة العود الكمبودي المعتق بثبات وفوحان عالي.", notes: "عود كمبودي | عنبر | خشب صندل", img: "" },
             { id: 92, name: "مسك الختام الأبيض", price: 0, category: "شرقي", desc: "مسك نقي وبودري مخملي يمنح شعور النظافة.", notes: "مسك أبيض | بودرة | ورد طائفي", img: "" },
             { id: 93, name: "عنبر الملوك الخالص", price: 0, category: "شرقي", desc: "دفء العنبر الشرقي الأصيل الممزوج بالتوابل.", notes: "عنبر دافئ | زعفران | هيل", img: "" },
@@ -557,8 +536,14 @@
             { id: 100, name: "توليفة فيلقيت الخاصة", price: 0, category: "شرقي", desc: "العطر الحصري والخاص بمتجرنا في طرابلس.", notes: "توليفة سرية | عود وخشب صندل", img: "" }
         ];
 
+        // تحميل البيانات المحفوظة تلقائياً من ذاكرة الهاتف/المتصفح LocalStorage
+        let perfumesList = JSON.parse(localStorage.getItem('velvet_perfumes_db')) || defaultPerfumes;
         let currentFilter = 'الكل';
         let selectedCart = [];
+
+        function saveStateToLocalStorage() {
+            localStorage.setItem('velvet_perfumes_db', JSON.stringify(perfumesList));
+        }
 
         function toggleAdminPanel() {
             const panel = document.getElementById('admin-panel');
@@ -575,7 +560,7 @@
             }
 
             if (filteredItems.length === 0) {
-                container.innerHTML = `<div class="empty-state"><p>لا توجد عطور المضافة هنا.</p></div>`;
+                container.innerHTML = `<div class="empty-state"><p>لا توجد عطور مضافة هنا.</p></div>`;
                 return;
             }
 
@@ -583,7 +568,6 @@
                 const card = document.createElement('div');
                 card.className = 'product-card';
                 
-                // صورة افتراضية في حال عدم التعديل
                 const imgSrc = item.img ? item.img : 'https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=400';
 
                 card.innerHTML = `
@@ -636,7 +620,7 @@
                 img.src = event.target.result;
                 img.onload = function() {
                     const canvas = document.createElement('canvas');
-                    const MAX_WIDTH = 450;
+                    const MAX_WIDTH = 400;
                     const scaleFactor = MAX_WIDTH / img.width;
                     canvas.width = MAX_WIDTH;
                     canvas.height = img.height * scaleFactor;
@@ -644,7 +628,7 @@
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                     
-                    const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.7);
+                    const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.6);
                     callback(compressedDataUrl);
                 }
             }
@@ -656,6 +640,7 @@
                     const item = perfumesList.find(p => p.id === id);
                     if (item) {
                         item.img = compressedImg;
+                        saveStateToLocalStorage();
                         displayPerfumes(perfumesList);
                     }
                 });
@@ -696,6 +681,7 @@
             };
 
             perfumesList.unshift(newItem);
+            saveStateToLocalStorage();
             displayPerfumes(perfumesList);
             
             document.getElementById('new-name').value = '';
@@ -712,12 +698,14 @@
             const item = perfumesList.find(p => p.id === id);
             if(item) {
                 item.price = parseFloat(newPrice) || 0;
+                saveStateToLocalStorage();
             }
         }
 
         function deletePerfume(id) {
             if (confirm('تأكيد حذف هذا العطر؟')) {
                 perfumesList = perfumesList.filter(p => p.id !== id);
+                saveStateToLocalStorage();
                 displayPerfumes(perfumesList);
             }
         }
@@ -726,6 +714,7 @@
             const perfume = perfumesList.find(p => p.id === id);
             if (perfume) {
                 perfume.category = newCat;
+                saveStateToLocalStorage();
                 displayPerfumes(perfumesList);
             }
         }
