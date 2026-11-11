@@ -94,7 +94,7 @@
             padding: 20px;
         }
 
-        /* لوحة التحكم المخفية للإدارة */
+        /* لوحة التحكم للإضافة */
         .admin-banner {
             display: none;
             background: #ffffff;
@@ -357,7 +357,7 @@
             <div class="brand-title">VELVET PARFUMS</div>
             <div class="brand-subtitle">عطور فيلقيت</div>
         </div>
-        <!-- زر فتح لوحة الإدارة المخفية -->
+        <!-- زر فتح لوحة الإدارة -->
         <button class="btn-admin-toggle" onclick="toggleAdminPanel()">🔒 الإدارة</button>
     </header>
 
@@ -415,6 +415,7 @@
     <script>
         const FB_PAGE_ID = "61596110442092";
 
+        // قائمة العطور تبدأ فارغة لتضيفها بيديك من الصفر
         let perfumesList = [];
         let currentFilter = 'الكل';
         let selectedCart = [];
@@ -454,7 +455,7 @@
                         <div class="product-desc">${item.desc}</div>
                         <div class="product-notes">${item.notes}</div>
                         
-                        <!-- تعديل التصنيف مباشرة من البطاقة -->
+                        <!-- تغيير التصنيف مباشرة من بطاقة العطر -->
                         <div style="margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
                             <span style="font-size: 11px; color: var(--text-muted);">التصنيف:</span>
                             <select onchange="changePerfumeCategory(${item.id}, this.value)" style="font-size: 12px; padding: 3px 6px; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-color); outline: none; cursor: pointer;">
@@ -548,6 +549,7 @@
             alert(`تمت إضافة عطر "${name}" بنجاح!`);
         }
 
+        // حذف عطر نهائياً
         function deletePerfume(id) {
             if (confirm('هل أنت متأكد من حذف هذا العطر نهائياً؟')) {
                 perfumesList = perfumesList.filter(p => p.id !== id);
@@ -555,6 +557,7 @@
             }
         }
 
+        // تغيير تصنيف العطر مباشرة
         function changePerfumeCategory(id, newCat) {
             const perfume = perfumesList.find(p => p.id === id);
             if (perfume) {
