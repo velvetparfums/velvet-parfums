@@ -355,8 +355,8 @@
             font-weight: bold;
         }
 
-        /* نافذة بيانات التوصيل للزبون */
-        .checkout-modal {
+        /* نافذة السلة واستعراض الأصناف */
+        .cart-modal, .checkout-modal {
             display: none;
             position: fixed;
             top: 0;
@@ -370,20 +370,67 @@
             padding: 15px;
         }
 
-        .checkout-content {
+        .modal-content {
             background: white;
             padding: 20px;
             border-radius: 12px;
             width: 100%;
-            max-width: 400px;
+            max-width: 420px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
         }
 
-        .checkout-content h3 {
+        .modal-content h3 {
             color: var(--accent-gold-dark);
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             font-size: 16px;
             text-align: center;
+        }
+
+        .cart-items-list {
+            overflow-y: auto;
+            max-height: 250px;
+            margin-bottom: 12px;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 8px 0;
+        }
+
+        .cart-item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 4px;
+            border-bottom: 1px dashed var(--border-color);
+            font-size: 13px;
+        }
+
+        .cart-item-row:last-child {
+            border-bottom: none;
+        }
+
+        .btn-remove-item {
+            background: #fae1dd;
+            color: var(--danger-color);
+            border: none;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .cart-summary-box {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-align: left;
+            color: var(--accent-gold-dark);
+            background: var(--bg-color);
+            padding: 10px;
+            border-radius: 8px;
         }
 
         .checkout-form-group {
@@ -504,15 +551,32 @@
 
     </div>
 
-    <!-- شريط السلة وإتمام الطلب -->
-    <div class="cart-bar" onclick="openCheckoutModal()">
-        <span>🛒 إتمام الطلب وتحديد التوصيل</span>
+    <!-- شريط السلة السفلي -->
+    <div class="cart-bar" onclick="openCartModal()">
+        <span>🛒 سلة الطلبات (مراجعة الأسعار والأصناف)</span>
         <div class="cart-count" id="cart-count">0</div>
+    </div>
+
+    <!-- نافذة مراجعة السلة وحذف الأصناف -->
+    <div class="cart-modal" id="cart-modal">
+        <div class="modal-content">
+            <h3>🛍️ مراجعة سلة العطور</h3>
+            <div class="cart-items-list" id="cart-items-list">
+                <!-- يتم تعبئتها ديناميكياً -->
+            </div>
+            <div class="cart-summary-box" id="cart-summary-box">
+                عدد الأصناف: 0 | الإجمالي: 0 د.ل
+            </div>
+            <div style="display: flex; gap: 8px;">
+                <button class="btn-add" onclick="proceedToCheckout()" style="background: var(--success-color);">تحديد بيانات التوصيل</button>
+                <button class="btn-add" onclick="closeCartModal()" style="background: #95a5a6;">إغلاق</button>
+            </div>
+        </div>
     </div>
 
     <!-- نافذة إدخال بيانات التوصيل للزبون -->
     <div class="checkout-modal" id="checkout-modal">
-        <div class="checkout-content">
+        <div class="modal-content">
             <h3>📍 بيانات التوصيل واستلام الطلب</h3>
             <div class="checkout-form-group">
                 <label>الاسم الكامل:</label>
@@ -528,7 +592,7 @@
             </div>
             <div style="display: flex; gap: 8px; margin-top: 15px;">
                 <button class="btn-add" onclick="submitOrderToMessenger()" style="background: var(--success-color);">إرسال الطلب عبر الماسنجر</button>
-                <button class="btn-add" onclick="closeCheckoutModal()" style="background: #95a5a6;">إلغاء</button>
+                <button class="btn-add" onclick="closeCheckoutModal()" style="background: #95a5a6;">السابق</button>
             </div>
         </div>
     </div>
@@ -624,7 +688,7 @@
             { id: 51, name: "Prada Luna Rossa Carbon", price: 0, category: "رجالي", desc: "معادن باردة ومعدنية مع اللافندر والخزامى.", notes: "لافندر | فلفل معدني | باتشولي", img: "" },
             { id: 52, name: "Bvlgari Man In Black", price: 0, category: "رجالي", desc: "توابل داكنة وجلود فاخرة مع الروم والعنبر.", notes: "روم | توابل | جلد وعنبر", img: "" },
             { id: 53, name: "Montblanc Explorer", price: 0, category: "رجالي", desc: "برغموت إيطالي منعش مع نجيل الهند والأخشاب.", notes: "برغموت | نجيل الهند | جلد", img: "" },
-            { id: 54, name: "Azzaro Most Wanted", price: 0, category: "رجالي", desc: "زنجبيل حار مع الشوكولاتة وفانيليا البوربون.", notes: "زنجبيل | روائح خشبية | فانيليا", img: "" },
+            { id: 54, name: "Azzaro Most Wanted", price: 0, category: "رجالي", desc: "زنجبيل حار مع الشوكولاتة والفانيليا البوربون.", notes: "زنجبيل | روائح خشبية | فانيليا", img: "" },
             { id: 55, name: "Bad Boy Le Parfum", price: 0, category: "رجالي", desc: "القنب والمريمية والجلود في توليفة عصرية.", notes: "قنب | مريمية | جلود سوداء", img: "" },
             { id: 56, name: "Lalique Encre Noire", price: 0, category: "رجالي", desc: "سيد النوتات الخشبية والنجيل الهند الداكن.", notes: "نجيل هندي | سرو | مسك", img: "" },
             { id: 57, name: "Davidoff Cool Water", price: 0, category: "رجالي", desc: "الكلاسيكية المنعشة بنوتات النعناع ومياه البحر.", notes: "نعناع | ماء البحر | لافندر", img: "" },
@@ -896,22 +960,68 @@
         function addToCart(id) {
             const item = perfumesList.find(p => p.id === Number(id));
             if(item) {
-                selectedCart.push({ name: item.name, price: item.price });
-                document.getElementById('cart-count').innerText = selectedCart.length;
+                selectedCart.push({ cartId: Date.now() + Math.random(), id: item.id, name: item.name, price: item.price });
+                updateCartUI();
                 alert(`تمت إضافة "${item.name}" إلى السلة.`);
             }
         }
 
-        function openCheckoutModal() {
-            if(selectedCart.length === 0) {
-                alert('السلة فارغة! الرجاء اختيار عطر واحد على الأقل للطلب.');
+        function updateCartUI() {
+            document.getElementById('cart-count').innerText = selectedCart.length;
+            
+            const listContainer = document.getElementById('cart-items-list');
+            listContainer.innerHTML = '';
+
+            if (selectedCart.length === 0) {
+                listContainer.innerHTML = `<p style="text-align: center; color: var(--text-muted); padding: 15px; font-size: 13px;">السلة فارغة حالياً.</p>`;
+                document.getElementById('cart-summary-box').innerText = "عدد الأصناف: 0 | الإجمالي: 0 د.ل";
                 return;
             }
+
+            let totalSum = 0;
+            selectedCart.forEach((cartItem, index) => {
+                totalSum += cartItem.price;
+                const row = document.createElement('div');
+                row.className = 'cart-item-row';
+                row.innerHTML = `
+                    <span>${index + 1}. ${cartItem.name}</span>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-weight: bold; color: var(--accent-gold-dark);">${cartItem.price} د.ل</span>
+                        <button class="btn-remove-item" onclick="removeFromCart('${cartItem.cartId}')">حذف</button>
+                    </div>
+                `;
+                listContainer.appendChild(row);
+            });
+
+            document.getElementById('cart-summary-box').innerText = `عدد الأصناف: ${selectedCart.length} | الإجمالي: ${totalSum} د.ل`;
+        }
+
+        function removeFromCart(cartId) {
+            selectedCart = selectedCart.filter(item => item.cartId != cartId);
+            updateCartUI();
+        }
+
+        function openCartModal() {
+            updateCartUI();
+            document.getElementById('cart-modal').style.display = 'flex';
+        }
+
+        function closeCartModal() {
+            document.getElementById('cart-modal').style.display = 'none';
+        }
+
+        function proceedToCheckout() {
+            if(selectedCart.length === 0) {
+                alert('السلة فارغة!');
+                return;
+            }
+            closeCartModal();
             document.getElementById('checkout-modal').style.display = 'flex';
         }
 
         function closeCheckoutModal() {
             document.getElementById('checkout-modal').style.display = 'none';
+            openCartModal(); // العودة للسلة عند النقر على السابق
         }
 
         function submitOrderToMessenger() {
@@ -935,11 +1045,11 @@
                 totalPrice += item.price;
             });
 
-            summaryText += `\nإجمالي المبلغ مع التوصيل: ${totalPrice} د.ل`;
+            summaryText += `\nإجمالي المبلغ: ${totalPrice} د.ل`;
             
             const messengerUrl = `https://m.me/${FB_PAGE_ID}?text=${encodeURIComponent(summaryText)}`;
             window.open(messengerUrl, '_blank');
-            closeCheckoutModal();
+            document.getElementById('checkout-modal').style.display = 'none';
         }
 
         displayPerfumes(perfumesList);
