@@ -170,6 +170,43 @@
             cursor: pointer;
         }
 
+        /* ===== البحث ===== */
+        .search-box {
+            position: relative;
+            margin-bottom: 14px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 11px 14px 11px 40px;
+            border: 1px solid var(--border-color);
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            background: var(--card-bg);
+            color: var(--text-dark);
+        }
+
+        .search-box input:focus {
+            border-color: var(--accent-gold);
+        }
+
+        .search-clear {
+            display: none;
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--border-color);
+            border: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
         .categories-nav {
             display: flex;
             gap: 8px;
@@ -538,6 +575,12 @@
             </div>
         </div>
 
+        <!-- مربع البحث -->
+        <div class="search-box">
+            <input type="search" id="search-input" placeholder="🔍 ابحث عن عطر بالاسم..." oninput="searchPerfumes(this.value)" autocomplete="off">
+            <button class="search-clear" id="search-clear" onclick="clearSearch()">✕</button>
+        </div>
+
         <div class="categories-nav">
             <button class="cat-btn active" onclick="filterPerfumes('الكل', this)">الكل</button>
             <button class="cat-btn" onclick="filterPerfumes('شرقي', this)">شرقي</button>
@@ -745,6 +788,7 @@
 
         let currentFilter = 'الكل';
         let selectedCart = [];
+        let searchTerm = '';
 
         function saveStateToLocalStorage() {
             try {
@@ -794,17 +838,52 @@
             }
         }
 
+        /* ===== البحث بالاسم ===== */
+        function normalizeText(str) {
+            return (str || '').toString()
+                .toLowerCase()
+                .normalize('NFD').replace(/[\u0300-\u036f]/g, '')   // إزالة علامات é وغيرها
+                .replace(/[\u064B-\u0652\u0640]/g, '')               // إزالة التشكيل والتطويل
+                .replace(/[أإآ]/g, 'ا')
+                .replace(/ة/g, 'ه')
+                .replace(/ى/g, 'ي')
+                .replace(/['’`\-\.&]/g, '')
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
+        function searchPerfumes(value) {
+            searchTerm = normalizeText(value);
+            document.getElementById('search-clear').style.display = value.trim() ? 'block' : 'none';
+            displayPerfumes(perfumesList);
+        }
+
+        function clearSearch() {
+            const input = document.getElementById('search-input');
+            input.value = '';
+            searchPerfumes('');
+            input.focus();
+        }
+
         function displayPerfumes(items) {
             const container = document.getElementById('products-container');
             container.innerHTML = '';
 
             let filteredItems = items;
             if (currentFilter !== 'الكل') {
-                filteredItems = items.filter(p => p.category === currentFilter);
+                filteredItems = filteredItems.filter(p => p.category === currentFilter);
+            }
+
+            if (searchTerm) {
+                const words = searchTerm.split(' ');
+                filteredItems = filteredItems.filter(p => {
+                    const n = normalizeText(p.name);
+                    return words.every(w => n.includes(w));
+                });
             }
 
             if (filteredItems.length === 0) {
-                container.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-muted);">لا توجد عطور مطابقة.</div>`;
+                container.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-muted); grid-column: 1 / -1;">${searchTerm ? 'لا يوجد عطر بهذا الاسم، جرّب كلمة أخرى أو تواصل معنا لطلبه.' : 'لا توجد عطور مطابقة.'}</div>`;
                 return;
             }
 
