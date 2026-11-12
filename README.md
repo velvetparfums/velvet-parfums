@@ -48,6 +48,24 @@
 
         .container { width: 100%; max-width: 1100px; margin: 0 auto; padding: 12px; }
 
+        .search-box {
+            margin-bottom: 15px;
+        }
+        .search-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 25px;
+            font-size: 14px;
+            background: var(--card-bg);
+            outline: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+            transition: border-color 0.2s;
+        }
+        .search-input:focus {
+            border-color: var(--accent-gold);
+        }
+
         .admin-banner {
             display: none;
             background: #ffffff;
@@ -161,12 +179,17 @@
             <button class="btn-update-live" onclick="addNewPerfumeCloud()">🚀 نشر مباشر في المتجر</button>
         </div>
 
+        <!-- شريط البحث السريع -->
+        <div class="search-box">
+            <input type="text" id="search-input" class="search-input" placeholder="🔍 ابحث عن العطر بالاسم أو النوتات..." oninput="filterPerfumes()">
+        </div>
+
         <div class="categories-nav">
-            <button class="cat-btn active" onclick="filterPerfumes('الكل', this)">الكل</button>
-            <button class="cat-btn" onclick="filterPerfumes('شرقي', this)">شرقي</button>
-            <button class="cat-btn" onclick="filterPerfumes('رجالي', this)">رجالي</button>
-            <button class="cat-btn" onclick="filterPerfumes('نسائي', this)">نسائي</button>
-            <button class="cat-btn" onclick="filterPerfumes('نيش', this)">نيش</button>
+            <button class="cat-btn active" onclick="setCategory('الكل', this)">الكل</button>
+            <button class="cat-btn" onclick="setCategory('شرقي', this)">شرقي</button>
+            <button class="cat-btn" onclick="setCategory('رجالي', this)">رجالي</button>
+            <button class="cat-btn" onclick="setCategory('نسائي', this)">نسائي</button>
+            <button class="cat-btn" onclick="setCategory('نيش', this)">نيش</button>
         </div>
 
         <div class="products-grid" id="products-container"></div>
@@ -341,7 +364,6 @@
             { id: 100, name: "توليفة فيلقيت الخاصة", price: 0, category: "شرقي", desc: "العطر الحصري والخاص بمتجرنا في طرابلس.", notes: "توليفة سرية | عود وخشب صندل", img: "" }
         ];
 
-        // تهيئة القائمة مباشرة من الذاكرة المحلية لضمان ظهورها فوراً بدون تأخير
         let perfumesList = defaultPerfumes.map((p, idx) => ({ firebaseKey: "local_" + p.id, ...p }));
         displayPerfumes(perfumesList);
 
@@ -364,7 +386,6 @@
             }
         });
 
-        // المزامنة مع Firebase في الخلفية
         db.ref('perfumes').on('value', (snapshot) => {
             const data = snapshot.val();
             if (data) {
@@ -374,7 +395,6 @@
                 })).sort((a, b) => (a.id || 0) - (b.id || 0));
                 displayPerfumes(perfumesList);
             } else {
-                // إذا كانت قاعدة البيانات فارغة، ارفع الـ 100 عطر تلقائياً
                 const updates = {};
                 defaultPerfumes.forEach(item => {
                     const newKey = db.ref('perfumes').push().key;
@@ -383,16 +403,26 @@
                 db.ref('perfumes').set(updates);
             }
         }, (error) => {
-            console.warn("Firebase read error (check rules):", error);
+            console.warn("Firebase read warning:", error);
         });
 
         function displayPerfumes(items) {
             const container = document.getElementById('products-container');
             container.innerHTML = '';
-            let filtered = currentFilter === 'الكل' ? items : items.filter(p => p.category === currentFilter);
+            
+            const searchTerm = document.getElementById('search-input').value.toLowerCase().trim();
+
+            let filtered = items.filter(item => {
+                const matchesCat = currentFilter === 'الكل' || item.category === currentFilter;
+                const matchesSearch = !searchTerm || 
+                    item.name.toLowerCase().includes(searchTerm) || 
+                    (item.desc && item.desc.toLowerCase().includes(searchTerm)) ||
+                    (item.notes && item.notes.toLowerCase().includes(searchTerm));
+                return matchesCat && matchesSearch;
+            });
 
             if (filtered.length === 0) {
-                container.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-muted); grid-column:1/-1;">لا توجد عطور مطابقة.</div>`;
+                container.innerHTML = `<div style="text-align:center; padding:30px; color:var(--text-muted); grid-column:1/-1;">لا توجد عطور مطابقة لبحثك.</div>`;
                 return;
             }
 
@@ -444,6 +474,17 @@
             });
         }
 
+        function setCategory(cat, btn) {
+            currentFilter = cat;
+            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            displayPerfumes(perfumesList);
+        }
+
+        function filterPerfumes() {
+            displayPerfumes(perfumesList);
+        }
+
         function compressImg(file, cb) {
             const reader = new FileReader();
             reader.readAsDataURL(file);
@@ -481,7 +522,7 @@
 
         function saveToCloud(name, price, cat, notes, desc, imgUrl) {
             const newItem = {
-                id: 0,
+                id: Date.now(),
                 name,
                 price: parseFloat(price),
                 category: cat,
@@ -500,7 +541,7 @@
                     document.getElementById('admin-panel').style.display = 'none';
                     isAdminMode = false;
                 } else {
-                    alert("⚠️ تعذر الحفظ في السحابة. تأكد من تفعيل صلاحيات القراءة والكتابة (Rules) في Firebase.");
+                    alert("⚠️ تعذر الحفظ في السحابة.");
                 }
             });
         }
@@ -529,13 +570,6 @@
             if(confirm('تأكيد حذف هذا العطر من المتجر؟')) {
                 db.ref('perfumes/' + firebaseKey).remove();
             }
-        }
-
-        function filterPerfumes(cat, btn) {
-            currentFilter = cat;
-            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            displayPerfumes(perfumesList);
         }
 
         function addToCart(firebaseKey) {
