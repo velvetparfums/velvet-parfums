@@ -172,7 +172,7 @@
             </div>
             
             <button class="btn-update-live" onclick="addNewPerfumeCloud()">🚀 نشر مباشر في المتجر</button>
-            <button class="btn-reset-cloud" onclick="resetToFull100Perfumes()">🔄 استعادة قائمة الـ 100 عطر الأصلية كاملة</button>
+            <button class="btn-reset-cloud" onclick="forceReloadDefaultPerfumes()">🔄 تحديث وضبط الـ 100 عطر فوراً</button>
         </div>
 
         <div class="categories-nav">
@@ -255,6 +255,7 @@
         let currentFilter = 'الكل';
         let selectedCart = [];
 
+        // قائمة الـ 100 عطر كاملة ومدمجة في الكود
         const defaultPerfumes = [
             { id: 1, name: "Baccarat Rouge 540", price: 0, category: "نيش", desc: "أيقونة النيش الفاخرة بنوتات الزعفران والياسمين الثابتة.", notes: "زعفران | لوز مر | ياسمين", img: "" },
             { id: 2, name: "Parfums de Marly Layton", price: 0, category: "نيش", desc: "توليفة ملكية دافئة تجمع التفاح واللافندر والفانيليا.", notes: "تفاح | لافندر | فانيليا", img: "" },
@@ -384,26 +385,23 @@
                     firebaseKey: key,
                     ...data[key]
                 })).sort((a, b) => (a.id || 0) - (b.id || 0));
+                displayPerfumes(perfumesList);
             } else {
-                uploadAllDefaultsToCloud();
+                forceReloadDefaultPerfumes();
             }
-            displayPerfumes(perfumesList);
         });
 
-        function uploadAllDefaultsToCloud() {
+        function forceReloadDefaultPerfumes() {
             const updates = {};
             defaultPerfumes.forEach(item => {
                 const newKey = db.ref('perfumes').push().key;
                 updates[newKey] = item;
             });
-            db.ref('perfumes').set(updates);
-        }
-
-        function resetToFull100Perfumes() {
-            if (confirm('هل تريد استعادة قائمة الـ 100 عطر الأصلية كاملة بوصفها في السحابة؟')) {
-                uploadAllDefaultsToCloud();
-                alert('تمت استعادة الـ 100 عطر كاملة بنجاح!');
-            }
+            db.ref('perfumes').set(updates, (error) => {
+                if(!error) {
+                    alert("✅ تم تحميل وضبط الـ 100 عطر بنجاح في السحابة!");
+                }
+            });
         }
 
         function displayPerfumes(items) {
@@ -501,7 +499,7 @@
 
         function saveToCloud(name, price, cat, notes, desc, imgUrl) {
             const newItem = {
-                id: 0, // يظهر في البداية
+                id: Date.now(),
                 name,
                 price: parseFloat(price),
                 category: cat,
