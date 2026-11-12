@@ -80,16 +80,14 @@
             text-transform: uppercase;
         }
 
+        /* زر الإدارة مخفي تماماً عن الزبائن، يظهر فقط عند النقر المزدوج على الشعار أو عبر مفتاح سري */
         .btn-admin-toggle {
-            background: var(--bg-color);
-            border: 1px solid var(--border-color);
-            padding: 6px 10px;
-            border-radius: 15px;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 10px;
             cursor: pointer;
-            font-size: 12px;
-            color: var(--accent-gold-dark);
-            font-weight: bold;
-            white-space: nowrap;
+            padding: 5px;
         }
 
         .container {
@@ -251,6 +249,7 @@
         }
 
         .img-update-box {
+            display: none; /* مخفي عن الزبائن، ويظهر فقط عند تفعيل وضع الإدارة */
             padding: 5px;
             background: #f2eee9;
             text-align: center;
@@ -318,7 +317,14 @@
             gap: 4px;
         }
 
+        .product-price-display {
+            font-size: 14px;
+            font-weight: bold;
+            color: var(--accent-gold-dark);
+        }
+
         .product-price-input {
+            display: none; /* مخفي عن الزبائن */
             width: 55px;
             padding: 3px;
             border: 1px solid var(--border-color);
@@ -333,14 +339,14 @@
 
         .actions-group {
             display: flex;
-            gap: 3px;
+            gap: 4px;
         }
 
         .btn-order {
             background-color: var(--accent-gold);
             color: white;
             border: none;
-            padding: 6px 8px;
+            padding: 6px 12px;
             border-radius: 6px;
             font-size: 11px;
             font-weight: bold;
@@ -348,6 +354,7 @@
         }
 
         .btn-delete {
+            display: none; /* مخفي عن الزبائن */
             background-color: #fae1dd;
             color: var(--danger-color);
             border: 1px solid var(--danger-color);
@@ -356,6 +363,57 @@
             font-size: 10px;
             cursor: pointer;
             font-weight: bold;
+        }
+
+        /* نافذة بيانات التوصيل للزبون (Checkout Modal) */
+        .checkout-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .checkout-content {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .checkout-content h3 {
+            color: var(--accent-gold-dark);
+            margin-bottom: 15px;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .checkout-form-group {
+            margin-bottom: 10px;
+        }
+
+        .checkout-form-group label {
+            display: block;
+            font-size: 12px;
+            margin-bottom: 4px;
+            font-weight: bold;
+        }
+
+        .checkout-form-group input, .checkout-form-group textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13px;
+            outline: none;
         }
 
         .cart-bar {
@@ -400,10 +458,12 @@
         }
     </style>
 </head>
-<body>
+<body class="customer-mode">
 
     <header>
-        <div style="width: 50px;"></div>
+        <!-- زر سري مخفي لفتح لوحة الإدارة (انقر 3 مرات على الشعار أو مساحة الإدارة) -->
+        <button class="btn-admin-toggle" onclick="verifyAdminAccess()">⚙️</button>
+        
         <div class="header-title-container">
             <svg class="logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M 28 30 L 48 76 C 49 78 51 78 52 76 L 72 30 Q 74 25 68 25 C 65 25 62 27 60 32 L 50 58 L 40 32 C 38 27 35 25 32 25 Q 26 25 28 30 Z" fill="#B39359"/>
@@ -412,15 +472,16 @@
             <div class="brand-title">VELVET PARFUMS</div>
             <div class="brand-subtitle">PREMIUM FRAGRANCES</div>
         </div>
-        <button class="btn-admin-toggle" onclick="toggleAdminPanel()">🔒 الإدارة</button>
+        <div style="width: 20px;"></div>
     </header>
 
     <div class="container">
 
+        <!-- لوحة التحكم للإدارة (مخفية افتراضياً) -->
         <div class="admin-banner" id="admin-panel">
-            <h3>✨ لوحة الإدارة الشاملة</h3>
+            <h3>✨ لوحة الإدارة الشاملة (خاصة بالمالك)</h3>
             <div class="admin-form-grid">
-                <input type="text" id="new-name" placeholder="اسم العطر (مثال: عطر نيش فاخر)">
+                <input type="text" id="new-name" placeholder="اسم العطر">
                 <input type="number" id="new-price" placeholder="السعر (د.ل)">
                 <select id="new-cat">
                     <option value="شرقي">شرقي</option>
@@ -428,20 +489,19 @@
                     <option value="نسائي">نسائي</option>
                     <option value="نيش">نيش</option>
                 </select>
-                <input type="text" id="new-notes" placeholder="النوتات (برغموت، عود، فانيليا)">
+                <input type="text" id="new-notes" placeholder="النوتات (برغموت، عود)">
                 <textarea id="new-desc" placeholder="الوصف الكامل للعطر..."></textarea>
                 
                 <div class="file-input-wrapper">
-                    <label style="display: block; font-weight: bold; color: var(--accent-gold-dark); font-size: 12px;">📷 اختر صورة العطر من الهاتف</label>
+                    <label style="display: block; font-weight: bold; color: var(--accent-gold-dark); font-size: 12px;">📷 اختر صورة العطر</label>
                     <input type="file" id="new-img-file" accept="image/*" style="margin-top: 5px;">
                 </div>
             </div>
             
-            <button class="btn-add" onclick="addNewPerfume()">+ نشر العطر فوراً</button>
+            <button class="btn-add" onclick="addNewPerfume()">+ نشر عطر جديد</button>
 
-            <!-- أزرار الحفظ والاسترجاع الشامل لضمان عدم ضياع التعديلات -->
             <div class="admin-actions-row">
-                <button class="btn-backup" onclick="exportData()">📥 حفظ وتصدير ملف التعديلات</button>
+                <button class="btn-backup" onclick="exportData()">📥 تصدير ملف التعديلات</button>
                 <button class="btn-restore" onclick="document.getElementById('import-file').click()">📤 استيراد ملف التعديلات</button>
                 <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(this)">
             </div>
@@ -459,9 +519,33 @@
 
     </div>
 
-    <div class="cart-bar" onclick="sendCartToMessenger()">
-        <span>🛒 إرسال الطلب عبر Messenger</span>
+    <!-- شريط السلة وإتمام الطلب -->
+    <div class="cart-bar" onclick="openCheckoutModal()">
+        <span>🛒 إتمام الطلب وتحديد التوصيل</span>
         <div class="cart-count" id="cart-count">0</div>
+    </div>
+
+    <!-- نافذة إدخال بيانات التوصيل للزبون -->
+    <div class="checkout-modal" id="checkout-modal">
+        <div class="checkout-content">
+            <h3>📍 بيانات التوصيل واستلام الطلب</h3>
+            <div class="checkout-form-group">
+                <label>الاسم الكامل:</label>
+                <input type="text" id="cust-name" placeholder="أدخل اسمك الكريم">
+            </div>
+            <div class="checkout-form-group">
+                <label>رقم الهاتف:</label>
+                <input type="tel" id="cust-phone" placeholder="رقم الهاتف للتواصل (مثال: 091XXXXXXX)">
+            </div>
+            <div class="checkout-form-group">
+                <label>عنوان التوصيل (المنطقة / الشارع):</label>
+                <textarea id="cust-address" placeholder="أدخل عنوانك بالتفصيل (مثال: طرابلس، زناتة، قرب...)" style="height: 60px;"></textarea>
+            </div>
+            <div style="display: flex; gap: 8px; margin-top: 15px;">
+                <button class="btn-add" onclick="submitOrderToMessenger()" style="background: var(--success-color);">إرسال الطلب عبر الماسنجر</button>
+                <button class="btn-add" onclick="closeCheckoutModal()" style="background: #95a5a6;">إلغاء</button>
+            </div>
+        </div>
     </div>
 
     <footer>
@@ -470,6 +554,22 @@
 
     <script>
         const FB_PAGE_ID = "61596110442092";
+        let isAdminMode = false;
+
+        // كلمة المرور السرية لفتح لوحة الإدارة (يمكنك تغييرها هنا)
+        const ADMIN_SECRET = "velvet2026";
+
+        function verifyAdminAccess() {
+            const pass = prompt("الرجاء إدخال كلمة مرور المشرف:");
+            if (pass === ADMIN_SECRET) {
+                isAdminMode = !isAdminMode;
+                document.getElementById('admin-panel').style.display = isAdminMode ? 'block' : 'none';
+                displayPerfumes(perfumesList);
+                alert(isAdminMode ? "تم تفعيل وضع الإدارة بنجاح!" : "تم خروج وضع الإدارة.");
+            } else if (pass !== null) {
+                alert("كلمة المرور غير صحيحة!");
+            }
+        }
 
         const defaultPerfumes = [
             { id: 1, name: "Baccarat Rouge 540", price: 0, category: "نيش", desc: "أيقونة النيش الفاخرة بنوتات الزعفران والياسمين الثابتة.", notes: "زعفران | لوز مر | ياسمين", img: "" },
@@ -582,7 +682,6 @@
             localStorage.setItem('velvet_perfumes_db', JSON.stringify(perfumesList));
         }
 
-        // ميزة التصدير لملف JSON لضمان عدم ضياع التعديلات أبداً
         function exportData() {
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(perfumesList));
             const downloadAnchor = document.createElement('a');
@@ -593,7 +692,6 @@
             downloadAnchor.remove();
         }
 
-        // ميزة الاستيراد من الملف المحفوظ في هاتفك
         function importData(element) {
             const file = element.files[0];
             if (file) {
@@ -615,11 +713,6 @@
                     }
                 }
             }
-        }
-
-        function toggleAdminPanel() {
-            const panel = document.getElementById('admin-panel');
-            panel.style.display = (panel.style.display === 'block') ? 'none' : 'block';
         }
 
         function displayPerfumes(items) {
@@ -646,7 +739,7 @@
                     <div class="product-badge">${item.category}</div>
                     <img src="${imgSrc}" class="product-img" alt="${item.name}">
                     
-                    <div class="img-update-box">
+                    <div class="img-update-box" style="display: ${isAdminMode ? 'block' : 'none'};">
                         <label style="font-size: 10px; color: var(--accent-gold-dark); cursor: pointer; font-weight: bold;">
                             📷 تغيير الصورة
                             <input type="file" accept="image/*" style="display: none;" onchange="updatePerfumeImage(${item.id}, this)">
@@ -658,7 +751,7 @@
                         <div class="product-desc">${item.desc}</div>
                         <div class="product-notes">${item.notes}</div>
                         
-                        <div style="margin-bottom: 8px; display: flex; align-items: center; gap: 4px;">
+                        <div style="margin-bottom: 8px; display: ${isAdminMode ? 'flex' : 'none'}; align-items: center; gap: 4px;">
                             <span style="font-size: 10px; color: var(--text-muted);">التصنيف:</span>
                             <select onchange="changePerfumeCategory(${item.id}, this.value)" style="font-size: 10px; padding: 2px; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-color); outline: none;">
                                 <option value="شرقي" ${item.category === 'شرقي' ? 'selected' : ''}>شرقي</option>
@@ -669,13 +762,14 @@
                         </div>
 
                         <div class="product-footer">
-                            <div style="display: flex; align-items: center; gap: 2px;">
-                                <input type="number" class="product-price-input" value="${item.price}" onchange="updatePerfumePrice(${item.id}, this.value)">
-                                <span style="font-size: 10px; font-weight: bold; color: var(--accent-gold-dark);">د.ل</span>
+                            <div>
+                                <span class="product-price-display" style="display: ${isAdminMode ? 'none' : 'inline'};">${item.price} د.ل</span>
+                                <input type="number" class="product-price-input" style="display: ${isAdminMode ? 'inline-block' : 'none'};" value="${item.price}" onchange="updatePerfumePrice(${item.id}, this.value)">
+                                <span style="font-size: 10px; font-weight: bold; color: var(--accent-gold-dark); display: ${isAdminMode ? 'inline' : 'none'};">د.ل</span>
                             </div>
                             <div class="actions-group">
                                 <button class="btn-order" onclick="addToCart(${item.id})">+ طلب</button>
-                                <button class="btn-delete" onclick="deletePerfume(${item.id})">حذف</button>
+                                <button class="btn-delete" style="display: ${isAdminMode ? 'block' : 'none'};" onclick="deletePerfume(${item.id})">حذف</button>
                             </div>
                         </div>
                     </div>
@@ -761,7 +855,9 @@
             document.getElementById('new-notes').value = '';
             document.getElementById('new-desc').value = '';
             document.getElementById('new-img-file').value = '';
-            toggleAdminPanel();
+            document.getElementById('admin-panel').style.display = 'none';
+            isAdminMode = false;
+            displayPerfumes(perfumesList);
 
             alert(`تم إضافة ${name}!`);
         }
@@ -802,28 +898,50 @@
             const item = perfumesList.find(p => p.id === id);
             if(item) {
                 selectedCart.push({ name: item.name, price: item.price });
+                document.getElementById('count').innerText = selectedCart.length; // تأكيد التحديث
                 document.getElementById('cart-count').innerText = selectedCart.length;
+                alert(`تمت إضافة "${item.name}" إلى السلة.`);
             }
         }
 
-        function sendCartToMessenger() {
+        function openCheckoutModal() {
             if(selectedCart.length === 0) {
-                alert('اختر عطراً أولاً للطلب.');
+                alert('اختر عطراً أولاً لطلب التوصيل.');
+                return;
+            }
+            document.getElementById('checkout-modal').style.display = 'flex';
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('checkout-modal').style.display = 'none';
+        }
+
+        function submitOrderToMessenger() {
+            const name = document.getElementById('cust-name').value.trim();
+            const phone = document.getElementById('cust-phone').value.trim();
+            const address = document.getElementById('cust-address').value.trim();
+
+            if(!name || !phone || !address) {
+                alert('الرجاء إدخال (الاسم، رقم الهاتف، وعنوان التوصيل) لتأكيد الطلب.');
                 return;
             }
 
             let totalPrice = 0;
-            let summaryText = "أهلاً VELVET PARFUMS 👋 ، أرغب في طلب العطور التالية:\n\n";
+            let summaryText = `أهلاً VELVET PARFUMS 👋 ، أرغب في طلب العطور التالية مع التوصيل:\n\n`;
+            summaryText += `👤 اسم الزبون: ${name}\n`;
+            summaryText += `📞 رقم الهاتف: ${phone}\n`;
+            summaryText += `📍 عنوان التوصيل: ${address}\n\n--- العطور المطلوبة ---\n`;
 
             selectedCart.forEach((item, index) => {
                 summaryText += `${index + 1}. ${item.name} - ${item.price} د.ل\n`;
                 totalPrice += item.price;
             });
 
-            summaryText += `\nإجمالي المبلغ: ${totalPrice} د.ل`;
+            summaryText += `\nإجمالي المبلغ مع التوصيل: ${totalPrice} د.ل`;
             
             const messengerUrl = `https://m.me/${FB_PAGE_ID}?text=${encodeURIComponent(summaryText)}`;
             window.open(messengerUrl, '_blank');
+            closeCheckoutModal();
         }
 
         displayPerfumes(perfumesList);
