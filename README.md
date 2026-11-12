@@ -529,7 +529,7 @@
             <button class="btn-add" onclick="addNewPerfume()">+ نشر عطر جديد</button>
 
             <div class="admin-actions-row">
-                <button class="btn-backup" onclick="exportData()">📥 تصدير ملف التعديلات (نسخ احتياطي)</button>
+                <button class="btn-backup" onclick="exportCodeFile()">📥 تحميل كود المتجر المحدث (نسخة كاملة)</button>
                 <button class="btn-restore" onclick="document.getElementById('import-file').click()">📤 استيراد ملف التعديلات</button>
                 <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(this)">
             </div>
@@ -735,18 +735,21 @@
             try {
                 localStorage.setItem('velvet_perfumes_db', JSON.stringify(perfumesList));
             } catch (e) {
-                alert("حجم الصور كبير جداً، يفضل اختيار صور بحجم أصغر لكي يتم حفظها في ذاكرة المتصفح بنجاح.");
+                alert("ذاكرة المتصفح ممتلئة. يفضل تصدير ملف الكود المحدث لحفظ التعديلات.");
             }
         }
 
-        function exportData() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(perfumesList));
+        // دالة مبتكرة: تنزيل ملف index.html محدث بالكامل ليتم رفعه مباشرة إلى GitHub
+        function exportCodeFile() {
+            let fullHtml = document.documentElement.outerHTML;
+            const blob = new Blob([fullHtml], { type: 'text/html;charset=utf-8' });
             const downloadAnchor = document.createElement('a');
-            downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", "velvet_perfumes_backup.json");
+            downloadAnchor.href = URL.createObjectURL(blob);
+            downloadAnchor.download = "index.html";
             document.body.appendChild(downloadAnchor);
             downloadAnchor.click();
             downloadAnchor.remove();
+            alert("تم تحميل ملف index.html الجديد بنجاح! قم برفعه الآن إلى مستودعك في GitHub لترى كل الصور والأسعار ظاهرة للجميع فوراً.");
         }
 
         function importData(element) {
@@ -843,7 +846,7 @@
                 img.src = event.target.result;
                 img.onload = function() {
                     const canvas = document.createElement('canvas');
-                    const MAX_WIDTH = 300;
+                    const MAX_WIDTH = 250;
                     const scaleFactor = MAX_WIDTH / img.width;
                     canvas.width = MAX_WIDTH;
                     canvas.height = img.height * scaleFactor;
@@ -951,7 +954,6 @@
             displayPerfumes(perfumesList);
         }
 
-        // تم إلغاء التأكيد وإضافة العطر للسلة مباشرة مع تحديث العداد
         function addToCart(id) {
             const item = perfumesList.find(p => p.id === Number(id));
             if(item) {
@@ -989,6 +991,8 @@
 
             document.getElementById('cart-summary-box').innerText = `عدد الأصناف: ${selectedCart.length} | الإجمالي: ${totalSum} د.ل`;
         }
+
+        function removeFromCard(cartId) {}
 
         function removeFromCart(cartId) {
             selectedCart = selectedCart.filter(item => item.cartId != cartId);
@@ -1043,7 +1047,7 @@
             
             const messengerUrl = `https://m.me/${FB_PAGE_ID}?text=${encodeURIComponent(summaryText)}`;
             window.open(messengerUrl, '_blank');
-            document.getElementById('checkout-modal').style.display = 'none';
+            document.getElementById('checkout-modal'].style.display = 'none';
         }
 
         displayPerfumes(perfumesList);
