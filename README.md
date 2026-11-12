@@ -53,7 +53,7 @@
 
         .header-title-container {
             text-align: center;
-            cursor: pointer; /* مؤشر يوضح أن الشعار قابل للنقر */
+            cursor: pointer;
         }
 
         .logo-svg {
@@ -451,7 +451,6 @@
 <body class="customer-mode">
 
     <header>
-        <!-- انقر 3 مرات متتالية على عنوان الشعار في المنتصف لتفتح لك خانة كلمة المرور -->
         <div class="header-title-container" onclick="handleLogoTripleClick()">
             <svg class="logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M 28 30 L 48 76 C 49 78 51 78 52 76 L 72 30 Q 74 25 68 25 C 65 25 62 27 60 32 L 50 58 L 40 32 C 38 27 35 25 32 25 Q 26 25 28 30 Z" fill="#B39359"/>
@@ -464,7 +463,6 @@
 
     <div class="container">
 
-        <!-- لوحة التحكم للإدارة (مخفية افتراضياً) -->
         <div class="admin-banner" id="admin-panel">
             <h3>✨ لوحة الإدارة الشاملة (خاصة بالمالك)</h3>
             <div class="admin-form-grid">
@@ -542,7 +540,7 @@
     <script>
         const FB_PAGE_ID = "61596110442092";
         let isAdminMode = false;
-        const ADMIN_SECRET = "velvet2026"; // كلمة المرور الخاصة بك
+        const ADMIN_SECRET = "velvet2026";
 
         let clickCount = 0;
         let clickTimer = null;
@@ -626,7 +624,7 @@
             { id: 51, name: "Prada Luna Rossa Carbon", price: 0, category: "رجالي", desc: "معادن باردة ومعدنية مع اللافندر والخزامى.", notes: "لافندر | فلفل معدني | باتشولي", img: "" },
             { id: 52, name: "Bvlgari Man In Black", price: 0, category: "رجالي", desc: "توابل داكنة وجلود فاخرة مع الروم والعنبر.", notes: "روم | توابل | جلد وعنبر", img: "" },
             { id: 53, name: "Montblanc Explorer", price: 0, category: "رجالي", desc: "برغموت إيطالي منعش مع نجيل الهند والأخشاب.", notes: "برغموت | نجيل الهند | جلد", img: "" },
-            { id: 54, name: "Azzaro Most Wanted", price: 0, category: "رجالي", desc: "زنجبيل حار مع الشوكولاتة وفانيليا البوربون.", notes: "زنجبيل | روائح خشبية | فانيليا", img: "" },
+            { id: 54, name: "Azzaro Most Wanted", price: 0, category: "رجالي", desc: "زنجبيل حار مع الشوكولاتة والفانيليا البوربون.", notes: "زنجبيل | روائح خشبية | فانيليا", img: "" },
             { id: 55, name: "Bad Boy Le Parfum", price: 0, category: "رجالي", desc: "القنب والمريمية والجلود في توليفة عصرية.", notes: "قنب | مريمية | جلود سوداء", img: "" },
             { id: 56, name: "Lalique Encre Noire", price: 0, category: "رجالي", desc: "سيد النوتات الخشبية والنجيل الهند الداكن.", notes: "نجيل هندي | سرو | مسك", img: "" },
             { id: 57, name: "Davidoff Cool Water", price: 0, category: "رجالي", desc: "الكلاسيكية المنعشة بنوتات النعناع ومياه البحر.", notes: "نعناع | ماء البحر | لافندر", img: "" },
@@ -932,7 +930,6 @@
             summaryText += `📞 رقم الهاتف: ${phone}\n`;
             summaryText += `📍 عنوان التوصيل: ${address}\n\n--- العطور المطلوبة ---\n`;
 
-            selectedCart.solve = true;
             selectedCart.forEach((item, index) => {
                 summaryText += `${index + 1}. ${item.name} - ${item.price} د.ل\n`;
                 totalPrice += item.price;
