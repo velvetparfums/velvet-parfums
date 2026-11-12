@@ -54,6 +54,7 @@
         .header-title-container {
             text-align: center;
             cursor: pointer;
+            user-select: none;
         }
 
         .logo-svg {
@@ -355,7 +356,6 @@
             font-weight: bold;
         }
 
-        /* نوافذ السلة والتوصيل */
         .cart-modal, .checkout-modal {
             display: none;
             position: fixed;
@@ -494,7 +494,7 @@
 <body class="customer-mode">
 
     <header>
-        <div class="header-title-container" onclick="handleLogoTripleClick()">
+        <div class="header-title-container" id="logo-trigger">
             <svg class="logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M 28 30 L 48 76 C 49 78 51 78 52 76 L 72 30 Q 74 25 68 25 C 65 25 62 27 60 32 L 50 58 L 40 32 C 38 27 35 25 32 25 Q 26 25 28 30 Z" fill="#B39359"/>
                 <path d="M 50 32 C 58 32 68 37 68 46 C 68 55 58 60 50 60 L 50 53 C 56 53 62 49 62 46 C 62 42 56 38 50 38 Z" fill="#B39359"/>
@@ -532,6 +532,9 @@
                 <button class="btn-backup" onclick="exportDataFile()">📥 تصدير ملف التعديلات (JSON)</button>
                 <button class="btn-restore" onclick="document.getElementById('import-file').click()">📤 استيراد ملف التعديلات</button>
                 <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(this)">
+            </div>
+            <div style="margin-top: 10px; text-align: center;">
+                <button onclick="resetCacheAndStorage()" style="background: var(--danger-color); color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 11px; cursor: pointer;">إعادة ضبط وتفريغ الذاكرة المؤقتة</button>
             </div>
         </div>
 
@@ -601,16 +604,16 @@
         let clickCount = 0;
         let clickTimer = null;
 
-        function handleLogoTripleClick() {
+        document.getElementById('logo-trigger').addEventListener('click', function() {
             clickCount++;
             if (clickCount === 1) {
-                clickTimer = setTimeout(() => { clickCount = 0; }, 600);
+                clickTimer = setTimeout(() => { clickCount = 0; }, 700);
             } else if (clickCount === 3) {
                 clearTimeout(clickTimer);
                 clickCount = 0;
                 verifyAdminAccess();
             }
-        }
+        });
 
         function verifyAdminAccess() {
             const pass = prompt("الرجاء إدخال كلمة مرور المشرف:");
@@ -727,7 +730,6 @@
             { id: 100, name: "توليفة فيلقيت الخاصة", price: 0, category: "شرقي", desc: "العطر الحصري والخاص بمتجرنا في طرابلس.", notes: "توليفة سرية | عود وخشب صندل", img: "" }
         ];
 
-        // استرجاع البيانات الآمنة بدون تضخم الذاكرة
         let perfumesList = defaultPerfumes;
         try {
             const savedData = localStorage.getItem('velvet_perfumes_db');
@@ -749,6 +751,13 @@
                 localStorage.setItem('velvet_perfumes_db', JSON.stringify(perfumesList));
             } catch (e) {
                 alert("مساحة التخزين ممتلئة. يرجى تصدير ملف التعديلات وحفظه.");
+            }
+        }
+
+        function resetCacheAndStorage() {
+            if(confirm('هل تريد فعلاً إعادة ضبط المتجر ومسح الذاكرة التالفة؟')) {
+                localStorage.removeItem('velvet_perfumes_db');
+                location.reload();
             }
         }
 
