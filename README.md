@@ -624,7 +624,7 @@
             { id: 51, name: "Prada Luna Rossa Carbon", price: 0, category: "رجالي", desc: "معادن باردة ومعدنية مع اللافندر والخزامى.", notes: "لافندر | فلفل معدني | باتشولي", img: "" },
             { id: 52, name: "Bvlgari Man In Black", price: 0, category: "رجالي", desc: "توابل داكنة وجلود فاخرة مع الروم والعنبر.", notes: "روم | توابل | جلد وعنبر", img: "" },
             { id: 53, name: "Montblanc Explorer", price: 0, category: "رجالي", desc: "برغموت إيطالي منعش مع نجيل الهند والأخشاب.", notes: "برغموت | نجيل الهند | جلد", img: "" },
-            { id: 54, name: "Azzaro Most Wanted", price: 0, category: "رجالي", desc: "زنجبيل حار مع الشوكولاتة والفانيليا البوربون.", notes: "زنجبيل | روائح خشبية | فانيليا", img: "" },
+            { id: 54, name: "Azzaro Most Wanted", price: 0, category: "رجالي", desc: "زنجبيل حار مع الشوكولاتة وفانيليا البوربون.", notes: "زنجبيل | روائح خشبية | فانيليا", img: "" },
             { id: 55, name: "Bad Boy Le Parfum", price: 0, category: "رجالي", desc: "القنب والمريمية والجلود في توليفة عصرية.", notes: "قنب | مريمية | جلود سوداء", img: "" },
             { id: 56, name: "Lalique Encre Noire", price: 0, category: "رجالي", desc: "سيد النوتات الخشبية والنجيل الهند الداكن.", notes: "نجيل هندي | سرو | مسك", img: "" },
             { id: 57, name: "Davidoff Cool Water", price: 0, category: "رجالي", desc: "الكلاسيكية المنعشة بنوتات النعناع ومياه البحر.", notes: "نعناع | ماء البحر | لافندر", img: "" },
@@ -894,7 +894,7 @@
         }
 
         function addToCart(id) {
-            const item = perfumesList.find(p => p.id === id);
+            const item = perfumesList.find(p => p.id === Number(id));
             if(item) {
                 selectedCart.push({ name: item.name, price: item.price });
                 document.getElementById('cart-count').innerText = selectedCart.length;
@@ -904,7 +904,7 @@
 
         function openCheckoutModal() {
             if(selectedCart.length === 0) {
-                alert('اختر عطراً أولاً لطلب التوصيل.');
+                alert('السلة فارغة! الرجاء اختيار عطر واحد على الأقل للطلب.');
                 return;
             }
             document.getElementById('checkout-modal').style.display = 'flex';
