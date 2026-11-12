@@ -355,7 +355,7 @@
             font-weight: bold;
         }
 
-        /* نافذة السلة واستعراض الأصناف */
+        /* نوافذ السلة والتوصيل */
         .cart-modal, .checkout-modal {
             display: none;
             position: fixed;
@@ -405,10 +405,6 @@
             padding: 8px 4px;
             border-bottom: 1px dashed var(--border-color);
             font-size: 13px;
-        }
-
-        .cart-item-row:last-child {
-            border-bottom: none;
         }
 
         .btn-remove-item {
@@ -533,7 +529,7 @@
             <button class="btn-add" onclick="addNewPerfume()">+ نشر عطر جديد</button>
 
             <div class="admin-actions-row">
-                <button class="btn-backup" onclick="exportData()">📥 تصدير ملف التعديلات</button>
+                <button class="btn-backup" onclick="exportData()">📥 تصدير ملف التعديلات (نسخ احتياطي)</button>
                 <button class="btn-restore" onclick="document.getElementById('import-file').click()">📤 استيراد ملف التعديلات</button>
                 <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(this)">
             </div>
@@ -557,16 +553,12 @@
         <div class="cart-count" id="cart-count">0</div>
     </div>
 
-    <!-- نافذة مراجعة السلة وحذف الأصناف -->
+    <!-- نافذة مراجعة السلة -->
     <div class="cart-modal" id="cart-modal">
         <div class="modal-content">
             <h3>🛍️ مراجعة سلة العطور</h3>
-            <div class="cart-items-list" id="cart-items-list">
-                <!-- يتم تعبئتها ديناميكياً -->
-            </div>
-            <div class="cart-summary-box" id="cart-summary-box">
-                عدد الأصناف: 0 | الإجمالي: 0 د.ل
-            </div>
+            <div class="cart-items-list" id="cart-items-list"></div>
+            <div class="cart-summary-box" id="cart-summary-box">عدد الأصناف: 0 | الإجمالي: 0 د.ل</div>
             <div style="display: flex; gap: 8px;">
                 <button class="btn-add" onclick="proceedToCheckout()" style="background: var(--success-color);">تحديد بيانات التوصيل</button>
                 <button class="btn-add" onclick="closeCartModal()" style="background: #95a5a6;">إغلاق</button>
@@ -574,7 +566,7 @@
         </div>
     </div>
 
-    <!-- نافذة إدخال بيانات التوصيل للزبون -->
+    <!-- نافذة بيانات التوصيل -->
     <div class="checkout-modal" id="checkout-modal">
         <div class="modal-content">
             <h3>📍 بيانات التوصيل واستلام الطلب</h3>
@@ -588,7 +580,7 @@
             </div>
             <div class="checkout-form-group">
                 <label>عنوان التوصيل (المنطقة / الشارع):</label>
-                <textarea id="cust-address" placeholder="أدخل عنوانك بالتفصيل (مثال: طرابلس، زناتة، قرب...)" style="height: 60px;"></textarea>
+                <textarea id="cust-address" placeholder="أدخل عنوانك بالتفصيل..." style="height: 60px;"></textarea>
             </div>
             <div style="display: flex; gap: 8px; margin-top: 15px;">
                 <button class="btn-add" onclick="submitOrderToMessenger()" style="background: var(--success-color);">إرسال الطلب عبر الماسنجر</button>
@@ -612,9 +604,7 @@
         function handleLogoTripleClick() {
             clickCount++;
             if (clickCount === 1) {
-                clickTimer = setTimeout(() => {
-                    clickCount = 0;
-                }, 600);
+                clickTimer = setTimeout(() => { clickCount = 0; }, 600);
             } else if (clickCount === 3) {
                 clearTimeout(clickTimer);
                 clickCount = 0;
@@ -742,7 +732,11 @@
         let selectedCart = [];
 
         function saveStateToLocalStorage() {
-            localStorage.setItem('velvet_perfumes_db', JSON.stringify(perfumesList));
+            try {
+                localStorage.setItem('velvet_perfumes_db', JSON.stringify(perfumesList));
+            } catch (e) {
+                alert("حجم الصور كبير جداً، يفضل اختيار صور بحجم أصغر لكي يتم حفظها في ذاكرة المتصفح بنجاح.");
+            }
         }
 
         function exportData() {
@@ -849,7 +843,7 @@
                 img.src = event.target.result;
                 img.onload = function() {
                     const canvas = document.createElement('canvas');
-                    const MAX_WIDTH = 350;
+                    const MAX_WIDTH = 300;
                     const scaleFactor = MAX_WIDTH / img.width;
                     canvas.width = MAX_WIDTH;
                     canvas.height = img.height * scaleFactor;
@@ -857,7 +851,7 @@
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                     
-                    const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.5);
+                    const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.4);
                     callback(compressedDataUrl);
                 }
             }
@@ -957,12 +951,12 @@
             displayPerfumes(perfumesList);
         }
 
+        // تم إلغاء التأكيد وإضافة العطر للسلة مباشرة مع تحديث العداد
         function addToCart(id) {
             const item = perfumesList.find(p => p.id === Number(id));
             if(item) {
                 selectedCart.push({ cartId: Date.now() + Math.random(), id: item.id, name: item.name, price: item.price });
                 updateCartUI();
-                alert(`تمت إضافة "${item.name}" إلى السلة.`);
             }
         }
 
@@ -1021,7 +1015,7 @@
 
         function closeCheckoutModal() {
             document.getElementById('checkout-modal').style.display = 'none';
-            openCartModal(); // العودة للسلة عند النقر على السابق
+            openCartModal();
         }
 
         function submitOrderToMessenger() {
