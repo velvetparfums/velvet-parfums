@@ -529,7 +529,7 @@
             <button class="btn-add" onclick="addNewPerfume()">+ نشر عطر جديد</button>
 
             <div class="admin-actions-row">
-                <button class="btn-backup" onclick="exportCodeFile()">📥 تحميل كود المتجر المحدث (نسخة كاملة)</button>
+                <button class="btn-backup" onclick="exportDataFile()">📥 تصدير ملف التعديلات (JSON)</button>
                 <button class="btn-restore" onclick="document.getElementById('import-file').click()">📤 استيراد ملف التعديلات</button>
                 <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(this)">
             </div>
@@ -727,7 +727,20 @@
             { id: 100, name: "توليفة فيلقيت الخاصة", price: 0, category: "شرقي", desc: "العطر الحصري والخاص بمتجرنا في طرابلس.", notes: "توليفة سرية | عود وخشب صندل", img: "" }
         ];
 
-        let perfumesList = JSON.parse(localStorage.getItem('velvet_perfumes_db')) || defaultPerfumes;
+        // استرجاع البيانات الآمنة بدون تضخم الذاكرة
+        let perfumesList = defaultPerfumes;
+        try {
+            const savedData = localStorage.getItem('velvet_perfumes_db');
+            if (savedData) {
+                const parsed = JSON.parse(savedData);
+                if (Array.isArray(parsed) && parsed.length > 0) {
+                    perfumesList = parsed;
+                }
+            }
+        } catch (e) {
+            localStorage.removeItem('velvet_perfumes_db');
+        }
+
         let currentFilter = 'الكل';
         let selectedCart = [];
 
@@ -735,21 +748,18 @@
             try {
                 localStorage.setItem('velvet_perfumes_db', JSON.stringify(perfumesList));
             } catch (e) {
-                alert("ذاكرة المتصفح ممتلئة. يفضل تصدير ملف الكود المحدث لحفظ التعديلات.");
+                alert("مساحة التخزين ممتلئة. يرجى تصدير ملف التعديلات وحفظه.");
             }
         }
 
-        // دالة مبتكرة: تنزيل ملف index.html محدث بالكامل ليتم رفعه مباشرة إلى GitHub
-        function exportCodeFile() {
-            let fullHtml = document.documentElement.outerHTML;
-            const blob = new Blob([fullHtml], { type: 'text/html;charset=utf-8' });
+        function exportDataFile() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(perfumesList));
             const downloadAnchor = document.createElement('a');
-            downloadAnchor.href = URL.createObjectURL(blob);
-            downloadAnchor.download = "index.html";
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "velvet_perfumes_backup.json");
             document.body.appendChild(downloadAnchor);
             downloadAnchor.click();
             downloadAnchor.remove();
-            alert("تم تحميل ملف index.html الجديد بنجاح! قم برفعه الآن إلى مستودعك في GitHub لترى كل الصور والأسعار ظاهرة للجميع فوراً.");
         }
 
         function importData(element) {
@@ -764,7 +774,7 @@
                             perfumesList = importedList;
                             saveStateToLocalStorage();
                             displayPerfumes(perfumesList);
-                            alert("تم استعادة وتحديث جميع الأسعار والصور بنجاح!");
+                            alert("تم استعادة البيانات بنجاح!");
                         } else {
                             alert("الملف غير صالح.");
                         }
@@ -785,7 +795,7 @@
             }
 
             if (filteredItems.length === 0) {
-                container.innerHTML = `<div class="empty-state"><p>لا توجد عطور مضافة هنا.</p></div>`;
+                container.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-muted);">لا توجد عطور مطابقة.</div>`;
                 return;
             }
 
@@ -992,8 +1002,6 @@
             document.getElementById('cart-summary-box').innerText = `عدد الأصناف: ${selectedCart.length} | الإجمالي: ${totalSum} د.ل`;
         }
 
-        function removeFromCard(cartId) {}
-
         function removeFromCart(cartId) {
             selectedCart = selectedCart.filter(item => item.cartId != cartId);
             updateCartUI();
@@ -1047,7 +1055,7 @@
             
             const messengerUrl = `https://m.me/${FB_PAGE_ID}?text=${encodeURIComponent(summaryText)}`;
             window.open(messengerUrl, '_blank');
-            document.getElementById('checkout-modal'].style.display = 'none';
+            document.getElementById('checkout-modal').style.display = 'none';
         }
 
         displayPerfumes(perfumesList);
