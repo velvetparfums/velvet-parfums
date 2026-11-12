@@ -47,13 +47,13 @@
             z-index: 100;
             box-shadow: 0 2px 10px rgba(0,0,0,0.03);
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
         }
 
         .header-title-container {
             text-align: center;
-            flex-grow: 1;
+            cursor: pointer; /* مؤشر يوضح أن الشعار قابل للنقر */
         }
 
         .logo-svg {
@@ -78,16 +78,6 @@
             letter-spacing: 1.5px;
             color: var(--text-muted);
             text-transform: uppercase;
-        }
-
-        /* زر الإدارة مخفي تماماً عن الزبائن، يظهر فقط عند النقر المزدوج على الشعار أو عبر مفتاح سري */
-        .btn-admin-toggle {
-            background: transparent;
-            border: none;
-            color: var(--text-muted);
-            font-size: 10px;
-            cursor: pointer;
-            padding: 5px;
         }
 
         .container {
@@ -249,7 +239,7 @@
         }
 
         .img-update-box {
-            display: none; /* مخفي عن الزبائن، ويظهر فقط عند تفعيل وضع الإدارة */
+            display: none;
             padding: 5px;
             background: #f2eee9;
             text-align: center;
@@ -324,7 +314,7 @@
         }
 
         .product-price-input {
-            display: none; /* مخفي عن الزبائن */
+            display: none;
             width: 55px;
             padding: 3px;
             border: 1px solid var(--border-color);
@@ -354,7 +344,7 @@
         }
 
         .btn-delete {
-            display: none; /* مخفي عن الزبائن */
+            display: none;
             background-color: #fae1dd;
             color: var(--danger-color);
             border: 1px solid var(--danger-color);
@@ -365,7 +355,7 @@
             font-weight: bold;
         }
 
-        /* نافذة بيانات التوصيل للزبون (Checkout Modal) */
+        /* نافذة بيانات التوصيل للزبون */
         .checkout-modal {
             display: none;
             position: fixed;
@@ -461,10 +451,8 @@
 <body class="customer-mode">
 
     <header>
-        <!-- زر سري مخفي لفتح لوحة الإدارة (انقر 3 مرات على الشعار أو مساحة الإدارة) -->
-        <button class="btn-admin-toggle" onclick="verifyAdminAccess()">⚙️</button>
-        
-        <div class="header-title-container">
+        <!-- انقر 3 مرات متتالية على عنوان الشعار في المنتصف لتفتح لك خانة كلمة المرور -->
+        <div class="header-title-container" onclick="handleLogoTripleClick()">
             <svg class="logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M 28 30 L 48 76 C 49 78 51 78 52 76 L 72 30 Q 74 25 68 25 C 65 25 62 27 60 32 L 50 58 L 40 32 C 38 27 35 25 32 25 Q 26 25 28 30 Z" fill="#B39359"/>
                 <path d="M 50 32 C 58 32 68 37 68 46 C 68 55 58 60 50 60 L 50 53 C 56 53 62 49 62 46 C 62 42 56 38 50 38 Z" fill="#B39359"/>
@@ -472,7 +460,6 @@
             <div class="brand-title">VELVET PARFUMS</div>
             <div class="brand-subtitle">PREMIUM FRAGRANCES</div>
         </div>
-        <div style="width: 20px;"></div>
     </header>
 
     <div class="container">
@@ -555,9 +542,23 @@
     <script>
         const FB_PAGE_ID = "61596110442092";
         let isAdminMode = false;
+        const ADMIN_SECRET = "velvet2026"; // كلمة المرور الخاصة بك
 
-        // كلمة المرور السرية لفتح لوحة الإدارة (يمكنك تغييرها هنا)
-        const ADMIN_SECRET = "velvet2026";
+        let clickCount = 0;
+        let clickTimer = null;
+
+        function handleLogoTripleClick() {
+            clickCount++;
+            if (clickCount === 1) {
+                clickTimer = setTimeout(() => {
+                    clickCount = 0;
+                }, 600);
+            } else if (clickCount === 3) {
+                clearTimeout(clickTimer);
+                clickCount = 0;
+                verifyAdminAccess();
+            }
+        }
 
         function verifyAdminAccess() {
             const pass = prompt("الرجاء إدخال كلمة مرور المشرف:");
@@ -898,7 +899,6 @@
             const item = perfumesList.find(p => p.id === id);
             if(item) {
                 selectedCart.push({ name: item.name, price: item.price });
-                document.getElementById('count').innerText = selectedCart.length; // تأكيد التحديث
                 document.getElementById('cart-count').innerText = selectedCart.length;
                 alert(`تمت إضافة "${item.name}" إلى السلة.`);
             }
@@ -932,6 +932,7 @@
             summaryText += `📞 رقم الهاتف: ${phone}\n`;
             summaryText += `📍 عنوان التوصيل: ${address}\n\n--- العطور المطلوبة ---\n`;
 
+            selectedCart.solve = true;
             selectedCart.forEach((item, index) => {
                 summaryText += `${index + 1}. ${item.name} - ${item.price} د.ل\n`;
                 totalPrice += item.price;
