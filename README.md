@@ -80,19 +80,6 @@
             box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3);
         }
 
-        .btn-reset-cloud {
-            background-color: var(--danger-color);
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            font-size: 12px;
-            margin-top: 10px;
-        }
-
         .categories-nav { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px; }
         .categories-nav::-webkit-scrollbar { display: none; }
         .cat-btn { background-color: var(--card-bg); border: 1px solid var(--border-color); padding: 6px 16px; border-radius: 20px; cursor: pointer; font-size: 13px; color: var(--text-dark); white-space: nowrap; flex-shrink: 0; }
@@ -172,7 +159,6 @@
             </div>
             
             <button class="btn-update-live" onclick="addNewPerfumeCloud()">🚀 نشر مباشر في المتجر</button>
-            <button class="btn-reset-cloud" onclick="forceReloadDefaultPerfumes()">🔄 تحديث وضبط الـ 100 عطر فوراً</button>
         </div>
 
         <div class="categories-nav">
@@ -183,9 +169,7 @@
             <button class="cat-btn" onclick="filterPerfumes('نيش', this)">نيش</button>
         </div>
 
-        <div class="products-grid" id="products-container">
-            <div style="text-align:center; padding:30px; grid-column: 1 / -1; color: var(--text-muted);">جاري تحميل العطور...</div>
-        </div>
+        <div class="products-grid" id="products-container"></div>
 
     </div>
 
@@ -251,11 +235,9 @@
         const ADMIN_SECRET = "velvet2026";
         let clickCount = 0;
         let clickTimer = null;
-        let perfumesList = [];
         let currentFilter = 'الكل';
         let selectedCart = [];
 
-        // قائمة الـ 100 عطر كاملة ومدمجة في الكود
         const defaultPerfumes = [
             { id: 1, name: "Baccarat Rouge 540", price: 0, category: "نيش", desc: "أيقونة النيش الفاخرة بنوتات الزعفران والياسمين الثابتة.", notes: "زعفران | لوز مر | ياسمين", img: "" },
             { id: 2, name: "Parfums de Marly Layton", price: 0, category: "نيش", desc: "توليفة ملكية دافئة تجمع التفاح واللافندر والفانيليا.", notes: "تفاح | لافندر | فانيليا", img: "" },
@@ -359,6 +341,10 @@
             { id: 100, name: "توليفة فيلقيت الخاصة", price: 0, category: "شرقي", desc: "العطر الحصري والخاص بمتجرنا في طرابلس.", notes: "توليفة سرية | عود وخشب صندل", img: "" }
         ];
 
+        // تهيئة القائمة مباشرة من الذاكرة المحلية لضمان ظهورها فوراً بدون تأخير
+        let perfumesList = defaultPerfumes.map((p, idx) => ({ firebaseKey: "local_" + p.id, ...p }));
+        displayPerfumes(perfumesList);
+
         document.getElementById('logo-trigger').addEventListener('click', function() {
             clickCount++;
             if (clickCount === 1) {
@@ -378,6 +364,7 @@
             }
         });
 
+        // المزامنة مع Firebase في الخلفية
         db.ref('perfumes').on('value', (snapshot) => {
             const data = snapshot.val();
             if (data) {
@@ -387,22 +374,17 @@
                 })).sort((a, b) => (a.id || 0) - (b.id || 0));
                 displayPerfumes(perfumesList);
             } else {
-                forceReloadDefaultPerfumes();
+                // إذا كانت قاعدة البيانات فارغة، ارفع الـ 100 عطر تلقائياً
+                const updates = {};
+                defaultPerfumes.forEach(item => {
+                    const newKey = db.ref('perfumes').push().key;
+                    updates[newKey] = item;
+                });
+                db.ref('perfumes').set(updates);
             }
+        }, (error) => {
+            console.warn("Firebase read error (check rules):", error);
         });
-
-        function forceReloadDefaultPerfumes() {
-            const updates = {};
-            defaultPerfumes.forEach(item => {
-                const newKey = db.ref('perfumes').push().key;
-                updates[newKey] = item;
-            });
-            db.ref('perfumes').set(updates, (error) => {
-                if(!error) {
-                    alert("✅ تم تحميل وضبط الـ 100 عطر بنجاح في السحابة!");
-                }
-            });
-        }
 
         function displayPerfumes(items) {
             const container = document.getElementById('products-container');
@@ -499,7 +481,7 @@
 
         function saveToCloud(name, price, cat, notes, desc, imgUrl) {
             const newItem = {
-                id: Date.now(),
+                id: 0,
                 name,
                 price: parseFloat(price),
                 category: cat,
@@ -518,20 +500,23 @@
                     document.getElementById('admin-panel').style.display = 'none';
                     isAdminMode = false;
                 } else {
-                    alert("حدث خطأ أثناء النشر.");
+                    alert("⚠️ تعذر الحفظ في السحابة. تأكد من تفعيل صلاحيات القراءة والكتابة (Rules) في Firebase.");
                 }
             });
         }
 
         function updateCloudPrice(firebaseKey, val) {
+            if (firebaseKey.startsWith('local_')) return;
             db.ref('perfumes/' + firebaseKey).update({ price: parseFloat(val) || 0 });
         }
 
         function updateCloudCategory(firebaseKey, cat) {
+            if (firebaseKey.startsWith('local_')) return;
             db.ref('perfumes/' + firebaseKey).update({ category: cat });
         }
 
         function updateCloudImage(firebaseKey, input) {
+            if (firebaseKey.startsWith('local_')) return;
             if(input.files && input.files[0]) {
                 compressImg(input.files[0], url => {
                     db.ref('perfumes/' + firebaseKey).update({ img: url });
@@ -540,6 +525,7 @@
         }
 
         function deleteCloudItem(firebaseKey) {
+            if (firebaseKey.startsWith('local_')) return;
             if(confirm('تأكيد حذف هذا العطر من المتجر؟')) {
                 db.ref('perfumes/' + firebaseKey).remove();
             }
