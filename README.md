@@ -48,24 +48,6 @@
 
         .container { width: 100%; max-width: 1100px; margin: 0 auto; padding: 12px; }
 
-        .search-box {
-            margin-bottom: 15px;
-        }
-        .search-input {
-            width: 100%;
-            padding: 12px 16px;
-            border: 1px solid var(--border-color);
-            border-radius: 25px;
-            font-size: 14px;
-            background: var(--card-bg);
-            outline: none;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
-            transition: border-color 0.2s;
-        }
-        .search-input:focus {
-            border-color: var(--accent-gold);
-        }
-
         .admin-banner {
             display: none;
             background: #ffffff;
@@ -98,7 +80,28 @@
             box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3);
         }
 
-        .categories-nav { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px; }
+        /* شريط البحث الواضح والبارز */
+        .search-container {
+            margin-bottom: 15px;
+            position: relative;
+        }
+        .search-input {
+            width: 100%;
+            padding: 12px 18px;
+            border: 2px solid var(--accent-gold);
+            border-radius: 25px;
+            font-size: 14px;
+            background: var(--card-bg);
+            outline: none;
+            box-shadow: 0 4px 12px rgba(179, 147, 89, 0.15);
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+        .search-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .categories-nav { display: flex; gap: 8px; margin-bottom: 15px; overflow-x: auto; padding-bottom: 5px; }
         .categories-nav::-webkit-scrollbar { display: none; }
         .cat-btn { background-color: var(--card-bg); border: 1px solid var(--border-color); padding: 6px 16px; border-radius: 20px; cursor: pointer; font-size: 13px; color: var(--text-dark); white-space: nowrap; flex-shrink: 0; }
         .cat-btn.active { background-color: var(--accent-gold); color: white; border-color: var(--accent-gold); font-weight: bold; }
@@ -179,17 +182,18 @@
             <button class="btn-update-live" onclick="addNewPerfumeCloud()">🚀 نشر مباشر في المتجر</button>
         </div>
 
-        <!-- شريط البحث السريع -->
-        <div class="search-box">
-            <input type="text" id="search-input" class="search-input" placeholder="🔍 ابحث عن العطر بالاسم أو النوتات..." oninput="filterPerfumes()">
-        </div>
-
+        <!-- أزرار التصنيفات -->
         <div class="categories-nav">
             <button class="cat-btn active" onclick="setCategory('الكل', this)">الكل</button>
             <button class="cat-btn" onclick="setCategory('شرقي', this)">شرقي</button>
             <button class="cat-btn" onclick="setCategory('رجالي', this)">رجالي</button>
             <button class="cat-btn" onclick="setCategory('نسائي', this)">نسائي</button>
             <button class="cat-btn" onclick="setCategory('نيش', this)">نيش</button>
+        </div>
+
+        <!-- شريط البحث البارز -->
+        <div class="search-container">
+            <input type="text" id="search-input" class="search-input" placeholder="🔍 ابحث عن العطر بالاسم أو النوتات..." oninput="filterPerfumes()">
         </div>
 
         <div class="products-grid" id="products-container"></div>
@@ -410,7 +414,8 @@
             const container = document.getElementById('products-container');
             container.innerHTML = '';
             
-            const searchTerm = document.getElementById('search-input').value.toLowerCase().trim();
+            const searchInputEl = document.getElementById('search-input');
+            const searchTerm = searchInputEl ? searchInputEl.value.toLowerCase().trim() : '';
 
             let filtered = items.filter(item => {
                 const matchesCat = currentFilter === 'الكل' || item.category === currentFilter;
