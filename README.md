@@ -29,16 +29,6 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background-color: var(--bg-color); color: var(--text-dark); line-height: 1.5; padding-bottom: 100px; }
 
-        .promo-banner {
-            background-color: var(--accent-gold-dark);
-            color: #ffffff;
-            text-align: center;
-            padding: 7px 12px;
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 0.3px;
-        }
-
         header {
             background-color: var(--card-bg);
             padding: 15px 12px;
@@ -55,6 +45,27 @@
         .logo-svg { width: 48px; height: 48px; margin: 0 auto; display: block; }
         .brand-title { font-family: 'Cinzel', serif; font-size: 16px; font-weight: 700; color: var(--accent-gold-dark); margin-top: 2px; }
         .brand-subtitle { font-family: 'Cinzel', serif; font-size: 8px; letter-spacing: 1.5px; color: var(--text-muted); text-transform: uppercase; }
+
+        /* شريط المميزات والأيقونات */
+        .features-bar {
+            background-color: #f2eee9;
+            border-bottom: 1px solid var(--border-color);
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            gap: 10px;
+        }
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--accent-gold-dark);
+            text-align: center;
+        }
+        .feature-item span { font-size: 16px; }
 
         .container { width: 100%; max-width: 1100px; margin: 0 auto; padding: 12px; }
 
@@ -149,8 +160,6 @@
 </head>
 <body>
 
-    <div class="promo-banner">🚚 التوصيل فوق 500 دينار مجاني</div>
-
     <header>
         <div class="header-title-container" id="logo-trigger">
             <svg class="logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -161,6 +170,16 @@
             <div class="brand-subtitle">PREMIUM FRAGRANCES</div>
         </div>
     </header>
+
+    <!-- شريط الأيقونات والمميزات -->
+    <div class="features-bar">
+        <div class="feature-item">
+            <span>🚚</span> توصيل مجاني فوق 500 د.ل
+        </div>
+        <div class="feature-item">
+            <span>✨</span> عطور أصلية 100%
+        </div>
+    </div>
 
     <div class="container">
 
@@ -269,7 +288,7 @@
         const db = firebase.database();
 
         const FB_PAGE_ID = "61596110442092";
-        const DELIVERY_FEE = 20; // قيمة التوصيل 20 دينار
+        const DELIVERY_FEE = 20;
         let isAdminMode = false;
         const ADMIN_SECRET = "velvet2026";
         let clickCount = 0;
