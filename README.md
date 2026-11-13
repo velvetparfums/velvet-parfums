@@ -29,6 +29,16 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background-color: var(--bg-color); color: var(--text-dark); line-height: 1.5; padding-bottom: 100px; }
 
+        .promo-banner {
+            background-color: var(--accent-gold-dark);
+            color: #ffffff;
+            text-align: center;
+            padding: 7px 12px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+
         header {
             background-color: var(--card-bg);
             padding: 15px 12px;
@@ -138,6 +148,8 @@
     </style>
 </head>
 <body>
+
+    <div class="promo-banner">🚚 التوصيل فوق 500 دينار مجاني</div>
 
     <header>
         <div class="header-title-container" id="logo-trigger">
@@ -257,7 +269,7 @@
         const db = firebase.database();
 
         const FB_PAGE_ID = "61596110442092";
-        const DELIVERY_FEE = 10; // قيمة التوصيل الافتراضية
+        const DELIVERY_FEE = 20; // قيمة التوصيل 20 دينار
         let isAdminMode = false;
         const ADMIN_SECRET = "velvet2026";
         let clickCount = 0;
@@ -590,7 +602,7 @@
             list.innerHTML = '';
             if(selectedCart.length === 0) {
                 list.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:10px;">السلة فارغة.</p>`;
-                document.getElementById('cart-summary-box').innerHTML = "مجموع المنتجات: 0 د.ل<br>التوصيل: 0 د.ل<br><b>الإجمالي النهائي: 0 د.ل</b>";
+                document.getElementById('cart-summary-box').innerHTML = "مجموع العطور: 0 د.ل<br>رسوم التوصيل: 0 د.ل<br><b>الإجمالي النهائي: 0 د.ل</b>";
                 return;
             }
             let subtotal = 0;
@@ -602,7 +614,7 @@
             let delivery = subtotal >= 500 ? 0 : DELIVERY_FEE;
             let finalTotal = subtotal + delivery;
 
-            let deliveryText = delivery === 0 ? '<span style="color:var(--success-color);">توصيل مجاني (بلاش) 🎉</span>' : `${delivery} د.ل`;
+            let deliveryText = delivery === 0 ? '<span style="color:var(--success-color);">مجاني 🎉</span>' : `${delivery} د.ل`;
             
             document.getElementById('cart-summary-box').innerHTML = `مجموع العطور: ${subtotal} د.ل<br>رسوم التوصيل: ${deliveryText}<br><span style="font-size:15px; color:var(--accent-gold-dark);">الإجمالي النهائي: ${finalTotal} د.ل</span>`;
         }
@@ -633,7 +645,7 @@
             let txt = `أهلاً VELVET PARFUMS 👋 ، طلب جديد:\n👤 الاسم: ${name}\n📞 الهاتف: ${phone}\n📍 العنوان: ${address}\n💳 طريقة الدفع: ${payment}\n\n--- تفاصيل الطلب --- \n`;
             selectedCart.forEach((i, idx) => { txt += `${idx+1}. ${i.name} - ${i.price} د.ل\n`; });
             txt += `\nمجموع العطور: ${subtotal} د.ل`;
-            txt += `\nالتوصيل: ${delivery === 0 ? 'مجاني (بلاش)' : delivery + ' د.ل'}`;
+            txt += `\nالتوصيل: ${delivery === 0 ? 'مجاني' : delivery + ' د.ل'}`;
             txt += `\nالإجمالي النهائي: ${finalTotal} د.ل`;
 
             window.open(`https://m.me/${FB_PAGE_ID}?text=${encodeURIComponent(txt)}`, '_blank');
