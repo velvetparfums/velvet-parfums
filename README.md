@@ -48,6 +48,20 @@
 
         .container { width: 100%; max-width: 1100px; margin: 0 auto; padding: 12px; }
 
+        .search-box { margin-bottom: 15px; }
+        .search-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 25px;
+            font-size: 14px;
+            background: var(--card-bg);
+            outline: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+            transition: border-color 0.2s;
+        }
+        .search-input:focus { border-color: var(--accent-gold); }
+
         .admin-banner {
             display: none;
             background: #ffffff;
@@ -80,28 +94,7 @@
             box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3);
         }
 
-        /* شريط البحث الواضح والبارز */
-        .search-container {
-            margin-bottom: 15px;
-            position: relative;
-        }
-        .search-input {
-            width: 100%;
-            padding: 12px 18px;
-            border: 2px solid var(--accent-gold);
-            border-radius: 25px;
-            font-size: 14px;
-            background: var(--card-bg);
-            outline: none;
-            box-shadow: 0 4px 12px rgba(179, 147, 89, 0.15);
-            color: var(--text-dark);
-            font-weight: 500;
-        }
-        .search-input::placeholder {
-            color: var(--text-muted);
-        }
-
-        .categories-nav { display: flex; gap: 8px; margin-bottom: 15px; overflow-x: auto; padding-bottom: 5px; }
+        .categories-nav { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px; }
         .categories-nav::-webkit-scrollbar { display: none; }
         .cat-btn { background-color: var(--card-bg); border: 1px solid var(--border-color); padding: 6px 16px; border-radius: 20px; cursor: pointer; font-size: 13px; color: var(--text-dark); white-space: nowrap; flex-shrink: 0; }
         .cat-btn.active { background-color: var(--accent-gold); color: white; border-color: var(--accent-gold); font-weight: bold; }
@@ -131,15 +124,15 @@
         .cart-count { background: white; color: var(--accent-gold-dark); width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; }
 
         .cart-modal, .checkout-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; padding: 15px; }
-        .modal-content { background: white; padding: 20px; border-radius: 12px; width: 100%; max-width: 420px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); max-height: 90vh; display: flex; flex-direction: column; }
+        .modal-content { background: white; padding: 20px; border-radius: 12px; width: 100%; max-width: 420px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); max-height: 90vh; display: flex; flex-direction: column; overflow-y: auto; }
         .modal-content h3 { color: var(--accent-gold-dark); margin-bottom: 12px; font-size: 16px; text-align: center; }
-        .cart-items-list { overflow-y: auto; max-height: 250px; margin-bottom: 12px; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); padding: 8px 0; }
+        .cart-items-list { overflow-y: auto; max-height: 200px; margin-bottom: 12px; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); padding: 8px 0; }
         .cart-item-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 4px; border-bottom: 1px dashed var(--border-color); font-size: 13px; }
         .btn-remove-item { background: #fae1dd; color: var(--danger-color); border: none; padding: 3px 8px; border-radius: 4px; font-size: 11px; cursor: pointer; font-weight: bold; }
-        .cart-summary-box { font-size: 14px; font-weight: bold; margin-bottom: 15px; text-align: left; color: var(--accent-gold-dark); background: var(--bg-color); padding: 10px; border-radius: 8px; }
+        .cart-summary-box { font-size: 13px; font-weight: bold; margin-bottom: 15px; text-align: right; color: var(--accent-gold-dark); background: var(--bg-color); padding: 10px; border-radius: 8px; line-height: 1.6; }
         .checkout-form-group { margin-bottom: 10px; }
         .checkout-form-group label { display: block; font-size: 12px; margin-bottom: 4px; font-weight: bold; }
-        .checkout-form-group input, .checkout-form-group textarea { width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 13px; outline: none; }
+        .checkout-form-group input, .checkout-form-group select, .checkout-form-group textarea { width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 13px; outline: none; background: var(--bg-color); }
 
         footer { text-align: center; margin-top: 30px; padding: 15px; color: var(--text-muted); font-size: 11px; border-top: 1px solid var(--border-color); }
     </style>
@@ -182,18 +175,17 @@
             <button class="btn-update-live" onclick="addNewPerfumeCloud()">🚀 نشر مباشر في المتجر</button>
         </div>
 
-        <!-- أزرار التصنيفات -->
+        <!-- شريط البحث السريع -->
+        <div class="search-box">
+            <input type="text" id="search-input" class="search-input" placeholder="🔍 ابحث عن العطر بالاسم أو النوتات..." oninput="filterPerfumes()">
+        </div>
+
         <div class="categories-nav">
             <button class="cat-btn active" onclick="setCategory('الكل', this)">الكل</button>
             <button class="cat-btn" onclick="setCategory('شرقي', this)">شرقي</button>
             <button class="cat-btn" onclick="setCategory('رجالي', this)">رجالي</button>
             <button class="cat-btn" onclick="setCategory('نسائي', this)">نسائي</button>
             <button class="cat-btn" onclick="setCategory('نيش', this)">نيش</button>
-        </div>
-
-        <!-- شريط البحث البارز -->
-        <div class="search-container">
-            <input type="text" id="search-input" class="search-input" placeholder="🔍 ابحث عن العطر بالاسم أو النوتات..." oninput="filterPerfumes()">
         </div>
 
         <div class="products-grid" id="products-container"></div>
@@ -219,7 +211,7 @@
 
     <div class="checkout-modal" id="checkout-modal">
         <div class="modal-content">
-            <h3>📍 بيانات التوصيل</h3>
+            <h3>📍 بيانات التوصيل والدفع</h3>
             <div class="checkout-form-group">
                 <label>الاسم:</label>
                 <input type="text" id="cust-name" placeholder="اسمك الكريم">
@@ -230,7 +222,14 @@
             </div>
             <div class="checkout-form-group">
                 <label>العنوان:</label>
-                <textarea id="cust-address" placeholder="المنطقة والشارع..." style="height: 50px;"></textarea>
+                <textarea id="cust-address" placeholder="المنطقة والشارع..." style="height: 45px;"></textarea>
+            </div>
+            <div class="checkout-form-group">
+                <label>طريقة الدفع:</label>
+                <select id="payment-method">
+                    <option value="كاش عند الاستلام">💵 كاش عند الاستلام</option>
+                    <option value="حوالة مصرفية">🏦 حوالة مصرفية</option>
+                </select>
             </div>
             <div style="display: flex; gap: 8px; margin-top: 10px;">
                 <button class="btn-update-live" style="margin-top:0; background: var(--success-color);" onclick="submitOrderToMessenger()">إرسال للماسنجر</button>
@@ -258,6 +257,7 @@
         const db = firebase.database();
 
         const FB_PAGE_ID = "61596110442092";
+        const DELIVERY_FEE = 10; // قيمة التوصيل الافتراضية
         let isAdminMode = false;
         const ADMIN_SECRET = "velvet2026";
         let clickCount = 0;
@@ -414,8 +414,7 @@
             const container = document.getElementById('products-container');
             container.innerHTML = '';
             
-            const searchInputEl = document.getElementById('search-input');
-            const searchTerm = searchInputEl ? searchInputEl.value.toLowerCase().trim() : '';
+            const searchTerm = document.getElementById('search-input').value.toLowerCase().trim();
 
             let filtered = items.filter(item => {
                 const matchesCat = currentFilter === 'الكل' || item.category === currentFilter;
@@ -591,15 +590,21 @@
             list.innerHTML = '';
             if(selectedCart.length === 0) {
                 list.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:10px;">السلة فارغة.</p>`;
-                document.getElementById('cart-summary-box').innerText = "الإجمالي: 0 د.ل";
+                document.getElementById('cart-summary-box').innerHTML = "مجموع المنتجات: 0 د.ل<br>التوصيل: 0 د.ل<br><b>الإجمالي النهائي: 0 د.ل</b>";
                 return;
             }
-            let sum = 0;
+            let subtotal = 0;
             selectedCart.forEach((i, idx) => {
-                sum += i.price;
+                subtotal += i.price;
                 list.innerHTML += `<div class="cart-item-row"><span>${idx+1}. ${i.name}</span> <span style="color:var(--accent-gold-dark); font-weight:bold;">${i.price} د.ل</span> <button class="btn-remove-item" onclick="removeFromCart('${i.cartId}')">حذف</button></div>`;
             });
-            document.getElementById('cart-summary-box').innerText = `الإجمالي: ${sum} د.ل`;
+
+            let delivery = subtotal >= 500 ? 0 : DELIVERY_FEE;
+            let finalTotal = subtotal + delivery;
+
+            let deliveryText = delivery === 0 ? '<span style="color:var(--success-color);">توصيل مجاني (بلاش) 🎉</span>' : `${delivery} د.ل`;
+            
+            document.getElementById('cart-summary-box').innerHTML = `مجموع العطور: ${subtotal} د.ل<br>رسوم التوصيل: ${deliveryText}<br><span style="font-size:15px; color:var(--accent-gold-dark);">الإجمالي النهائي: ${finalTotal} د.ل</span>`;
         }
 
         function removeFromCart(id) {
@@ -616,11 +621,21 @@
             const name = document.getElementById('cust-name').value.trim();
             const phone = document.getElementById('cust-phone').value.trim();
             const address = document.getElementById('cust-address').value.trim();
+            const payment = document.getElementById('payment-method').value;
+
             if(!name || !phone || !address) { alert('الرجاء تعبئة بيانات التوصيل'); return; }
-            let total = 0;
-            let txt = `أهلاً VELVET PARFUMS 👋 ، طلب جديد:\n👤 الاسم: ${name}\n📞 الهاتف: ${phone}\n📍 العنوان: ${address}\n\n--- العطور --- \n`;
-            selectedCart.forEach((i, idx) => { txt += `${idx+1}. ${i.name} - ${i.price} د.ل\n`; total += i.price; });
-            txt += `\nالإجمالي: ${total} د.ل`;
+            
+            let subtotal = 0;
+            selectedCart.forEach(i => { subtotal += i.price; });
+            let delivery = subtotal >= 500 ? 0 : DELIVERY_FEE;
+            let finalTotal = subtotal + delivery;
+
+            let txt = `أهلاً VELVET PARFUMS 👋 ، طلب جديد:\n👤 الاسم: ${name}\n📞 الهاتف: ${phone}\n📍 العنوان: ${address}\n💳 طريقة الدفع: ${payment}\n\n--- تفاصيل الطلب --- \n`;
+            selectedCart.forEach((i, idx) => { txt += `${idx+1}. ${i.name} - ${i.price} د.ل\n`; });
+            txt += `\nمجموع العطور: ${subtotal} د.ل`;
+            txt += `\nالتوصيل: ${delivery === 0 ? 'مجاني (بلاش)' : delivery + ' د.ل'}`;
+            txt += `\nالإجمالي النهائي: ${finalTotal} د.ل`;
+
             window.open(`https://m.me/${FB_PAGE_ID}?text=${encodeURIComponent(txt)}`, '_blank');
             document.getElementById('checkout-modal').style.display='none';
         }
