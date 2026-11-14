@@ -174,7 +174,7 @@
     <!-- شريط الأيقونات والمميزات -->
     <div class="features-bar">
         <div class="feature-item">
-            <span>🚚</span> توصيل مجاني فوق 500 د.ل
+            <span>🚚</span> توصيل مجاني داخل طرابلس
         </div>
         <div class="feature-item">
             <span>✨</span> عطور أصلية 100%
@@ -252,6 +252,13 @@
                 <input type="tel" id="cust-phone" placeholder="091XXXXXXX">
             </div>
             <div class="checkout-form-group">
+                <label>المدينة / المنطقة:</label>
+                <select id="cust-city" onchange="updateCartUI()">
+                    <option value="طرابلس" selected>طرابلس (توصيل مجاني)</option>
+                    <option value="خارج طرابلس">خارج طرابلس (20 د.ل)</option>
+                </select>
+            </div>
+            <div class="checkout-form-group">
                 <label>العنوان:</label>
                 <textarea id="cust-address" placeholder="المنطقة والشارع..." style="height: 45px;"></textarea>
             </div>
@@ -288,7 +295,7 @@
         const db = firebase.database();
 
         const FB_PAGE_ID = "61596110442092";
-        const DELIVERY_FEE = 20;
+        const OUTSIDE_TRIPOLI_FEE = 20;
         let isAdminMode = false;
         const ADMIN_SECRET = "velvet2026";
         let clickCount = 0;
@@ -615,13 +622,19 @@
             }
         }
 
+        function getDeliveryFee() {
+            const cityEl = document.getElementById('cust-city');
+            const city = cityEl ? cityEl.value : 'طرابلس';
+            return city === 'طرابلس' ? 0 : OUTSIDE_TRIPOLI_FEE;
+        }
+
         function updateCartUI() {
             document.getElementById('cart-count').innerText = selectedCart.length;
             const list = document.getElementById('cart-items-list');
             list.innerHTML = '';
             if(selectedCart.length === 0) {
                 list.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:10px;">السلة فارغة.</p>`;
-                document.getElementById('cart-summary-box').innerHTML = "مجموع العطور: 0 د.ل<br>رسوم التوصيل: 0 د.ل<br><b>الإجمالي النهائي: 0 د.ل</b>";
+                document.getElementById('cart-summary-box').innerHTML = "مجموع العطور: 0 د.ل<br>التوصيل: مجاني داخل طرابلس<br><b>الإجمالي النهائي: 0 د.ل</b>";
                 return;
             }
             let subtotal = 0;
@@ -630,12 +643,13 @@
                 list.innerHTML += `<div class="cart-item-row"><span>${idx+1}. ${i.name}</span> <span style="color:var(--accent-gold-dark); font-weight:bold;">${i.price} د.ل</span> <button class="btn-remove-item" onclick="removeFromCart('${i.cartId}')">حذف</button></div>`;
             });
 
-            let delivery = subtotal >= 500 ? 0 : DELIVERY_FEE;
-            let finalTotal = subtotal + delivery;
+            const delivery = getDeliveryFee();
+            const finalTotal = subtotal + delivery;
+            const deliveryHtml = delivery === 0
+                ? '<span style="color:var(--success-color);">مجاني داخل طرابلس 🎉</span>'
+                : `${delivery} د.ل (خارج طرابلس)`;
 
-            let deliveryText = delivery === 0 ? '<span style="color:var(--success-color);">مجاني 🎉</span>' : `${delivery} د.ل`;
-            
-            document.getElementById('cart-summary-box').innerHTML = `مجموع العطور: ${subtotal} د.ل<br>رسوم التوصيل: ${deliveryText}<br><span style="font-size:15px; color:var(--accent-gold-dark);">الإجمالي النهائي: ${finalTotal} د.ل</span>`;
+            document.getElementById('cart-summary-box').innerHTML = `مجموع العطور: ${subtotal} د.ل<br>التوصيل: ${deliveryHtml}<br><span style="font-size:15px; color:var(--accent-gold-dark);">الإجمالي النهائي: ${finalTotal} د.ل</span>`;
         }
 
         function removeFromCart(id) {
@@ -645,12 +659,13 @@
 
         function openCartModal() { updateCartUI(); document.getElementById('cart-modal').style.display = 'flex'; }
         function closeCartModal() { document.getElementById('cart-modal').style.display = 'none'; }
-        function proceedToCheckout() { if(selectedCart.length===0){alert('السلة فارغة');return;} closeCartModal(); document.getElementById('checkout-modal').style.display='flex'; }
+        function proceedToCheckout() { if(selectedCart.length===0){alert('السلة فارغة');return;} closeCartModal(); updateCartUI(); document.getElementById('checkout-modal').style.display='flex'; }
         function closeCheckoutModal() { document.getElementById('checkout-modal').style.display='none'; openCartModal(); }
 
         function submitOrderToMessenger() {
             const name = document.getElementById('cust-name').value.trim();
             const phone = document.getElementById('cust-phone').value.trim();
+            const city = document.getElementById('cust-city').value;
             const address = document.getElementById('cust-address').value.trim();
             const payment = document.getElementById('payment-method').value;
 
@@ -658,13 +673,13 @@
             
             let subtotal = 0;
             selectedCart.forEach(i => { subtotal += i.price; });
-            let delivery = subtotal >= 500 ? 0 : DELIVERY_FEE;
-            let finalTotal = subtotal + delivery;
+            const delivery = getDeliveryFee();
+            const finalTotal = subtotal + delivery;
 
-            let txt = `أهلاً VELVET PARFUMS 👋 ، طلب جديد:\n👤 الاسم: ${name}\n📞 الهاتف: ${phone}\n📍 العنوان: ${address}\n💳 طريقة الدفع: ${payment}\n\n--- تفاصيل الطلب --- \n`;
+            let txt = `أهلاً VELVET PARFUMS 👋 ، طلب جديد:\n👤 الاسم: ${name}\n📞 الهاتف: ${phone}\n🏙️ المدينة: ${city}\n📍 العنوان: ${address}\n💳 طريقة الدفع: ${payment}\n\n--- تفاصيل الطلب --- \n`;
             selectedCart.forEach((i, idx) => { txt += `${idx+1}. ${i.name} - ${i.price} د.ل\n`; });
             txt += `\nمجموع العطور: ${subtotal} د.ل`;
-            txt += `\nالتوصيل: ${delivery === 0 ? 'مجاني' : delivery + ' د.ل'}`;
+            txt += `\nالتوصيل: ${delivery === 0 ? 'مجاني داخل طرابلس' : delivery + ' د.ل (خارج طرابلس)'}`;
             txt += `\nالإجمالي النهائي: ${finalTotal} د.ل`;
 
             window.open(`https://m.me/${FB_PAGE_ID}?text=${encodeURIComponent(txt)}`, '_blank');
