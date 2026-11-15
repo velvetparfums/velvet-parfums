@@ -212,7 +212,7 @@
         </div>
     </header>
 
-    <!-- شريط الأيقونات والمميزات -->
+    <!-- شريط المميزات والأيقونات -->
     <div class="features-bar">
         <div class="feature-item">
             <span>🚚</span> توصيل مجاني داخل طرابلس
@@ -233,7 +233,7 @@
                 <div class="admin-row-2">
                     <input type="text" id="new-brand" list="brands-datalist" placeholder="الشركة (مثال: Dior)">
                     <datalist id="brands-datalist"></datalist>
-                    <input type="text" id="new-size" placeholder="الحجم (مثال: 100ml)">
+                    <input type="text" id="new-size" placeholder="الحجم بالملي (مثال: 100 مل)">
                 </div>
 
                 <div class="admin-row-2">
@@ -362,115 +362,114 @@
         let selectedCart = [];
 
         const defaultPerfumes = [
-            { id: 1, name: "Baccarat Rouge 540", brand: "Maison Francis Kurkdjian", size: "70ml", price: 0, category: "نيش", desc: "أيقونة النيش الفاخرة بنوتات الزعفران والياسمين الثابتة.", notes: "زعفران | لوز مر | ياسمين", img: "" },
-            { id: 2, name: "Parfums de Marly Layton", brand: "Parfums de Marly", size: "125ml", price: 0, category: "نيش", desc: "توليفة ملكية دافئة تجمع التفاح واللافندر والفانيليا.", notes: "تفاح | لافندر | فانيليا", img: "" },
-            { id: 3, name: "Parfums de Marly Herod", brand: "Parfums de Marly", size: "125ml", price: 0, category: "نيش", desc: "عطر التبغ الفاخر الممزوج بالقرفة والفانيليا الشرقية.", notes: "تبغ | قرفة | فانيليا", img: "" },
-            { id: 4, name: "Parfums de Marly Pegasus", brand: "Parfums de Marly", size: "125ml", price: 0, category: "نيش", desc: "نفحات اللوز البودري والفانيليا لإطلالة نيش راقية.", notes: "لوز مر | فانيليا | خشب صندل", img: "" },
-            { id: 5, name: "Parfums de Marly Sedley", brand: "Parfums de Marly", size: "125ml", price: 0, category: "نيش", desc: "انتعاش الحمضيات والنعناع الأخضر لأيام الصيف.", notes: "نعناع | حمضيات | خشب أرز", img: "" },
-            { id: 6, name: "Kilian Angel's Share", brand: "Kilian", size: "50ml", price: 0, category: "نيش", desc: "رائحة الكونياك الفاخرة الممزوجة بالقرفة والبلوط.", notes: "كونياك | قرفة | بلوط", img: "" },
-            { id: 7, name: "Kilian Good Girl Gone Bad", brand: "Kilian", size: "50ml", price: 0, category: "نيش", desc: "عاصفة زهرية بيضاء مغرية من الياسمين ومسك الروم.", notes: "ياسمين | مسك رومي | ورد", img: "" },
-            { id: 8, name: "Tom Ford Lost Cherry", brand: "Tom Ford", size: "50ml", price: 0, category: "نيش", desc: "عبق الكرز الأسود الشهواني مع اللوز المر واللوز.", notes: "كرز أسود | لوز مر | حبوب تونس", img: "" },
-            { id: 9, name: "Tom Ford Tobacco Vanille", brand: "Tom Ford", size: "50ml", price: 0, category: "نيش", desc: "دفء أوراق التبغ العتيقة مع فانيليا بوربون.", notes: "تبغ فاخر | فانيليا | أخشاب", img: "" },
-            { id: 10, name: "Tom Ford Oud Wood", brand: "Tom Ford", size: "50ml", price: 0, category: "نيش", desc: "أفخم أخشاب العود المدخنة بلمسات الهيل والأرز.", notes: "عود | هيل | خشب أرز", img: "" },
-            { id: 11, name: "Tom Ford Bitter Peach", brand: "Tom Ford", size: "50ml", price: 0, category: "نيش", desc: "خوخ غني وناضج بلمسات دافئة من الروم والباتشولي.", notes: "خوخ | برتقال دموي | باتشولي", img: "" },
-            { id: 12, name: "Xerjoff Erba Pura", brand: "Xerjoff", size: "100ml", price: 0, category: "نيش", desc: "قنبلة الفواكه الاستوائية المنعشة مع المسك الأبيض.", notes: "فواكه استوائية | مسك أبيض", img: "" },
-            { id: 13, name: "Xerjoff Naxos", brand: "Xerjoff", size: "100ml", price: 0, category: "نيش", desc: "لوحة فنية تجمع العسل الفاخر والتبغ واللافندر.", notes: "عسل | تبغ | لافندر | قرفة", img: "" },
-            { id: 14, name: "Xerjoff Accento", brand: "Xerjoff", size: "100ml", price: 0, category: "نيش", desc: "أناقة الأناناس والصفير والمسك الثابت بالحيوية.", notes: "أناناس | صفير | مسك | فانيليا", img: "" },
-            { id: 15, name: "MFK Grand Soir", brand: "Maison Francis Kurkdjian", size: "70ml", price: 0, category: "نيش", desc: "عنبر ملكي دافئ وفخم يناسب السهرات الباردة.", notes: "عنبر | فانيليا | لاباندا", img: "" },
-            { id: 16, name: "MFK Aqua Universalis", brand: "Maison Francis Kurkdjian", size: "70ml", price: 0, category: "نيش", desc: "رائحة النظافة المطلقة والمنعشة كالقميص الأبيض.", notes: "حمضيات | زنابق الوادي | زهور", img: "" },
-            { id: 17, name: "Creed Silver Mountain", brand: "Creed", size: "100ml", price: 0, category: "نيش", desc: "انتعاش الجبال الثلجية والشاي الأخضر والكشمش.", notes: "شاي أخضر | كشمش | مسك", img: "" },
-            { id: 18, name: "Creed Millesime Imperial", brand: "Creed", size: "100ml", price: 0, category: "نيش", desc: "فخامة الفواكه البحرية المالحة والأخشاب المنعشة.", notes: "ملح بحري | فواكه | خشب صندل", img: "" },
-            { id: 19, name: "Creed Green Irish Tweed", brand: "Creed", size: "100ml", price: 0, category: "نيش", desc: "كلاسيكية الريف الأخضر بنوتات الفريزيا والسوسن.", notes: "إريش | لويزة | خشب ساج", img: "" },
-            { id: 20, name: "Initio Oud for Greatness", brand: "Initio", size: "90ml", price: 0, category: "نيش", desc: "قوة العود الطبيعي الممزوج بالزعفران وجوزة الطيب.", notes: "عود طبيعي | زعفران | جوزة الطيب", img: "" },
-            { id: 21, name: "Initio Side Effect", brand: "Initio", size: "90ml", price: 0, category: "نيش", desc: "مزيج مسكر ومدمن من الروم والفانيليا والتبغ.", notes: "روم | فانيليا | تبغ | قرفة", img: "" },
-            { id: 22, name: "Byredo Gypsy Water", brand: "Byredo", size: "100ml", price: 0, category: "نيش", desc: "روح الطبيعة الحرة بنوتات الصنوبر والفانيليا.", notes: "صنوبر | برغموت | فانيليا خشبية", img: "" },
-            { id: 23, name: "Byredo Bal d'Afrique", brand: "Byredo", size: "100ml", price: 0, category: "نيش", desc: "لوحة عطرية دافئة تمزج زهر البرتقال بالأرز.", notes: "زهر برتقال | ليمون | عنبر", img: "" },
-            { id: 24, name: "Mancera Cedrat Boise", brand: "Mancera", size: "120ml", price: 0, category: "نيش", desc: "انتعاش الليمون والحمضيات مع قاعدة خشبية.", notes: "ليمون | كشمش أسود | أخشاب", img: "" },
-            { id: 25, name: "Mancera Red Tobacco", brand: "Mancera", size: "120ml", price: 0, category: "نيش", desc: "تبغ أحمر ناري قوي وثابت جداً مع التوابل.", notes: "تبغ | قرفة | العود الأبيض", img: "" },
-            { id: 26, name: "Montale Intense Cafe", brand: "Montale", size: "100ml", price: 0, category: "نيش", desc: "قهوة عربية دافئة ممزوجة بعبق الورد التركي.", notes: "قهوة | ورد تركي | فانيليا مسك", img: "" },
-            { id: 27, name: "Orto Parisi Megamare", brand: "Orto Parisi", size: "50ml", price: 0, category: "نيش", desc: "عطر بحري عميق ومالح ذو ثبات وفوحان خارق.", notes: "نوتات بحرية | طحالب | أعشاب", img: "" },
-            { id: 28, name: "Nasomatto Black Afgano", brand: "Nasomatto", size: "30ml", price: 0, category: "نيش", desc: "الغموض الداكن بنوتات التبغ والأخشاب المدخنة.", notes: "تبغ فاخر | أخشاب العود", img: "" },
-            { id: 29, name: "Tiziana Terenzi Kirke", brand: "Tiziana Terenzi", size: "100ml", price: 0, category: "نيش", desc: "فاكهة العاطفة الاستوائية الساحرة مع المسك.", notes: "فاكهة العاطفة | خوخ | مسك", img: "" },
-            { id: 30, name: "Amouage Interlude Man", brand: "Amouage", size: "100ml", price: 0, category: "نيش", desc: "عطر الأساطير والدخان والبخور والأخشاب الشرقية.", notes: "بخور | عود | جلد", img: "" },
-            { id: 31, name: "Creed Aventus", brand: "Creed", size: "100ml", price: 0, category: "رجالي", desc: "ملك العطور الرجالية بنوتات الأناناس والأخشاب.", notes: "أناناس | أخشاب الأرز | مسك", img: "" },
-            { id: 32, name: "Bleu de Chanel EDP", brand: "Chanel", size: "100ml", price: 0, category: "رجالي", desc: "أناقة الحمضيات والبخور والأخشاب العطرية.", notes: "حمضيات | بخور | أخشاب صندل", img: "" },
-            { id: 33, name: "Dior Sauvage Elixir", brand: "Dior", size: "60ml", price: 0, category: "رجالي", desc: "تركيز مكثف وتوابل حارة فاخرة مع الخزامى.", notes: "قرفة | جوزة الطيب | خزامى", img: "" },
-            { id: 34, name: "Dior Sauvage EDT", brand: "Dior", size: "100ml", price: 0, category: "رجالي", desc: "البرغموت المنعش والأمبروكسان الجذاب لكل الأوقات.", notes: "برغموت | فلفل أسود | أمبروكسان", img: "" },
-            { id: 35, name: "Acqua Di Gio Parfum", brand: "Giorgio Armani", size: "100ml", price: 0, category: "رجالي", desc: "انتعاش أمواج البحر العميقة مع البخور والأخشاب.", notes: "نوتات بحرية | إكليل الجبل | بخور", img: "" },
-            { id: 36, name: "Armani Code Parfum", brand: "Giorgio Armani", size: "125ml", price: 0, category: "رجالي", desc: "فول التونكا الدافئ مع السوسن وأخشاب الأرز.", notes: "سوسن | فول تونكا | أخشاب أرز", img: "" },
-            { id: 37, name: "Versace Eros EDP", brand: "Versace", size: "100ml", price: 0, category: "رجالي", desc: "نعناع منعش مع التفاح الفانيليا وحبوب التونكا.", notes: "نعناع | تفاح حامض | فانيليا", img: "" },
-            { id: 38, name: "Versace Dylan Blue", brand: "Versace", size: "100ml", price: 0, category: "رجالي", desc: "حمضيات متوسطية منعشة مع البخور والمسك.", notes: "برغموت | جريب فروت | بخور", img: "" },
-            { id: 39, name: "1 Million Elixir", brand: "Paco Rabanne", size: "100ml", price: 0, category: "رجالي", desc: "مزيج غني من الفانيليا والورد التركي والتونكا.", notes: "فانيليا | ورد تركي | تونكا", img: "" },
-            { id: 40, name: "Invictus Victory", brand: "Paco Rabanne", size: "100ml", price: 0, category: "رجالي", desc: "انتعاش الليمون الحامض مع قوة الفانيليا والعنبر.", notes: "ليمون | فلفل وردي | فانيليا", img: "" },
-            { id: 41, name: "Le Male Le Parfum", brand: "Jean Paul Gaultier", size: "125ml", price: 0, category: "رجالي", desc: "هال وهيل وزهور السوسن مع الفانيليا الشرقية.", notes: "هيل | لافندر | فانيليا شرقية", img: "" },
-            { id: 42, name: "Scandal Pour Homme", brand: "Jean Paul Gaultier", size: "100ml", price: 0, category: "رجالي", desc: "كراميل حلو مع الميرمية والماندرين لإطلالة جريئة.", notes: "كراميل | ميرمية | نجيل الهند", img: "" },
-            { id: 43, name: "Tom Ford Ombre Leather", brand: "Tom Ford", size: "100ml", price: 0, category: "رجالي", desc: "عبير الجلود الفاخرة النقية مع الهيل والياسمين.", notes: "جلد أسود | هيل | ياسمين", img: "" },
-            { id: 44, name: "Tom Ford Noir Extreme", brand: "Tom Ford", size: "100ml", price: 0, category: "رجالي", desc: "توابل هندية وفانيليا غنية مع كولفي الحليب.", notes: "كولفي | توابل | فانيليا خشبية", img: "" },
-            { id: 45, name: "Terre d'Hermes", brand: "Hermes", size: "100ml", price: 0, category: "رجالي", desc: "رائحة الأرض والمعادن وأشجار البرتقال والفلفل.", notes: "برتقال | فلفل | أخشاب الأرز", img: "" },
-            { id: 46, name: "Bleu de Chanel Parfum", brand: "Chanel", size: "100ml", price: 0, category: "رجالي", desc: "أعلى درجات الفخامة الخشبية العطرية الناعمة.", notes: "قشر ليمون | خشب صندل | أرز", img: "" },
-            { id: 47, name: "YSL Y EDP", brand: "Yves Saint Laurent", size: "100ml", price: 0, category: "رجالي", desc: "تفاح مقرمش مع الميرمية والزنجبيل لإطلالة شبابية.", notes: "تفاح | زنجبيل | ميرمية", img: "" },
-            { id: 48, name: "YSL La Nuit de L'Homme", brand: "Yves Saint Laurent", size: "100ml", price: 0, category: "رجالي", desc: "عطر السهرات الرومانسي بالهيل واللافندر والأخشاب.", notes: "هيل | لافندر | خشب الأرز", img: "" },
-            { id: 49, name: "D&G The One EDP", brand: "Dolce & Gabbana", size: "100ml", price: 0, category: "رجالي", desc: "دفء التبغ والعنبر والجريب فروت لإطلالة أنيقة.", notes: "جريب فروت | كزبرة | تبغ وعنبر", img: "" },
-            { id: 50, name: "D&G Light Blue Intense", brand: "Dolce & Gabbana", size: "100ml", price: 0, category: "رجالي", desc: "انتعاش مياه البحر المتوسط الحامضة والمنعشة.", notes: "جريب فروت | مياه بحر | مسك", img: "" },
-            { id: 51, name: "Prada Luna Rossa Carbon", brand: "Prada", size: "100ml", price: 0, category: "رجالي", desc: "معادن باردة ومعدنية مع اللافندر والخزامى.", notes: "لافندر | فلفل معدني | باتشولي", img: "" },
-            { id: 52, name: "Bvlgari Man In Black", brand: "Bvlgari", size: "100ml", price: 0, category: "رجالي", desc: "توابل داكنة وجلود فاخرة مع الروم والعنبر.", notes: "روم | توابل | جلد وعنبر", img: "" },
-            { id: 53, name: "Montblanc Explorer", brand: "Montblanc", size: "100ml", price: 0, category: "رجالي", desc: "برغموت إيطالي منعش مع نجيل الهند والأخشاب.", notes: "برغموت | نجيل الهند | جلد", img: "" },
-            { id: 54, name: "Azzaro Most Wanted", brand: "Azzaro", size: "100ml", price: 0, category: "رجالي", desc: "زنجبيل حار مع الشوكولاتة والفانيليا البوربون.", notes: "زنجبيل | روائح خشبية | فانيليا", img: "" },
-            { id: 55, name: "Bad Boy Le Parfum", brand: "Carolina Herrera", size: "100ml", price: 0, category: "رجالي", desc: "القنب والمريمية والجلود في توليفة عصرية.", notes: "قنب | مريمية | جلود سوداء", img: "" },
-            { id: 56, name: "Lalique Encre Noire", brand: "Lalique", size: "100ml", price: 0, category: "رجالي", desc: "سيد النوتات الخشبية والنجيل الهند الداكن.", notes: "نجيل هندي | سرو | مسك", img: "" },
-            { id: 57, name: "Davidoff Cool Water", brand: "Davidoff", size: "125ml", price: 0, category: "رجالي", desc: "الكلاسيكية المنعشة بنوتات النعناع ومياه البحر.", notes: "نعناع | ماء البحر | لافندر", img: "" },
-            { id: 58, name: "L'Eau d'Issey Pour Homme", brand: "Issey Miyake", size: "125ml", price: 0, category: "رجالي", desc: "يوسوكي ياباني وحمضيات خفيفة مع نوتات خشبية.", notes: "يوسو | ليمون | توابل مائية", img: "" },
-            { id: 59, name: "Burberry Hero EDP", brand: "Burberry", size: "100ml", price: 0, category: "رجالي", desc: "أرز أطلسي دافئ مع إبرة الصقنوبر والجاوي.", notes: "أرز الأطلس | صنوبر | جاوي", img: "" },
-            { id: 60, name: "Polo Blue Parfum", brand: "Ralph Lauren", size: "125ml", price: 0, category: "رجالي", desc: "يوسفي ونوتات أكسجين بحرية مع نجيل الهند.", notes: "يوسفي | مريمية | نجيل الهند", img: "" },
-            { id: 61, name: "Dior J'adore EDP", brand: "Dior", size: "100ml", price: 0, category: "نسائي", desc: "باقة زهرية أنثوية خالدة من الياسمين والورد.", notes: "ياسمين | ورد جوري | كمثرى", img: "" },
-            { id: 62, name: "YSL Libre Intense", brand: "Yves Saint Laurent", size: "90ml", price: 0, category: "نسائي", desc: "لافندر فرنسي ناعم مع أوركيد الفانيليا الدافئة.", notes: "لافندر | أوركيد | فانيليا", img: "" },
-            { id: 63, name: "Chanel Coco Mademoiselle", brand: "Chanel", size: "100ml", price: 0, category: "نسائي", desc: "أناقة البرتقال المنعش مع الورد والباتشولي.", notes: "برتقال | ورد | باتشولي", img: "" },
-            { id: 64, name: "Chanel No. 5", brand: "Chanel", size: "100ml", price: 0, category: "نسائي", desc: "عطر الأساطير الألدهيدي الزهري الخالد.", notes: "ألدهيدات | ياسمين | ورد | مسك", img: "" },
-            { id: 65, name: "Good Girl EDP", brand: "Carolina Herrera", size: "80ml", price: 0, category: "نسائي", desc: "توليفة اللوز والقهوة ومسك الروم الأيقونية.", notes: "لوز | قهوة | مسك رومي | كاكاو", img: "" },
-            { id: 66, name: "Lancome La Vie Est Belle", brand: "Lancome", size: "100ml", price: 0, category: "نسائي", desc: "سعادة السوسن والياسمين مع حلاوة الفانيليا.", notes: "سوسن | ياسمين | فانيليا", img: "" },
-            { id: 67, name: "Lancome Idole", brand: "Lancome", size: "100ml", price: 0, category: "نسائي", desc: "ورد نقي مع الياسمين والكمثرى لإطلالة مشرقة.", notes: "ورد أخضر | ياسمين | كمثرى", img: "" },
-            { id: 68, name: "Armani My Way", brand: "Giorgio Armani", size: "90ml", price: 0, category: "نسائي", desc: "زهر البرتقال ومسك الروم الهندي مع الفانيليا.", notes: "زهر برتقال | مسك رومي | فانيليا", img: "" },
-            { id: 69, name: "Armani Si EDP", brand: "Giorgio Armani", size: "100ml", price: 0, category: "نسائي", desc: "رحيق الكشمش الأسود مع الورد وخشب الأرز.", notes: "كشمش أسود | ورد فريزيا | باتشولي", img: "" },
-            { id: 70, name: "Donna Born In Roma", brand: "Valentino", size: "100ml", price: 0, category: "نسائي", desc: "ياسمين فاخر مع فانيليا دافئة ولمسات خشبية.", notes: "ياسمين | فانيليا | أخشاب", img: "" },
-            { id: 71, name: "Marc Jacobs Daisy", brand: "Marc Jacobs", size: "100ml", price: 0, category: "نسائي", desc: "فراولة برية وفريزيا وبنفسج لعطر مرح ومنعش.", notes: "فراولة | بنفسج | ياسمين", img: "" },
-            { id: 72, name: "Gucci Bloom", brand: "Gucci", size: "100ml", price: 0, category: "نسائي", desc: "حديقة أزهار بيضاء غنية بعبق مسك الروم والياسمين.", notes: "مسك رومي | ياسمين", img: "" },
-            { id: 73, name: "Gucci Flora Gardenia", brand: "Gucci", size: "100ml", price: 0, category: "نسائي", desc: "زهرة الغاردينيا البيضاء مع زهر الكمثرى والسكر.", notes: "غاردينيا | زهر كمثرى | سكر بني", img: "" },
-            { id: 74, name: "Olympéa EDP", brand: "Paco Rabanne", size: "80ml", price: 0, category: "نسائي", desc: "فانيليا مالحة فريدة مع زهر الياسمين واليوسفي.", notes: "فانيليا مالحة | ياسمين مائي", img: "" },
-            { id: 75, name: "Flowerbomb EDP", brand: "Viktor & Rolf", size: "100ml", price: 0, category: "نسائي", desc: "قنبلة أزهار مذهلة من الشاي والياسمين والورد.", notes: "شاي | ياسمين | ورد | باتشولي", img: "" },
-            { id: 76, name: "Tom Ford Black Orchid", brand: "Tom Ford", size: "100ml", price: 0, category: "نسائي", desc: "أوركيد سوداء داكنة مع الشوكولاتة والتوابل.", notes: "أوركيد سوداء | شوكولاتة | كمأة", img: "" },
-            { id: 77, name: "Tom Ford Velvet Orchid", brand: "Tom Ford", size: "100ml", price: 0, category: "نسائي", desc: "زهور أوركيد مخملية مع العسل والروم والفانيليا.", notes: "عسل | روم | أوركيد مخملي", img: "" },
-            { id: 78, name: "Burberry Her EDP", brand: "Burberry", size: "100ml", price: 0, category: "نسائي", desc: "توت بري وفراولة مقرمشة مع قاعدة مسكية.", notes: "توت بري | فراولة | مسك وعنبر", img: "" },
-            { id: 79, name: "Versace Bright Crystal", brand: "Versace", size: "90ml", price: 0, category: "نسائي", desc: "رمان منعش مع زهر الياسمين والفاوانيا الصيفية.", notes: "رمان | فاوانيا | مسك وعنبر", img: "" },
-            { id: 80, name: "La Belle EDP", brand: "Jean Paul Gaultier", size: "100ml", price: 0, category: "نسائي", desc: "كمثرى ناضجة وحسية مع فانيليا ونوتات دافئة.", notes: "كمثرى | نجيل الهند | فانيليا", img: "" },
-            { id: 81, name: "Prada Paradoxe", brand: "Prada", size: "90ml", price: 0, category: "نسائي", desc: "زهر البرتقال والعنبر الأبيض في زجاجة عصرية.", notes: "زهر برتقال | عنبر أبيض | مسك", img: "" },
-            { id: 82, name: "Twilly d'Hermes", brand: "Hermes", size: "85ml", price: 0, category: "نسائي", desc: "زنجبيل منعش مع مسك الروم وخشب الصندل.", notes: "زنجبيل | مسك رومي | خشب صندل", img: "" },
-            { id: 83, name: "Narciso Rodriguez For Her", brand: "Narciso Rodriguez", size: "100ml", price: 0, category: "نسائي", desc: "مسك مصري ساحر مع زهر البرتقال الناعم.", notes: "مسك | زهر برتقال | أوسمانثوس", img: "" },
-            { id: 84, name: "CK Euphoria", brand: "Calvin Klein", size: "100ml", price: 0, category: "نسائي", desc: "رمان وأوركيد أسود مع الماهوجني لإطلالة غامضة.", notes: "رمان | أوركيد أسود | ماهوجني", img: "" },
-            { id: 85, name: "Jo Malone English Pear", brand: "Jo Malone", size: "100ml", price: 0, category: "نسائي", desc: "كمثرى إنجليزية ناضجة مع فريزيا بيضاء والأخشاب.", notes: "كمثرى | فريزيا | باتشولي", img: "" },
-            { id: 86, name: "Chloe EDP", brand: "Chloe", size: "75ml", price: 0, category: "نسائي", desc: "ورد بلغاري فاخر وبودرة ناعمة مع الفاوانيا.", notes: "ورد بلغاري | فاوانيا | عسل", img: "" },
-            { id: 87, name: "DKNY Be Delicious", brand: "DKNY", size: "100ml", price: 0, category: "نسائي", desc: "تفاح أخضر مقرمش ومنعش للغاية لأجواء الصيف.", notes: "تفاح أخضر | خيار | ماغنوليا", img: "" },
-            { id: 88, name: "Alien Mugler", brand: "Mugler", size: "90ml", price: 0, category: "نسائي", desc: "ياسمين غامض وعميق مع أخشاب الكشمير والعنبر.", notes: "ياسمين | أخشاب كشمير | عنبر", img: "" },
-            { id: 89, name: "Angel Mugler", brand: "Mugler", size: "100ml", price: 0, category: "نسائي", desc: "شوكولاتة داكنة وباتشولي وفواكه حمراء.", notes: "باتشولي | شوكولاتة | توت بري", img: "" },
-            { id: 90, name: "Signorina EDP", brand: "Salvatore Ferragamo", size: "100ml", price: 0, category: "نسائي", desc: "توت وفلفل وردي مع الباناكوتا والمسك الناعم.", notes: "فلفل وردي | باناكوتا | باتشولي", img: "" },
-            { id: 91, name: "دهن العود المعتق الملكي", brand: "عطور شرقية", size: "تولة (12ml)", price: 0, category: "شرقي", desc: "أصالة العود الكمبودي المعتق بثبات وفوحان عالي.", notes: "عود كمبودي | عنبر | خشب صندل", img: "" },
-            { id: 92, name: "مسك الختام الأبيض", brand: "عطور شرقية", size: "تولة (12ml)", price: 0, category: "شرقي", desc: "مسك نقي وبودري مخملي يمنح شعور النظافة.", notes: "مسك أبيض | بودرة | ورد طائفي", img: "" },
-            { id: 93, name: "عنبر الملوك الخالص", brand: "عطور شرقية", size: "تولة (12ml)", price: 0, category: "شرقي", desc: "دفء العنبر الشرقي الأصيل الممزوج بالتوابل.", notes: "عنبر دافئ | زعفران | هيل", img: "" },
-            { id: 94, name: "ورد طائفي معتق", brand: "عطور شرقية", size: "تولة (12ml)", price: 0, category: "شرقي", desc: "عبير الورد الطائفي الفاخر المقطر بعناية.", notes: "ورد طائفي | دهن عود | مسك", img: "" },
-            { id: 95, name: "خلاصة العود الهندي", brand: "عطور شرقية", size: "تولة (12ml)", price: 0, category: "شرقي", desc: "عبق أخشاب العود الهندي القديم للمجالس.", notes: "عود هندي معتق | بخور | جلد", img: "" },
-            { id: 96, name: "مسك العروس الفاخر", brand: "عطور شرقية", size: "تولة (12ml)", price: 0, category: "شرقي", desc: "مزيج كريمي أنثوي من المسك والفانيليا.", notes: "مسك أبيض | فانيليا كريمية", img: "" },
-            { id: 97, name: "لبان الدكور العماني", brand: "عطور شرقية", size: "100g", price: 0, category: "شرقي", desc: "بخور لبان الدكور الملكي المنقى لأجواء المنازل.", notes: "لبان عماني | صمغ | بخور", img: "" },
-            { id: 98, name: "مخلط الملك الفاخر", brand: "عطور شرقية", size: "50ml", price: 0, category: "شرقي", desc: "توليفة تجمع الورد والزعفران والعود والعنبر.", notes: "زعفران | ورد | عود | عنبر", img: "" },
-            { id: 99, name: "مسك الرمان السحري", brand: "عطور شرقية", size: "تولة (12ml)", price: 0, category: "شرقي", desc: "انتعاش الرمان الحلو الممزوج بعبق المسك.", notes: "رمان أحمر | مسك أبيض | توت", img: "" },
-            { id: 100, name: "توليفة فيلقيت الخاصة", brand: "Velvet Exclusive", size: "100ml", price: 0, category: "شرقي", desc: "العطر الحصري والخاص بمتجرنا في طرابلس.", notes: "توليفة سرية | عود وخشب صندل", img: "" }
+            { id: 1, name: "Baccarat Rouge 540", brand: "Maison Francis Kurkdjian", size: "70 مل", price: 0, category: "نيش", desc: "أيقونة النيش الفاخرة بنوتات الزعفران والياسمين الثابتة.", notes: "زعفران | لوز مر | ياسمين", img: "" },
+            { id: 2, name: "Parfums de Marly Layton", brand: "Parfums de Marly", size: "125 مل", price: 0, category: "نيش", desc: "توليفة ملكية دافئة تجمع التفاح واللافندر والفانيليا.", notes: "تفاح | لافندر | فانيليا", img: "" },
+            { id: 3, name: "Parfums de Marly Herod", brand: "Parfums de Marly", size: "125 مل", price: 0, category: "نيش", desc: "عطر التبغ الفاخر الممزوج بالقرفة والفانيليا الشرقية.", notes: "تبغ | قرفة | فانيليا", img: "" },
+            { id: 4, name: "Parfums de Marly Pegasus", brand: "Parfums de Marly", size: "125 مل", price: 0, category: "نيش", desc: "نفحات اللوز البودري والفانيليا لإطلالة نيش راقية.", notes: "لوز مر | فانيليا | خشب صندل", img: "" },
+            { id: 5, name: "Parfums de Marly Sedley", brand: "Parfums de Marly", size: "125 مل", price: 0, category: "نيش", desc: "انتعاش الحمضيات والنعناع الأخضر لأيام الصيف.", notes: "نعناع | حمضيات | خشب أرز", img: "" },
+            { id: 6, name: "Kilian Angel's Share", brand: "Kilian", size: "50 مل", price: 0, category: "نيش", desc: "رائحة الكونياك الفاخرة الممزوجة بالقرفة والبلوط.", notes: "كونياك | قرفة | بلوط", img: "" },
+            { id: 7, name: "Kilian Good Girl Gone Bad", brand: "Kilian", size: "50 مل", price: 0, category: "نيش", desc: "عاصفة زهرية بيضاء مغرية من الياسمين ومسك الروم.", notes: "ياسمين | مسك رومي | ورد", img: "" },
+            { id: 8, name: "Tom Ford Lost Cherry", brand: "Tom Ford", size: "50 مل", price: 0, category: "نيش", desc: "عبق الكرز الأسود الشهواني مع اللوز المر واللوز.", notes: "كرز أسود | لوز مر | حبوب تونس", img: "" },
+            { id: 9, name: "Tom Ford Tobacco Vanille", brand: "Tom Ford", size: "50 مل", price: 0, category: "نيش", desc: "دفء أوراق التبغ العتيقة مع فانيليا بوربون.", notes: "تبغ فاخر | فانيليا | أخشاب", img: "" },
+            { id: 10, name: "Tom Ford Oud Wood", brand: "Tom Ford", size: "50 مل", price: 0, category: "نيش", desc: "أفخم أخشاب العود المدخنة بلمسات الهيل والأرز.", notes: "عود | هيل | خشب أرز", img: "" },
+            { id: 11, name: "Tom Ford Bitter Peach", brand: "Tom Ford", size: "50 مل", price: 0, category: "نيش", desc: "خوخ غني وناضج بلمسات دافئة من الروم والباتشولي.", notes: "خوخ | برتقال دموي | باتشولي", img: "" },
+            { id: 12, name: "Xerjoff Erba Pura", brand: "Xerjoff", size: "100 مل", price: 0, category: "نيش", desc: "قنبلة الفواكه الاستوائية المنعشة مع المسك الأبيض.", notes: "فواكه استوائية | مسك أبيض", img: "" },
+            { id: 13, name: "Xerjoff Naxos", brand: "Xerjoff", size: "100 مل", price: 0, category: "نيش", desc: "لوحة فنية تجمع العسل الفاخر والتبغ واللافندر.", notes: "عسل | تبغ | لافندر | قرفة", img: "" },
+            { id: 14, name: "Xerjoff Accento", brand: "Xerjoff", size: "100 مل", price: 0, category: "نيش", desc: "أناقة الأناناس والصفير والمسك الثابت بالحيوية.", notes: "أناناس | صفير | مسك | فانيليا", img: "" },
+            { id: 15, name: "MFK Grand Soir", brand: "Maison Francis Kurkdjian", size: "70 مل", price: 0, category: "نيش", desc: "عنبر ملكي دافئ وفخم يناسب السهرات الباردة.", notes: "عنبر | فانيليا | لاباندا", img: "" },
+            { id: 16, name: "MFK Aqua Universalis", brand: "Maison Francis Kurkdjian", size: "70 مل", price: 0, category: "نيش", desc: "رائحة النظافة المطلقة والمنعشة كالقميص الأبيض.", notes: "حمضيات | زنابق الوادي | زهور", img: "" },
+            { id: 17, name: "Creed Silver Mountain", brand: "Creed", size: "100 مل", price: 0, category: "نيش", desc: "انتعاش الجبال الثلجية والشاي الأخضر والكشمش.", notes: "شاي أخضر | كشمش | مسك", img: "" },
+            { id: 18, name: "Creed Millesime Imperial", brand: "Creed", size: "100 مل", price: 0, category: "نيش", desc: "فخامة الفواكه البحرية المالحة والأخشاب المنعشة.", notes: "ملح بحري | فواكه | خشب صندل", img: "" },
+            { id: 19, name: "Creed Green Irish Tweed", brand: "Creed", size: "100 مل", price: 0, category: "نيش", desc: "كلاسيكية الريف الأخضر بنوتات الفريزيا والسوسن.", notes: "إريش | لويزة | خشب ساج", img: "" },
+            { id: 20, name: "Initio Oud for Greatness", brand: "Initio", size: "90 مل", price: 0, category: "نيش", desc: "قوة العود الطبيعي الممزوج بالزعفران وجوزة الطيب.", notes: "عود طبيعي | زعفران | جوزة الطيب", img: "" },
+            { id: 21, name: "Initio Side Effect", brand: "Initio", size: "90 مل", price: 0, category: "نيش", desc: "مزيج مسكر ومدمن من الروم والفانيليا والتبغ.", notes: "روم | فانيليا | تبغ | قرفة", img: "" },
+            { id: 22, name: "Byredo Gypsy Water", brand: "Byredo", size: "100 مل", price: 0, category: "نيش", desc: "روح الطبيعة الحرة بنوتات الصنوبر والفانيليا.", notes: "صنوبر | برغموت | فانيليا خشبية", img: "" },
+            { id: 23, name: "Byredo Bal d'Afrique", brand: "Byredo", size: "100 مل", price: 0, category: "نيش", desc: "لوحة عطرية دافئة تمزج زهر البرتقال بالأرز.", notes: "زهر برتقال | ليمون | عنبر", img: "" },
+            { id: 24, name: "Mancera Cedrat Boise", brand: "Mancera", size: "120 مل", price: 0, category: "نيش", desc: "انتعاش الليمون والحمضيات مع قاعدة خشبية.", notes: "ليمون | كشمش أسود | أخشاب", img: "" },
+            { id: 25, name: "Mancera Red Tobacco", brand: "Mancera", size: "120 مل", price: 0, category: "نيش", desc: "تبغ أحمر ناري قوي وثابت جداً مع التوابل.", notes: "تبغ | قرفة | العود الأبيض", img: "" },
+            { id: 26, name: "Montale Intense Cafe", brand: "Montale", size: "100 مل", price: 0, category: "نيش", desc: "قهوة عربية دافئة ممزوجة بعبق الورد التركي.", notes: "قهوة | ورد تركي | فانيليا مسك", img: "" },
+            { id: 27, name: "Orto Parisi Megamare", brand: "Orto Parisi", size: "50 مل", price: 0, category: "نيش", desc: "عطر بحري عميق ومالح ذو ثبات وفوحان خارق.", notes: "نوتات بحرية | طحالب | أعشاب", img: "" },
+            { id: 28, name: "Nasomatto Black Afgano", brand: "Nasomatto", size: "30 مل", price: 0, category: "نيش", desc: "الغموض الداكن بنوتات التبغ والأخشاب المدخنة.", notes: "تبغ فاخر | أخشاب العود", img: "" },
+            { id: 29, name: "Tiziana Terenzi Kirke", brand: "Tiziana Terenzi", size: "100 مل", price: 0, category: "نيش", desc: "فاكهة العاطفة الاستوائية الساحرة مع المسك.", notes: "فاكهة العاطفة | خوخ | مسك", img: "" },
+            { id: 30, name: "Amouage Interlude Man", brand: "Amouage", size: "100 مل", price: 0, category: "نيش", desc: "عطر الأساطير والدخان والبخور والأخشاب الشرقية.", notes: "بخور | عود | جلد", img: "" },
+            { id: 31, name: "Creed Aventus", brand: "Creed", size: "100 مل", price: 0, category: "رجالي", desc: "ملك العطور الرجالية بنوتات الأناناس والأخشاب.", notes: "أناناس | أخشاب الأرز | مسك", img: "" },
+            { id: 32, name: "Bleu de Chanel EDP", brand: "Chanel", size: "100 مل", price: 0, category: "رجالي", desc: "أناقة الحمضيات والبخور والأخشاب العطرية.", notes: "حمضيات | بخور | أخشاب صندل", img: "" },
+            { id: 33, name: "Dior Sauvage Elixir", brand: "Dior", size: "60 مل", price: 0, category: "رجالي", desc: "تركيز مكثف وتوابل حارة فاخرة مع الخزامى.", notes: "قرفة | جوزة الطيب | خزامى", img: "" },
+            { id: 34, name: "Dior Sauvage EDT", brand: "Dior", size: "100 مل", price: 0, category: "رجالي", desc: "البرغموت المنعش والأمبروكسان الجذاب لكل الأوقات.", notes: "برغموت | فلفل أسود | أمبروكسان", img: "" },
+            { id: 35, name: "Acqua Di Gio Parfum", brand: "Giorgio Armani", size: "100 مل", price: 0, category: "رجالي", desc: "انتعاش أمواج البحر العميقة مع البخور والأخشاب.", notes: "نوتات بحرية | إكليل الجبل | بخور", img: "" },
+            { id: 36, name: "Armani Code Parfum", brand: "Giorgio Armani", size: "125 مل", price: 0, category: "رجالي", desc: "فول التونكا الدافئ مع السوسن وأخشاب الأرز.", notes: "سوسن | فول تونكا | أخشاب أرز", img: "" },
+            { id: 37, name: "Versace Eros EDP", brand: "Versace", size: "100 مل", price: 0, category: "رجالي", desc: "نعناع منعش مع التفاح الفانيليا وحبوب التونكا.", notes: "نعناع | تفاح حامض | فانيليا", img: "" },
+            { id: 38, name: "Versace Dylan Blue", brand: "Versace", size: "100 مل", price: 0, category: "رجالي", desc: "حمضيات متوسطية منعشة مع البخور والمسك.", notes: "برغموت | جريب فروت | بخور", img: "" },
+            { id: 39, name: "1 Million Elixir", brand: "Paco Rabanne", size: "100 مل", price: 0, category: "رجالي", desc: "مزيج غني من الفانيليا والورد التركي والتونكا.", notes: "فانيليا | ورد تركي | تونكا", img: "" },
+            { id: 40, name: "Invictus Victory", brand: "Paco Rabanne", size: "100 مل", price: 0, category: "رجالي", desc: "انتعاش الليمون الحامض مع قوة الفانيليا والعنبر.", notes: "ليمون | فلفل وردي | فانيليا", img: "" },
+            { id: 41, name: "Le Male Le Parfum", brand: "Jean Paul Gaultier", size: "125 مل", price: 0, category: "رجالي", desc: "هال وهيل وزهور السوسن مع الفانيليا الشرقية.", notes: "هيل | لافندر | فانيليا شرقية", img: "" },
+            { id: 42, name: "Scandal Pour Homme", brand: "Jean Paul Gaultier", size: "100 مل", price: 0, category: "رجالي", desc: "كراميل حلو مع الميرمية والماندرين لإطلالة جريئة.", notes: "كراميل | ميرمية | نجيل الهند", img: "" },
+            { id: 43, name: "Tom Ford Ombre Leather", brand: "Tom Ford", size: "100 مل", price: 0, category: "رجالي", desc: "عبير الجلود الفاخرة النقية مع الهيل والياسمين.", notes: "جلد أسود | هيل | ياسمين", img: "" },
+            { id: 44, name: "Tom Ford Noir Extreme", brand: "Tom Ford", size: "100 مل", price: 0, category: "رجالي", desc: "توابل هندية وفانيليا غنية مع كولفي الحليب.", notes: "كولفي | توابل | فانيليا خشبية", img: "" },
+            { id: 45, name: "Terre d'Hermes", brand: "Hermes", size: "100 مل", price: 0, category: "رجالي", desc: "رائحة الأرض والمعادن وأشجار البرتقال والفلفل.", notes: "برتقال | فلفل | أخشاب الأرز", img: "" },
+            { id: 46, name: "Bleu de Chanel Parfum", brand: "Chanel", size: "100 مل", price: 0, category: "رجالي", desc: "أعلى درجات الفخامة الخشبية العطرية الناعمة.", notes: "قشر ليمون | خشب صندل | أرز", img: "" },
+            { id: 47, name: "YSL Y EDP", brand: "Yves Saint Laurent", size: "100 مل", price: 0, category: "رجالي", desc: "تفاح مقرمش مع الميرمية والزنجبيل لإطلالة شبابية.", notes: "تفاح | زنجبيل | ميرمية", img: "" },
+            { id: 48, name: "YSL La Nuit de L'Homme", brand: "Yves Saint Laurent", size: "100 مل", price: 0, category: "رجالي", desc: "عطر السهرات الرومانسي بالهيل واللافندر والأخشاب.", notes: "هيل | لافندر | خشب الأرز", img: "" },
+            { id: 49, name: "D&G The One EDP", brand: "Dolce & Gabbana", size: "100 مل", price: 0, category: "رجالي", desc: "دفء التبغ والعنبر والجريب فروت لإطلالة أنيقة.", notes: "جريب فروت | كزبرة | تبغ وعنبر", img: "" },
+            { id: 50, name: "D&G Light Blue Intense", brand: "Dolce & Gabbana", size: "100 مل", price: 0, category: "رجالي", desc: "انتعاش مياه البحر المتوسط الحامضة والمنعشة.", notes: "جريب فروت | مياه بحر | مسك", img: "" },
+            { id: 51, name: "Prada Luna Rossa Carbon", brand: "Prada", size: "100 مل", price: 0, category: "رجالي", desc: "معادن باردة ومعدنية مع اللافندر والخزامى.", notes: "لافندر | فلفل معدني | باتشولي", img: "" },
+            { id: 52, name: "Bvlgari Man In Black", brand: "Bvlgari", size: "100 مل", price: 0, category: "رجالي", desc: "توابل داكنة وجلود فاخرة مع الروم والعنبر.", notes: "روم | توابل | جلد وعنبر", img: "" },
+            { id: 53, name: "Montblanc Explorer", brand: "Montblanc", size: "100 مل", price: 0, category: "رجالي", desc: "برغموت إيطالي منعش مع نجيل الهند والأخشاب.", notes: "برغموت | نجيل الهند | جلد", img: "" },
+            { id: 54, name: "Azzaro Most Wanted", brand: "Azzaro", size: "100 مل", price: 0, category: "رجالي", desc: "زنجبيل حار مع الشوكولاتة والفانيليا البوربون.", notes: "زنجبيل | روائح خشبية | فانيليا", img: "" },
+            { id: 55, name: "Bad Boy Le Parfum", brand: "Carolina Herrera", size: "100 مل", price: 0, category: "رجالي", desc: "القنب والمريمية والجلود في توليفة عصرية.", notes: "قنب | مريمية | جلود سوداء", img: "" },
+            { id: 56, name: "Lalique Encre Noire", brand: "Lalique", size: "100 مل", price: 0, category: "رجالي", desc: "سيد النوتات الخشبية والنجيل الهند الداكن.", notes: "نجيل هندي | سرو | مسك", img: "" },
+            { id: 57, name: "Davidoff Cool Water", brand: "Davidoff", size: "125 مل", price: 0, category: "رجالي", desc: "الكلاسيكية المنعشة بنوتات النعناع ومياه البحر.", notes: "نعناع | ماء البحر | لافندر", img: "" },
+            { id: 58, name: "L'Eau d'Issey Pour Homme", brand: "Issey Miyake", size: "125 مل", price: 0, category: "رجالي", desc: "يوسوكي ياباني وحمضيات خفيفة مع نوتات خشبية.", notes: "يوسو | ليمون | توابل مائية", img: "" },
+            { id: 59, name: "Burberry Hero EDP", brand: "Burberry", size: "100 مل", price: 0, category: "رجالي", desc: "أرز أطلسي دافئ مع إبرة الصقنوبر والجاوي.", notes: "أرز الأطلس | صنوبر | جاوي", img: "" },
+            { id: 60, name: "Polo Blue Parfum", brand: "Ralph Lauren", size: "125 مل", price: 0, category: "رجالي", desc: "يوسفي ونوتات أكسجين بحرية مع نجيل الهند.", notes: "يوسفي | مريمية | نجيل الهند", img: "" },
+            { id: 61, name: "Dior J'adore EDP", brand: "Dior", size: "100 مل", price: 0, category: "نسائي", desc: "باقة زهرية أنثوية خالدة من الياسمين والورد.", notes: "ياسمين | ورد جوري | كمثرى", img: "" },
+            { id: 62, name: "YSL Libre Intense", brand: "Yves Saint Laurent", size: "90 مل", price: 0, category: "نسائي", desc: "لافندر فرنسي ناعم مع أوركيد الفانيليا الدافئة.", notes: "لافندر | أوركيد | فانيليا", img: "" },
+            { id: 63, name: "Chanel Coco Mademoiselle", brand: "Chanel", size: "100 مل", price: 0, category: "نسائي", desc: "أناقة البرتقال المنعش مع الورد والباتشولي.", notes: "برتقال | ورد | باتشولي", img: "" },
+            { id: 64, name: "Chanel No. 5", brand: "Chanel", size: "100 مل", price: 0, category: "نسائي", desc: "عطر الأساطير الألدهيدي الزهري الخالد.", notes: "ألدهيدات | ياسمين | ورد | مسك", img: "" },
+            { id: 65, name: "Good Girl EDP", brand: "Carolina Herrera", size: "80 مل", price: 0, category: "نسائي", desc: "توليفة اللوز والقهوة ومسك الروم الأيقونية.", notes: "لوز | قهوة | مسك رومي | كاكاو", img: "" },
+            { id: 66, name: "Lancome La Vie Est Belle", brand: "Lancome", size: "100 مل", price: 0, category: "نسائي", desc: "سعادة السوسن والياسمين مع حلاوة الفانيليا.", notes: "سوسن | ياسمين | فانيليا", img: "" },
+            { id: 67, name: "Lancome Idole", brand: "Lancome", size: "100 مل", price: 0, category: "نسائي", desc: "ورد نقي مع الياسمين والكمثرى لإطلالة مشرقة.", notes: "ورد أخضر | ياسمين | كمثرى", img: "" },
+            { id: 68, name: "Armani My Way", brand: "Giorgio Armani", size: "90 مل", price: 0, category: "نسائي", desc: "زهر البرتقال ومسك الروم الهندي مع الفانيليا.", notes: "زهر برتقال | مسك رومي | فانيليا", img: "" },
+            { id: 69, name: "Armani Si EDP", brand: "Giorgio Armani", size: "100 مل", price: 0, category: "نسائي", desc: "رحيق الكشمش الأسود مع الورد وخشب الأرز.", notes: "كشمش أسود | ورد فريزيا | باتشولي", img: "" },
+            { id: 70, name: "Donna Born In Roma", brand: "Valentino", size: "100 مل", price: 0, category: "نسائي", desc: "ياسمين فاخر مع فانيليا دافئة ولمسات خشبية.", notes: "ياسمين | فانيليا | أخشاب", img: "" },
+            { id: 71, name: "Marc Jacobs Daisy", brand: "Marc Jacobs", size: "100 مل", price: 0, category: "نسائي", desc: "فراولة برية وفريزيا وبنفسج لعطر مرح ومنعش.", notes: "فراولة | بنفسج | ياسمين", img: "" },
+            { id: 72, name: "Gucci Bloom", brand: "Gucci", size: "100 مل", price: 0, category: "نسائي", desc: "حديقة أزهار بيضاء غنية بعبق مسك الروم والياسمين.", notes: "مسك رومي | ياسمين", img: "" },
+            { id: 73, name: "Gucci Flora Gardenia", brand: "Gucci", size: "100 مل", price: 0, category: "نسائي", desc: "زهرة الغاردينيا البيضاء مع زهر الكمثرى والسكر.", notes: "غاردينيا | زهر كمثرى | سكر بني", img: "" },
+            { id: 74, name: "Olympéa EDP", brand: "Paco Rabanne", size: "80 مل", price: 0, category: "نسائي", desc: "فانيليا مالحة فريدة مع زهر الياسمين واليوسفي.", notes: "فانيليا مالحة | ياسمين مائي", img: "" },
+            { id: 75, name: "Flowerbomb EDP", brand: "Viktor & Rolf", size: "100 مل", price: 0, category: "نسائي", desc: "قنبلة أزهار مذهلة من الشاي والياسمين والورد.", notes: "شاي | ياسمين | ورد | باتشولي", img: "" },
+            { id: 76, name: "Tom Ford Black Orchid", brand: "Tom Ford", size: "100 مل", price: 0, category: "نسائي", desc: "أوركيد سوداء داكنة مع الشوكولاتة والتوابل.", notes: "أوركيد سوداء | شوكولاتة | كمأة", img: "" },
+            { id: 77, name: "Tom Ford Velvet Orchid", brand: "Tom Ford", size: "100 مل", price: 0, category: "نسائي", desc: "زهور أوركيد مخملية مع العسل والروم والفانيليا.", notes: "عسل | روم | أوركيد مخملي", img: "" },
+            { id: 78, name: "Burberry Her EDP", brand: "Burberry", size: "100 مل", price: 0, category: "نسائي", desc: "توت بري وفراولة مقرمشة مع قاعدة مسكية.", notes: "توت بري | فراولة | مسك وعنبر", img: "" },
+            { id: 79, name: "Versace Bright Crystal", brand: "Versace", size: "90 مل", price: 0, category: "نسائي", desc: "رمان منعش مع زهر الياسمين والفاوانيا الصيفية.", notes: "رمان | فاوانيا | مسك وعنبر", img: "" },
+            { id: 80, name: "La Belle EDP", brand: "Jean Paul Gaultier", size: "100 مل", price: 0, category: "نسائي", desc: "كمثرى ناضجة وحسية مع فانيليا ونوتات دافئة.", notes: "كمثرى | نجيل الهند | فانيليا", img: "" },
+            { id: 81, name: "Prada Paradoxe", brand: "Prada", size: "90 مل", price: 0, category: "نسائي", desc: "زهر البرتقال والعنبر الأبيض في زجاجة عصرية.", notes: "زهر برتقال | عنبر أبيض | مسك", img: "" },
+            { id: 82, name: "Twilly d'Hermes", brand: "Hermes", size: "85 مل", price: 0, category: "نسائي", desc: "زنجبيل منعش مع مسك الروم وخشب الصندل.", notes: "زنجبيل | مسك رومي | خشب صندل", img: "" },
+            { id: 83, name: "Narciso Rodriguez For Her", brand: "Narciso Rodriguez", size: "100 مل", price: 0, category: "نسائي", desc: "مسك مصري ساحر مع زهر البرتقال الناعم.", notes: "مسك | زهر برتقال | أوسمانثوس", img: "" },
+            { id: 84, name: "CK Euphoria", brand: "Calvin Klein", size: "100 مل", price: 0, category: "نسائي", desc: "رمان وأوركيد أسود مع الماهوجني لإطلالة غامضة.", notes: "رمان | أوركيد أسود | ماهوجني", img: "" },
+            { id: 85, name: "Jo Malone English Pear", brand: "Jo Malone", size: "100 مل", price: 0, category: "نسائي", desc: "كمثرى إنجليزية ناضجة مع فريزيا بيضاء والأخشاب.", notes: "كمثرى | فريزيا | باتشولي", img: "" },
+            { id: 86, name: "Chloe EDP", brand: "Chloe", size: "75 مل", price: 0, category: "نسائي", desc: "ورد بلغاري فاخر وبودرة ناعمة مع الفاوانيا.", notes: "ورد بلغاري | فاوانيا | عسل", img: "" },
+            { id: 87, name: "DKNY Be Delicious", brand: "DKNY", size: "100 مل", price: 0, category: "نسائي", desc: "تفاح أخضر مقرمش ومنعش للغاية لأجواء الصيف.", notes: "تفاح أخضر | خيار | ماغنوليا", img: "" },
+            { id: 88, name: "Alien Mugler", brand: "Mugler", size: "90 مل", price: 0, category: "نسائي", desc: "ياسمين غامض وعميق مع أخشاب الكشمير والعنبر.", notes: "ياسمين | أخشاب كشمير | عنبر", img: "" },
+            { id: 89, name: "Angel Mugler", brand: "Mugler", size: "100 مل", price: 0, category: "نسائي", desc: "شوكولاتة داكنة وباتشولي وفواكه حمراء.", notes: "باتشولي | شوكولاتة | توت بري", img: "" },
+            { id: 90, name: "Signorina EDP", brand: "Salvatore Ferragamo", size: "100 مل", price: 0, category: "نسائي", desc: "توت وفلفل وردي مع الباناكوتا والمسك الناعم.", notes: "فلفل وردي | باناكوتا | باتشولي", img: "" },
+            { id: 91, name: "دهن العود المعتق الملكي", brand: "عطور شرقية", size: "تولة (12 مل)", price: 0, category: "شرقي", desc: "أصالة العود الكمبودي المعتق بثبات وفوحان عالي.", notes: "عود كمبودي | عنبر | خشب صندل", img: "" },
+            { id: 92, name: "مسك الختام الأبيض", brand: "عطور شرقية", size: "تولة (12 مل)", price: 0, category: "شرقي", desc: "مسك نقي وبودري مخملي يمنح شعور النظافة.", notes: "مسك أبيض | بودرة | ورد طائفي", img: "" },
+            { id: 93, name: "عنبر الملوك الخالص", brand: "عطور شرقية", size: "تولة (12 مل)", price: 0, category: "شرقي", desc: "دفء العنبر الشرقي الأصيل الممزوج بالتوابل.", notes: "عنبر دافئ | زعفران | هيل", img: "" },
+            { id: 94, name: "ورد طائفي معتق", brand: "عطور شرقية", size: "تولة (12 مل)", price: 0, category: "شرقي", desc: "عبير الورد الطائفي الفاخر المقطر بعناية.", notes: "ورد طائفي | دهن عود | مسك", img: "" },
+            { id: 95, name: "خلاصة العود الهندي", brand: "عطور شرقية", size: "تولة (12 مل)", price: 0, category: "شرقي", desc: "عبق أخشاب العود الهندي القديم للمجالس.", notes: "عود هندي معتق | بخور | جلد", img: "" },
+            { id: 96, name: "مسك العروس الفاخر", brand: "عطور شرقية", size: "تولة (12 مل)", price: 0, category: "شرقي", desc: "مزيج كريمي أنثوي من المسك والفانيليا.", notes: "مسك أبيض | فانيليا كريمية", img: "" },
+            { id: 97, name: "لبان الدكور العماني", brand: "عطور شرقية", size: "100 جرام", price: 0, category: "شرقي", desc: "بخور لبان الدكور الملكي المنقى لأجواء المنازل.", notes: "لبان عماني | صمغ | بخور", img: "" },
+            { id: 98, name: "مخلط الملك الفاخر", brand: "عطور شرقية", size: "50 مل", price: 0, category: "شرقي", desc: "توليفة تجمع الورد والزعفران والعود والعنبر.", notes: "زعفران | ورد | عود | عنبر", img: "" },
+            { id: 99, name: "مسك الرمان السحري", brand: "عطور شرقية", size: "تولة (12 مل)", price: 0, category: "شرقي", desc: "انتعاش الرمان الحلو الممزوج بعبق المسك.", notes: "رمان أحمر | مسك أبيض | توت", img: "" },
+            { id: 100, name: "توليفة فيلقيت الخاصة", brand: "Velvet Exclusive", size: "100 مل", price: 0, category: "شرقي", desc: "العطر الحصري والخاص بمتجرنا في طرابلس.", notes: "توليفة سرية | عود وخشب صندل", img: "" }
         ];
 
-        // دالة مساعدة لاستنتاج الشركة والحجم للعطور القديمة المخزنة مسبقاً في السحابة
         function enrichPerfumeData(item) {
             const defMatch = defaultPerfumes.find(d => d.id === item.id || d.name === item.name);
             return {
                 ...item,
                 brand: item.brand || (defMatch ? defMatch.brand : "أخرى"),
-                size: item.size || (defMatch ? defMatch.size : "100ml")
+                size: item.size || (defMatch ? defMatch.size : "100 مل")
             };
         }
 
@@ -503,7 +502,9 @@
                 perfumesList = Object.keys(data).map(key => enrichPerfumeData({
                     firebaseKey: key,
                     ...data[key]
-                })).sort((a, b) => (a.id || 0) - (b.id || 0));
+                }));
+                // ترتيب العطور: السعر الغالي فوق وي descending
+                perfumesList.sort((a, b) => (b.price || 0) - (a.price || 0));
                 updateBrandsUI(perfumesList);
                 displayPerfumes(perfumesList);
             } else {
@@ -518,7 +519,6 @@
             console.warn("Firebase read warning:", error);
         });
 
-        // تحديث قائمة الشركات تلقائياً (في الأزرار + القائمة المنسدلة + اقتراحات لوحة الإدارة)
         function updateBrandsUI(items) {
             const brandsSet = new Set();
             items.forEach(item => {
@@ -529,7 +529,6 @@
 
             const sortedBrands = Array.from(brandsSet).sort((a, b) => a.localeCompare(b));
 
-            // 1. تحديث القائمة المنسدلة بجانب البحث
             const dropdown = document.getElementById('brand-select-dropdown');
             const prevSelected = dropdown.value;
             dropdown.innerHTML = `<option value="الكل">🏢 كل الشركات (${sortedBrands.length})</option>`;
@@ -543,7 +542,6 @@
                 dropdown.value = prevSelected;
             }
 
-            // 2. تحديث أزرار الشركات الأفقية
             const navContainer = document.getElementById('brands-nav-container');
             navContainer.innerHTML = '';
 
@@ -561,7 +559,6 @@
                 navContainer.appendChild(btn);
             });
 
-            // 3. تحديث قائمة الإكمال التلقائي في لوحة الإدارة
             const datalist = document.getElementById('brands-datalist');
             if (datalist) {
                 datalist.innerHTML = '';
@@ -604,6 +601,9 @@
                 return matchesCat && matchesBrand && matchesSearch;
             });
 
+            // ضمان ترتيب المعروض دائماً من الغالي للأرخص
+            filtered.sort((a, b) => (b.price || 0) - (a.price || 0));
+
             if (filtered.length === 0) {
                 container.innerHTML = `<div style="text-align:center; padding:30px; color:var(--text-muted); grid-column:1/-1;">لا توجد عطور مطابقة لخيارات البحث الحالية.</div>`;
                 return;
@@ -613,7 +613,7 @@
                 const card = document.createElement('div');
                 card.className = 'product-card';
                 const imgSrc = item.img ? item.img : 'https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=400';
-                const displaySize = item.size ? item.size : '100ml';
+                const displaySize = item.size ? item.size : '100 مل';
                 const displayBrand = item.brand ? item.brand : '';
 
                 card.innerHTML = `
@@ -636,7 +636,7 @@
 
                         <div class="admin-edit-fields" style="display: ${isAdminMode ? 'flex' : 'none'};">
                             <input type="text" value="${displayBrand}" placeholder="الشركة" onchange="updateCloudField('${item.firebaseKey}', 'brand', this.value)">
-                            <input type="text" value="${displaySize}" placeholder="الحجم (مثال: 100ml)" onchange="updateCloudField('${item.firebaseKey}', 'size', this.value)">
+                            <input type="text" value="${displaySize}" placeholder="الحجم (مثال: 100 مل)" onchange="updateCloudField('${item.firebaseKey}', 'size', this.value)">
                             <select onchange="updateCloudField('${item.firebaseKey}', 'category', this.value)">
                                 <option value="شرقي" ${item.category==='شرقي'?'selected':''}>شرقي</option>
                                 <option value="رجالي" ${item.category==='رجالي'?'selected':''}>رجالي</option>
@@ -694,11 +694,7 @@
         function addNewPerfumeCloud() {
             const name = document.getElementById('new-name').value.trim();
             const brand = document.getElementById('new-brand').value.trim() || "أخرى";
-            let size = document.getElementById('new-size').value.trim() || "100ml";
-            // إضافة ml تلقائياً إذا كتب المستخدم رقماً فقط مثل 100
-            if (/^\d+$/.test(size)) {
-                size = size + "ml";
-            }
+            const size = document.getElementById('new-size').value.trim() || "100 مل";
             const price = document.getElementById('new-price').value.trim() || 0;
             const cat = document.getElementById('new-cat').value;
             const notes = document.getElementById('new-notes').value.trim() || "تركيبة مميزة";
@@ -728,7 +724,7 @@
             };
             db.ref('perfumes').push(newItem, (error) => {
                 if (!error) {
-                    alert(`✅ تم نشر "${name}" (${brand} - ${size}) وإضافة الشركة لقائمة البحث فوراً!`);
+                    alert(`✅ تم نشر "${name}" بنجاح!`);
                     document.getElementById('new-name').value = '';
                     document.getElementById('new-brand').value = '';
                     document.getElementById('new-size').value = '';
@@ -751,11 +747,7 @@
 
         function updateCloudField(firebaseKey, field, val) {
             if (firebaseKey.startsWith('local_')) return;
-            let cleanVal = val.trim();
-            if (field === 'size' && /^\d+$/.test(cleanVal)) {
-                cleanVal += "ml";
-            }
-            db.ref('perfumes/' + firebaseKey).update({ [field]: cleanVal });
+            db.ref('perfumes/' + firebaseKey).update({ [field]: val.trim() });
         }
 
         function updateCloudImage(firebaseKey, input) {
@@ -781,7 +773,7 @@
                     cartId: Date.now() + Math.random(),
                     name: item.name,
                     brand: item.brand || '',
-                    size: item.size || '100ml',
+                    size: item.size || '100 مل',
                     price: item.price
                 });
                 updateCartUI();
