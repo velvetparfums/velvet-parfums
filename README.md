@@ -115,6 +115,44 @@
         }
 
         .admin-banner h3 { color: var(--accent-gold-dark); font-size: 15px; margin-bottom: 12px; text-align: center; }
+
+        /* بطاقة إحصائيات الزوار السرية */
+        .stats-dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+            background: #f9f7f2;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid var(--accent-gold);
+        }
+        .stat-card {
+            background: #ffffff;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: bold;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .stat-number {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--accent-gold-dark);
+        }
+        .stat-date-note {
+            grid-column: 1 / -1;
+            text-align: center;
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
         .admin-form-grid { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
         .admin-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
         .admin-form-grid input, .admin-form-grid select, .admin-form-grid textarea {
@@ -212,7 +250,7 @@
         </div>
     </header>
 
-    <!-- شريط المميزات والأيقونات -->
+    <!-- شريط الأيقونات والمميزات -->
     <div class="features-bar">
         <div class="feature-item">
             <span>🚚</span> توصيل مجاني داخل طرابلس
@@ -227,6 +265,20 @@
         <!-- لوحة الإدارة -->
         <div class="admin-banner" id="admin-panel">
             <h3>✨ لوحة الإدارة السريعة</h3>
+
+            <!-- قسم إحصائيات الزوار (سري للمشرف فقط) -->
+            <div class="stats-dashboard">
+                <div class="stat-card">
+                    <span class="stat-label">👥 زوار اليوم</span>
+                    <span class="stat-number" id="today-visitors-count">0</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">🌍 إجمالي الزيارات الكلي</span>
+                    <span class="stat-number" id="total-visitors-count">0</span>
+                </div>
+                <div class="stat-date-note" id="stats-today-date">تاريخ اليوم: --</div>
+            </div>
+
             <div class="admin-form-grid">
                 <input type="text" id="new-name" placeholder="اسم العطر الجديد (مثال: Sauvage Elixir)">
                 
@@ -351,6 +403,48 @@
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
+
+        // === نظام تتبع الزوار السري (اليومي والكلي) ===
+        function getTodayKey() {
+            const now = new Date();
+            const y = now.getFullYear();
+            const m = String(now.getMonth() + 1).padStart(2, '0');
+            const d = String(now.getDate()).padStart(2, '0');
+            return `${y}-${m}-${d}`;
+        }
+
+        function trackVisitorAnalytics() {
+            const todayKey = getTodayKey();
+            document.getElementById('stats-today-date').innerText = `إحصائيات اليوم (${todayKey})`;
+
+            // تسجيل الزيارة مرة واحدة في اليوم لكل متصفح لتجنب التكرار عند التحديث
+            const visitedStorageKey = 'velvet_visited_' + todayKey;
+            if (!localStorage.getItem(visitedStorageKey)) {
+                localStorage.setItem(visitedStorageKey, 'true');
+
+                // زيادة عداد اليوم
+                db.ref('analytics/daily/' + todayKey).transaction((current) => {
+                    return (current || 0) + 1;
+                });
+
+                // زيادة العداد الإجمالي الكلي
+                db.ref('analytics/total').transaction((current) => {
+                    return (current || 0) + 1;
+                });
+            }
+
+            // الاستماع المباشر للأرقام وعرضها في لوحة الإدارة فقط
+            db.ref('analytics/daily/' + todayKey).on('value', (snap) => {
+                document.getElementById('today-visitors-count').innerText = snap.val() || 0;
+            });
+
+            db.ref('analytics/total').on('value', (snap) => {
+                document.getElementById('total-visitors-count').innerText = snap.val() || 0;
+            });
+        }
+
+        // تشغيل التتبع عند فتح الصفحة
+        trackVisitorAnalytics();
 
         const FB_PAGE_ID = "61596110442092";
         let isAdminMode = false;
@@ -503,7 +597,6 @@
                     firebaseKey: key,
                     ...data[key]
                 }));
-                // ترتيب العطور: السعر الغالي فوق وي descending
                 perfumesList.sort((a, b) => (b.price || 0) - (a.price || 0));
                 updateBrandsUI(perfumesList);
                 displayPerfumes(perfumesList);
@@ -601,7 +694,6 @@
                 return matchesCat && matchesBrand && matchesSearch;
             });
 
-            // ضمان ترتيب المعروض دائماً من الغالي للأرخص
             filtered.sort((a, b) => (b.price || 0) - (a.price || 0));
 
             if (filtered.length === 0) {
