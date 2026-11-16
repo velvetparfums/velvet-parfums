@@ -3,7 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>VELVET PARFUMS | عطور فيلقيت</title>
+    <title>VELVET PARFUMS | عطور فيلقيت في طرابلس</title>
+    
+    <!-- وسوم فيسبوك وفتح الروابط (Open Graph) لضمان ظهور المتجر بشكل بطاقة احترافية -->
+    <meta property="og:title" content="VELVET PARFUMS | أفخم العطور الأصلية في طرابلس وليبيا">
+    <meta property="og:description" content="تنسيقات عطور نيش وعالمية أصلية 100% مع توصيل مجاني داخل طرابلس. اطلب الآن عبر المتجر أو الماسنجر.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=400">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="ar_LY">
+
+    <!-- بيانات الموقع الجغرافي ونشاط المتجر لتعزيز الظهور المحلي في ليبيا وطرابلس (Schema.org) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Store",
+      "name": "VELVET PARFUMS",
+      "description": "متجر متخصص في بيع العطور الأصلية والنيش والعطور الشرقية في طرابلس ليبيا",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Tripoli",
+        "addressRegion": "Tripoli",
+        "addressCountry": "LY"
+      },
+      "currenciesAccepted": "LYD",
+      "priceRange": "$$"
+    }
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -417,23 +443,19 @@
             const todayKey = getTodayKey();
             document.getElementById('stats-today-date').innerText = `إحصائيات اليوم (${todayKey})`;
 
-            // تسجيل الزيارة مرة واحدة في اليوم لكل متصفح لتجنب التكرار عند التحديث
             const visitedStorageKey = 'velvet_visited_' + todayKey;
             if (!localStorage.getItem(visitedStorageKey)) {
                 localStorage.setItem(visitedStorageKey, 'true');
 
-                // زيادة عداد اليوم
                 db.ref('analytics/daily/' + todayKey).transaction((current) => {
                     return (current || 0) + 1;
                 });
 
-                // زيادة العداد الإجمالي الكلي
                 db.ref('analytics/total').transaction((current) => {
                     return (current || 0) + 1;
                 });
             }
 
-            // الاستماع المباشر للأرقام وعرضها في لوحة الإدارة فقط
             db.ref('analytics/daily/' + todayKey).on('value', (snap) => {
                 document.getElementById('today-visitors-count').innerText = snap.val() || 0;
             });
@@ -443,7 +465,6 @@
             });
         }
 
-        // تشغيل التتبع عند فتح الصفحة
         trackVisitorAnalytics();
 
         const FB_PAGE_ID = "61596110442092";
