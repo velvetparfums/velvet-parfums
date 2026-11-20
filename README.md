@@ -4,19 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>VELVET PARFUMS | عطور فيلقيت في طرابلس</title>
+    <meta name="description" content="متجر فيلقيت للعطور في طرابلس، ليبيا. وفرنا لك أرقى العطور العالمية، عطور النيش، والشرقية الأصلية 100% مع توصيل مجاني سريع داخل طرابلس.">
+    <meta name="keywords" content="عطور طرابلس, شراء عطور في ليبيا, عطور أصلية طرابلس, متجر عطور نيش ليبيا, Velvet Parfums">
+    <meta name="geo.region" content="LY-TB">
+    <meta name="geo.placename" content="Tripoli">
     
-    <!-- وسوم فيسبوك وفتح الروابط (Open Graph) لضمان ظهور المتجر بشكل بطاقة احترافية -->
+    <!-- وسوم فيسبوك وفتح الروابط (Open Graph) -->
     <meta property="og:title" content="VELVET PARFUMS | أفخم العطور الأصلية في طرابلس وليبيا">
     <meta property="og:description" content="تنسيقات عطور نيش وعالمية أصلية 100% مع توصيل مجاني داخل طرابلس. اطلب الآن عبر المتجر أو الماسنجر.">
     <meta property="og:image" content="https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=400">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="ar_LY">
 
-    <!-- بيانات الموقع الجغرافي ونشاط المتجر لتعزيز الظهور المحلي في ليبيا وطرابلس (Schema.org) -->
+    <!-- بيانات الموقع الجغرافي ونشاط المتجر (Schema.org) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Store",
+      "@type": "PerfumeShop",
       "name": "VELVET PARFUMS",
       "description": "متجر متخصص في بيع العطور الأصلية والنيش والعطور الشرقية في طرابلس ليبيا",
       "address": {
@@ -95,14 +99,14 @@
 
         .container { width: 100%; max-width: 1100px; margin: 0 auto; padding: 12px; }
 
-        /* شريط البحث وفلتر الشركات */
+        /* شريط البحث وفلتر الشركات وزر الطلب الخاص */
         .search-filter-row {
             display: flex;
             gap: 8px;
             margin-bottom: 12px;
             flex-wrap: wrap;
         }
-        .search-box { flex: 1; min-width: 180px; }
+        .search-box { flex: 1; min-width: 170px; }
         .search-input {
             width: 100%;
             padding: 11px 16px;
@@ -116,7 +120,7 @@
         }
         .search-input:focus { border-color: var(--accent-gold); }
 
-        .brand-select-box { min-width: 145px; }
+        .brand-select-box { min-width: 135px; }
         .brand-select {
             width: 100%;
             padding: 11px 14px;
@@ -128,6 +132,19 @@
             background: var(--card-bg);
             outline: none;
             cursor: pointer;
+        }
+
+        .btn-custom-perfume-top {
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-gold-dark));
+            color: white;
+            border: none;
+            padding: 11px 16px;
+            border-radius: 25px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            white-space: nowrap;
+            box-shadow: 0 3px 10px rgba(179, 147, 89, 0.3);
         }
 
         .admin-banner {
@@ -246,10 +263,31 @@
         .btn-order { background-color: var(--accent-gold); color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer; }
         .btn-delete { display: none; background-color: #fae1dd; color: var(--danger-color); border: 1px solid var(--danger-color); padding: 6px; border-radius: 6px; font-size: 10px; cursor: pointer; font-weight: bold; }
 
+        /* صندوق عندما لا يجد الزبون عطره */
+        .not-found-box {
+            grid-column: 1 / -1;
+            background: #ffffff;
+            border: 2px dashed var(--accent-gold);
+            border-radius: 14px;
+            padding: 25px 15px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+        .not-found-box h4 {
+            color: var(--accent-gold-dark);
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        .not-found-box p {
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-bottom: 15px;
+        }
+
         .cart-bar { position: fixed; bottom: 12px; left: 5%; width: 90%; background: var(--accent-gold-dark); color: white; padding: 12px 18px; border-radius: 30px; box-shadow: 0 8px 20px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: space-between; z-index: 99; cursor: pointer; font-weight: bold; font-size: 13px; }
         .cart-count { background: white; color: var(--accent-gold-dark); width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; }
 
-        .cart-modal, .checkout-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; padding: 15px; }
+        .cart-modal, .checkout-modal, .custom-req-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; padding: 15px; }
         .modal-content { background: white; padding: 20px; border-radius: 12px; width: 100%; max-width: 420px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); max-height: 90vh; display: flex; flex-direction: column; overflow-y: auto; }
         .modal-content h3 { color: var(--accent-gold-dark); margin-bottom: 12px; font-size: 16px; text-align: center; }
         .cart-items-list { overflow-y: auto; max-height: 200px; margin-bottom: 12px; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); padding: 8px 0; }
@@ -258,7 +296,16 @@
         .cart-summary-box { font-size: 13px; font-weight: bold; margin-bottom: 15px; text-align: right; color: var(--accent-gold-dark); background: var(--bg-color); padding: 10px; border-radius: 8px; line-height: 1.6; }
         .checkout-form-group { margin-bottom: 10px; }
         .checkout-form-group label { display: block; font-size: 12px; margin-bottom: 4px; font-weight: bold; }
-        .checkout-form-group input, .checkout-form-group select, .checkout-form-group textarea { width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 13px; outline: none; background: var(--bg-color); }
+        .checkout-form-group input, .checkout-form-group select, .checkout-form-group textarea { width: 100%; padding: 9px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 13px; outline: none; background: var(--bg-color); }
+
+        .preview-custom-img {
+            max-width: 120px;
+            max-height: 120px;
+            border-radius: 8px;
+            margin: 8px auto 0;
+            display: none;
+            border: 1px solid var(--accent-gold);
+        }
 
         footer { text-align: center; margin-top: 30px; padding: 15px; color: var(--text-muted); font-size: 11px; border-top: 1px solid var(--border-color); }
     </style>
@@ -336,7 +383,7 @@
             <button class="btn-update-live" onclick="addNewPerfumeCloud()">🚀 نشر مباشر في المتجر</button>
         </div>
 
-        <!-- شريط البحث السريع + قائمة الشركات -->
+        <!-- شريط البحث السريع + قائمة الشركات + زر طلب عطر خاص -->
         <div class="search-filter-row">
             <div class="search-box">
                 <input type="text" id="search-input" class="search-input" placeholder="🔍 ابحث بالاسم، الشركة، الحجم، أو النوتات..." oninput="filterPerfumes()">
@@ -346,6 +393,7 @@
                     <option value="الكل">🏢 كل الشركات</option>
                 </select>
             </div>
+            <button class="btn-custom-perfume-top" onclick="openCustomPerfumeModal()">✨ طلب عطر خاص</button>
         </div>
 
         <!-- تصنيف حسب النوع -->
@@ -364,6 +412,44 @@
 
         <div class="products-grid" id="products-container"></div>
 
+    </div>
+
+    <!-- نافذة طلب عطر خاص غير متوفر -->
+    <div class="custom-req-modal" id="custom-req-modal">
+        <div class="modal-content">
+            <h3>✨ طلب توفير عطر خاص</h3>
+            <p style="font-size: 12px; color: var(--text-muted); text-align: center; margin-bottom: 12px;">
+                أرسل لنا بيانات وصورة العطر الذي تبحث عنه وسنوفره لك بأفضل سعر في طرابلس.
+            </p>
+
+            <div class="checkout-form-group">
+                <label>اسم العطر المطلوب: *</label>
+                <input type="text" id="req-perfume-name" placeholder="مثال: Dior Homme Intense">
+            </div>
+
+            <div class="checkout-form-group">
+                <label>الحجم بالملي (ml): *</label>
+                <input type="text" id="req-perfume-size" placeholder="مثال: 100 مل أو 50 مل">
+            </div>
+
+            <div class="checkout-form-group">
+                <label>📷 صورة العطر (اختياري - تسهل علينا المطابقة):</label>
+                <div class="file-input-wrapper" style="padding: 8px;">
+                    <input type="file" id="req-perfume-img" accept="image/*" onchange="previewCustomImage(this)">
+                    <img id="custom-img-preview" class="preview-custom-img" alt="معاينة العطر">
+                </div>
+            </div>
+
+            <div class="checkout-form-group">
+                <label>اسمك ورقم هاتفك (للتواصل معك عند التوفير): *</label>
+                <input type="text" id="req-cust-contact" placeholder="الاسم - 091XXXXXXX">
+            </div>
+
+            <div style="display: flex; gap: 8px; margin-top: 10px;">
+                <button class="btn-update-live" id="btn-submit-custom" style="margin-top:0; background: var(--success-color);" onclick="submitCustomPerfumeRequest()">📤 إرسال الطلب عبر الماسنجر</button>
+                <button class="btn-update-live" style="margin-top:0; background: #95a5a6;" onclick="closeCustomPerfumeModal()">إلغاء</button>
+            </div>
+        </div>
     </div>
 
     <div class="cart-bar" onclick="openCartModal()">
@@ -430,6 +516,29 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
+        // === معالجة صفحة عرض الصورة المرسلة من الزبون ===
+        const urlParams = new URLSearchParams(window.location.search);
+        const viewCustomImgId = urlParams.get('custom_img');
+        if (viewCustomImgId) {
+            document.body.innerHTML = `<div style="display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100vh; background:#f9f7f2; padding:20px; text-align:center;">
+                <h2 style="color:#8c703b; margin-bottom:15px;">📷 صورة العطر المطلوب من الزبون</h2>
+                <div id="img-loader" style="color:#666;">جاري تحميل الصورة...</div>
+                <img id="shared-custom-img" style="max-width:100%; max-height:75vh; border-radius:12px; border:2px solid #b39359; box-shadow:0 8px 25px rgba(0,0,0,0.15); display:none;">
+                <a href="${window.location.pathname}" style="margin-top:20px; background:#b39359; color:white; padding:10px 25px; border-radius:25px; text-decoration:none; font-weight:bold;">العودة للمتجر</a>
+            </div>`;
+            db.ref('custom_requests/' + viewCustomImgId).once('value').then(snap => {
+                const data = snap.val();
+                if (data && data.img) {
+                    document.getElementById('img-loader').style.display = 'none';
+                    const imgEl = document.getElementById('shared-custom-img');
+                    imgEl.src = data.img;
+                    imgEl.style.display = 'block';
+                } else {
+                    document.getElementById('img-loader').innerText = 'عذراً، لم يتم العثور على الصورة.';
+                }
+            });
+        }
+
         // === نظام تتبع الزوار السري (اليومي والكلي) ===
         function getTodayKey() {
             const now = new Date();
@@ -440,6 +549,7 @@
         }
 
         function trackVisitorAnalytics() {
+            if (viewCustomImgId) return;
             const todayKey = getTodayKey();
             document.getElementById('stats-today-date').innerText = `إحصائيات اليوم (${todayKey})`;
 
@@ -589,10 +699,12 @@
         }
 
         let perfumesList = defaultPerfumes.map(p => ({ firebaseKey: "local_" + p.id, ...p }));
-        updateBrandsUI(perfumesList);
-        displayPerfumes(perfumesList);
+        if (!viewCustomImgId) {
+            updateBrandsUI(perfumesList);
+            displayPerfumes(perfumesList);
+        }
 
-        document.getElementById('logo-trigger').addEventListener('click', function() {
+        document.getElementById('logo-trigger')?.addEventListener('click', function() {
             clickCount++;
             if (clickCount === 1) {
                 clickTimer = setTimeout(() => { clickCount = 0; }, 700);
@@ -612,6 +724,7 @@
         });
 
         db.ref('perfumes').on('value', (snapshot) => {
+            if (viewCustomImgId) return;
             const data = snapshot.val();
             if (data) {
                 perfumesList = Object.keys(data).map(key => enrichPerfumeData({
@@ -701,7 +814,8 @@
             const container = document.getElementById('products-container');
             container.innerHTML = '';
             
-            const searchTerm = document.getElementById('search-input').value.toLowerCase().trim();
+            const rawSearchTerm = document.getElementById('search-input').value.trim();
+            const searchTerm = rawSearchTerm.toLowerCase();
 
             let filtered = items.filter(item => {
                 const matchesCat = currentFilter === 'الكل' || item.category === currentFilter;
@@ -718,7 +832,14 @@
             filtered.sort((a, b) => (b.price || 0) - (a.price || 0));
 
             if (filtered.length === 0) {
-                container.innerHTML = `<div style="text-align:center; padding:30px; color:var(--text-muted); grid-column:1/-1;">لا توجد عطور مطابقة لخيارات البحث الحالية.</div>`;
+                container.innerHTML = `
+                    <div class="not-found-box">
+                        <h4>🔍 لم تجد العطر "${rawSearchTerm}" في القائمة؟</h4>
+                        <p>لا تقلق! نوفر لك أي عطر أصلي ترغب به حسب الطلب الخاص.</p>
+                        <button class="btn-update-live" style="max-width: 280px; margin: 0 auto;" onclick="openCustomPerfumeModal('${rawSearchTerm.replace(/'/g, "\\'")}')">
+                            ✨ اطلب هذا العطر الآن (ارسل اسمه وصورته)
+                        </button>
+                    </div>`;
                 return;
             }
 
@@ -784,6 +905,112 @@
 
         function filterPerfumes() {
             displayPerfumes(perfumesList);
+        }
+
+        // === دوال طلب العطر الخاص ===
+        function openCustomPerfumeModal(prefillName = '') {
+            const nameInput = document.getElementById('req-perfume-name');
+            if (prefillName) {
+                nameInput.value = prefillName;
+            } else {
+                const searchVal = document.getElementById('search-input').value.trim();
+                nameInput.value = searchVal;
+            }
+            document.getElementById('custom-req-modal').style.display = 'flex';
+        }
+
+        function closeCustomPerfumeModal() {
+            document.getElementById('custom-req-modal').style.display = 'none';
+        }
+
+        function previewCustomImage(input) {
+            const preview = document.getElementById('custom-img-preview');
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                preview.style.display = 'none';
+            }
+        }
+
+        function compressCustomImg(file, cb) {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = e => {
+                const img = new Image();
+                img.src = e.target.result;
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const maxW = 500;
+                    const scale = img.width > maxW ? (maxW / img.width) : 1;
+                    canvas.width = img.width * scale;
+                    canvas.height = img.height * scale;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    cb(canvas.toDataURL('image/jpeg', 0.6));
+                }
+            }
+        }
+
+        function submitCustomPerfumeRequest() {
+            const pName = document.getElementById('req-perfume-name').value.trim();
+            const pSize = document.getElementById('req-perfume-size').value.trim();
+            const contact = document.getElementById('req-cust-contact').value.trim();
+            const fileInput = document.getElementById('req-perfume-img');
+            const submitBtn = document.getElementById('btn-submit-custom');
+
+            if (!pName || !pSize || !contact) {
+                alert('الرجاء كتابة اسم العطر، الحجم بالملي، وبيانات التواصل معك.');
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.innerText = '⏳ جاري تجهيز الطلب...';
+
+            const sendToMessengerWithLink = (imageLink) => {
+                let msg = `أهلاً VELVET PARFUMS 👋 ، أرغب في توفير عطر خاص غير موجود في القائمة:\n\n`;
+                msg += `🌸 اسم العطر: ${pName}\n`;
+                msg += `📏 الحجم المطلوب: ${pSize}\n`;
+                msg += `👤 بيانات الزبون: ${contact}\n`;
+                if (imageLink) {
+                    msg += `📷 رابط صورة العطر: ${imageLink}\n`;
+                } else {
+                    msg += `📷 الصورة: لم يتم إرفاق صورة\n`;
+                }
+
+                submitBtn.disabled = false;
+                submitBtn.innerText = '📤 إرسال الطلب عبر الماسنجر';
+                closeCustomPerfumeModal();
+
+                window.open(`https://m.me/${FB_PAGE_ID}?text=${encodeURIComponent(msg)}`, '_blank');
+            };
+
+            if (fileInput.files && fileInput.files[0]) {
+                compressCustomImg(fileInput.files[0], (base64Img) => {
+                    const newReqRef = db.ref('custom_requests').push();
+                    newReqRef.set({
+                        name: pName,
+                        size: pSize,
+                        contact: contact,
+                        img: base64Img,
+                        date: new Date().toISOString()
+                    }, (err) => {
+                        if (!err) {
+                            const baseUrl = window.location.origin + window.location.pathname;
+                            const fullImgUrl = `${baseUrl}?custom_img=${newReqRef.key}`;
+                            sendToMessengerWithLink(fullImgUrl);
+                        } else {
+                            sendToMessengerWithLink('');
+                        }
+                    });
+                });
+            } else {
+                sendToMessengerWithLink('');
+            }
         }
 
         function compressImg(file, cb) {
