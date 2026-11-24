@@ -1,1173 +1,1263 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>VELVET PARFUMS | عطور فيلقيت في طرابلس</title>
-    <meta name="description" content="متجر فيلقيت للعطور في طرابلس، ليبيا. وفرنا لك أرقى العطور العالمية، عطور النيش، والشرقية الأصلية 100% مع توصيل مجاني سريع داخل طرابلس.">
-    <meta name="keywords" content="عطور طرابلس, شراء عطور في ليبيا, عطور أصلية طرابلس, متجر عطور نيش ليبيا, Velvet Parfums">
-    <meta name="geo.region" content="LY-TB">
-    <meta name="geo.placename" content="Tripoli">
-    
-    <!-- وسوم فيسبوك وفتح الروابط (Open Graph) -->
-    <meta property="og:title" content="VELVET PARFUMS | أفخم العطور الأصلية في طرابلس وليبيا">
-    <meta property="og:description" content="تنسيقات عطور نيش وعالمية أصلية 100% مع توصيل مجاني داخل طرابلس. اطلب الآن عبر المتجر أو الماسنجر.">
-    <meta property="og:image" content="https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=400">
-    <meta property="og:type" content="website">
-    <meta property="og:locale" content="ar_LY">
-
-    <!-- بيانات الموقع الجغرافي ونشاط المتجر (Schema.org) -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "PerfumeShop",
-      "name": "VELVET PARFUMS",
-      "description": "متجر متخصص في بيع العطور الأصلية والنيش والعطور الشرقية في طرابلس ليبيا",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Tripoli",
-        "addressRegion": "Tripoli",
-        "addressCountry": "LY"
-      },
-      "currenciesAccepted": "LYD",
-      "priceRange": "$$"
-    }
-    </script>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VelvetParfums | فيلفيت للعطور الفاخرة</title>
+    <!-- استدعاء مكتبة Tailwind CSS للتصميم المتجاوب -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- استدعاء خطوط عربية فاخرة من Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <!-- استدعاء أيقونات FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-
-    <style>
-        :root {
-            --bg-color: #f9f7f2;
-            --card-bg: #ffffff;
-            --accent-gold: #b39359;
-            --accent-gold-dark: #8c703b;
-            --text-dark: #2c2a29;
-            --text-muted: #66625c;
-            --border-color: #e8e4dc;
-            --shadow: 0 6px 20px rgba(0,0,0,0.05);
-            --danger-color: #c0392b;
-            --success-color: #27ae60;
+    <!-- إعدادات مخصصة لـ Tailwind لدعم الخطوط والألوان الفاخرة -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Cairo', 'sans-serif'],
+                        serif: ['Amiri', 'serif'],
+                    },
+                    colors: {
+                        velvet: {
+                            950: '#0a090c',
+                            900: '#141218',
+                            800: '#1f1c26',
+                            700: '#2d2838',
+                        },
+                        gold: {
+                            300: '#f3e5ab',
+                            400: '#e5c158',
+                            500: '#d4af37',
+                            600: '#b59224',
+                        }
+                    }
+                }
+            }
         }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: var(--bg-color); color: var(--text-dark); line-height: 1.5; padding-bottom: 100px; }
-
-        header {
-            background-color: var(--card-bg);
-            padding: 15px 12px;
-            border-bottom: 1px solid var(--border-color);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .header-title-container { text-align: center; cursor: pointer; user-select: none; }
-        .logo-svg { width: 48px; height: 48px; margin: 0 auto; display: block; }
-        .brand-title { font-family: 'Cinzel', serif; font-size: 16px; font-weight: 700; color: var(--accent-gold-dark); margin-top: 2px; }
-        .brand-subtitle { font-family: 'Cinzel', serif; font-size: 8px; letter-spacing: 1.5px; color: var(--text-muted); text-transform: uppercase; }
-
-        /* شريط المميزات والأيقونات */
-        .features-bar {
-            background-color: #f2eee9;
-            border-bottom: 1px solid var(--border-color);
-            padding: 10px 15px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            gap: 10px;
-        }
-        .feature-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--accent-gold-dark);
-            text-align: center;
-        }
-        .feature-item span { font-size: 16px; }
-
-        .container { width: 100%; max-width: 1100px; margin: 0 auto; padding: 12px; }
-
-        /* شريط البحث وفلتر الشركات وزر الطلب الخاص */
-        .search-filter-row {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 12px;
-            flex-wrap: wrap;
-        }
-        .search-box { flex: 1; min-width: 170px; }
-        .search-input {
-            width: 100%;
-            padding: 11px 16px;
-            border: 1px solid var(--border-color);
-            border-radius: 25px;
-            font-size: 13px;
-            background: var(--card-bg);
-            outline: none;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
-            transition: border-color 0.2s;
-        }
-        .search-input:focus { border-color: var(--accent-gold); }
-
-        .brand-select-box { min-width: 135px; }
-        .brand-select {
-            width: 100%;
-            padding: 11px 14px;
-            border: 1px solid var(--accent-gold);
-            border-radius: 25px;
-            font-size: 13px;
-            font-weight: bold;
-            color: var(--accent-gold-dark);
-            background: var(--card-bg);
-            outline: none;
-            cursor: pointer;
-        }
-
-        .btn-custom-perfume-top {
-            background: linear-gradient(135deg, var(--accent-gold), var(--accent-gold-dark));
-            color: white;
-            border: none;
-            padding: 11px 16px;
-            border-radius: 25px;
-            font-size: 12px;
-            font-weight: bold;
-            cursor: pointer;
-            white-space: nowrap;
-            box-shadow: 0 3px 10px rgba(179, 147, 89, 0.3);
-        }
-
-        .admin-banner {
-            display: none;
-            background: #ffffff;
-            border: 2px solid var(--accent-gold);
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        .admin-banner h3 { color: var(--accent-gold-dark); font-size: 15px; margin-bottom: 12px; text-align: center; }
-
-        /* بطاقة إحصائيات الزوار السرية */
-        .stats-dashboard {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 15px;
-            background: #f9f7f2;
-            padding: 12px;
-            border-radius: 10px;
-            border: 1px solid var(--accent-gold);
-        }
-        .stat-card {
-            background: #ffffff;
-            padding: 10px;
-            border-radius: 8px;
-            text-align: center;
-            border: 1px solid var(--border-color);
-        }
-        .stat-label {
-            font-size: 11px;
-            color: var(--text-muted);
-            font-weight: bold;
-            display: block;
-            margin-bottom: 4px;
-        }
-        .stat-number {
-            font-size: 22px;
-            font-weight: 800;
-            color: var(--accent-gold-dark);
-        }
-        .stat-date-note {
-            grid-column: 1 / -1;
-            text-align: center;
-            font-size: 10px;
-            color: var(--text-muted);
-        }
-
-        .admin-form-grid { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
-        .admin-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        .admin-form-grid input, .admin-form-grid select, .admin-form-grid textarea {
-            width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 13px; outline: none; background: var(--bg-color);
-        }
-
-        .file-input-wrapper { background: #f2eee9; padding: 12px; border-radius: 8px; text-align: center; border: 1px dashed var(--accent-gold); }
-
-        .btn-update-live {
-            background-color: var(--success-color);
-            color: white;
-            border: none;
-            padding: 14px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            font-size: 15px;
-            margin-top: 5px;
-            box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3);
-        }
-
-        .filter-section-label {
-            font-size: 11px;
-            font-weight: bold;
-            color: var(--text-muted);
-            margin-bottom: 5px;
-            display: block;
-        }
-
-        .categories-nav, .brands-nav { display: flex; gap: 7px; margin-bottom: 12px; overflow-x: auto; padding-bottom: 4px; }
-        .categories-nav::-webkit-scrollbar, .brands-nav::-webkit-scrollbar { display: none; }
-        
-        .cat-btn { background-color: var(--card-bg); border: 1px solid var(--border-color); padding: 6px 15px; border-radius: 20px; cursor: pointer; font-size: 12px; color: var(--text-dark); white-space: nowrap; flex-shrink: 0; }
-        .cat-btn.active { background-color: var(--accent-gold); color: white; border-color: var(--accent-gold); font-weight: bold; }
-
-        .brand-btn { background-color: #f2eee9; border: 1px solid var(--border-color); padding: 5px 13px; border-radius: 16px; cursor: pointer; font-size: 11px; font-weight: 600; color: var(--text-dark); white-space: nowrap; flex-shrink: 0; transition: all 0.2s; }
-        .brand-btn.active { background-color: var(--text-dark); color: #f9f7f2; border-color: var(--text-dark); }
-
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); gap: 12px; margin-top: 8px; }
-        @media (min-width: 600px) { .products-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; } }
-
-        .product-card { background-color: var(--card-bg); border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); box-shadow: var(--shadow); display: flex; flex-direction: column; position: relative; }
-        .product-img { width: 100%; height: 150px; object-fit: cover; background-color: #f7f5f0; }
-        @media (min-width: 600px) { .product-img { height: 220px; } }
-
-        .img-update-box { display: none; padding: 5px; background: #f2eee9; text-align: center; border-bottom: 1px solid var(--border-color); }
-        .product-info { padding: 10px; display: flex; flex-direction: column; flex-grow: 1; }
-        
-        .product-badge { position: absolute; top: 8px; right: 8px; background: rgba(139, 112, 59, 0.92); color: white; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: bold; z-index: 5; }
-        .product-size-badge { position: absolute; top: 8px; left: 8px; background: rgba(44, 42, 41, 0.88); color: #f9f7f2; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: bold; z-index: 5; direction: ltr; }
-        
-        .product-brand-tag { font-size: 10px; font-weight: 700; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
-        .product-title { font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 4px; }
-        .product-desc { font-size: 11px; color: var(--text-muted); margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        .product-notes { background: var(--bg-color); padding: 4px 6px; border-radius: 4px; font-size: 10px; color: var(--accent-gold-dark); margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-        .admin-edit-fields { display: flex; flex-direction: column; gap: 4px; margin-bottom: 6px; background: #faf8f5; padding: 6px; border-radius: 6px; border: 1px dashed var(--border-color); }
-        .admin-edit-fields input, .admin-edit-fields select { font-size: 11px; padding: 3px 5px; border: 1px solid var(--border-color); border-radius: 4px; width: 100%; }
-
-        .product-footer { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 6px; border-top: 1px solid var(--border-color); }
-        .product-price-display { font-size: 14px; font-weight: bold; color: var(--accent-gold-dark); }
-        .product-price-input { display: none; width: 60px; padding: 3px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 12px; font-weight: bold; color: var(--accent-gold-dark); text-align: center; background: var(--bg-color); outline: none; }
-        
-        .btn-order { background-color: var(--accent-gold); color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer; }
-        .btn-delete { display: none; background-color: #fae1dd; color: var(--danger-color); border: 1px solid var(--danger-color); padding: 6px; border-radius: 6px; font-size: 10px; cursor: pointer; font-weight: bold; }
-
-        /* صندوق عندما لا يجد الزبون عطره */
-        .not-found-box {
-            grid-column: 1 / -1;
-            background: #ffffff;
-            border: 2px dashed var(--accent-gold);
-            border-radius: 14px;
-            padding: 25px 15px;
-            text-align: center;
-            box-shadow: var(--shadow);
-        }
-        .not-found-box h4 {
-            color: var(--accent-gold-dark);
-            font-size: 16px;
-            margin-bottom: 8px;
-        }
-        .not-found-box p {
-            color: var(--text-muted);
-            font-size: 13px;
-            margin-bottom: 15px;
-        }
-
-        .cart-bar { position: fixed; bottom: 12px; left: 5%; width: 90%; background: var(--accent-gold-dark); color: white; padding: 12px 18px; border-radius: 30px; box-shadow: 0 8px 20px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: space-between; z-index: 99; cursor: pointer; font-weight: bold; font-size: 13px; }
-        .cart-count { background: white; color: var(--accent-gold-dark); width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; }
-
-        .cart-modal, .checkout-modal, .custom-req-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; padding: 15px; }
-        .modal-content { background: white; padding: 20px; border-radius: 12px; width: 100%; max-width: 420px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); max-height: 90vh; display: flex; flex-direction: column; overflow-y: auto; }
-        .modal-content h3 { color: var(--accent-gold-dark); margin-bottom: 12px; font-size: 16px; text-align: center; }
-        .cart-items-list { overflow-y: auto; max-height: 200px; margin-bottom: 12px; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); padding: 8px 0; }
-        .cart-item-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 4px; border-bottom: 1px dashed var(--border-color); font-size: 13px; }
-        .btn-remove-item { background: #fae1dd; color: var(--danger-color); border: none; padding: 3px 8px; border-radius: 4px; font-size: 11px; cursor: pointer; font-weight: bold; }
-        .cart-summary-box { font-size: 13px; font-weight: bold; margin-bottom: 15px; text-align: right; color: var(--accent-gold-dark); background: var(--bg-color); padding: 10px; border-radius: 8px; line-height: 1.6; }
-        .checkout-form-group { margin-bottom: 10px; }
-        .checkout-form-group label { display: block; font-size: 12px; margin-bottom: 4px; font-weight: bold; }
-        .checkout-form-group input, .checkout-form-group select, .checkout-form-group textarea { width: 100%; padding: 9px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 13px; outline: none; background: var(--bg-color); }
-
-        .preview-custom-img {
-            max-width: 120px;
-            max-height: 120px;
-            border-radius: 8px;
-            margin: 8px auto 0;
-            display: none;
-            border: 1px solid var(--accent-gold);
-        }
-
-        footer { text-align: center; margin-top: 30px; padding: 15px; color: var(--text-muted); font-size: 11px; border-top: 1px solid var(--border-color); }
-    </style>
+    </script>
 </head>
-<body>
+<body class="bg-velvet-950 text-gray-100 font-sans antialiased selection:bg-gold-500 selection:text-velvet-950 overflow-x-hidden">
 
-    <header>
-        <div class="header-title-container" id="logo-trigger">
-            <svg class="logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M 28 30 L 48 76 C 49 78 51 78 52 76 L 72 30 Q 74 25 68 25 C 65 25 62 27 60 32 L 50 58 L 40 32 C 38 27 35 25 32 25 Q 26 25 28 30 Z" fill="#B39359"/>
-                <path d="M 50 32 C 58 32 68 37 68 46 C 68 55 58 60 50 60 L 50 53 C 56 53 62 49 62 46 C 62 42 56 38 50 38 Z" fill="#B39359"/>
-            </svg>
-            <div class="brand-title">VELVET PARFUMS</div>
-            <div class="brand-subtitle">PREMIUM FRAGRANCES</div>
+    <!-- ==================== الشريط العلوي (Navbar) ==================== -->
+    <header class="fixed top-0 inset-x-0 z-40 bg-velvet-950/90 backdrop-blur-md border-b border-gold-500/20 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                
+                <!-- الشعار المخصص لـ VelvetParfums (نقر مزدوج يفتح لوحة الإدارة السرية) -->
+                <a href="#" ondblclick="requestAdminAccess()" class="flex items-center gap-3 group focus:outline-none" title="VelvetParfums">
+                    <!-- تصميم الشعار بصيغة SVG (زجاجة عطر ملكية مع حرف V) -->
+                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-velvet-800 to-velvet-950 border border-gold-500/40 flex items-center justify-center shadow-lg shadow-gold-500/10 group-hover:border-gold-400 transition-all duration-300">
+                        <svg class="w-8 h-8 text-gold-400 transform group-hover:scale-105 transition-transform" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- غطاء الزجاجة -->
+                            <rect x="25" y="6" width="14" height="8" rx="2" stroke="currentColor" stroke-width="2.5"/>
+                            <path d="M28 14V19H36V14" stroke="currentColor" stroke-width="2"/>
+                            <!-- جسم الزجاجة الماسي -->
+                            <path d="M18 24C18 21.2386 20.2386 19 23 19H41C43.7614 19 46 21.2386 46 24V48C46 53.5228 41.5228 58 36 58H28C22.4772 58 18 53.5228 18 48V24Z" stroke="currentColor" stroke-width="2.5" fill="url(#goldGrad)" fill-opacity="0.15"/>
+                            <!-- حرف V في المنتصف -->
+                            <path d="M26 31L32 45L38 31" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+                            <!-- لمعة -->
+                            <circle cx="32" cy="25" r="1.5" fill="currentColor"/>
+                            <defs>
+                                <linearGradient id="goldGrad" x1="18" y1="19" x2="46" y2="58" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#D4AF37"/>
+                                    <stop offset="1" stop-color="#141218" stop-opacity="0"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-xl sm:text-2xl font-serif font-bold tracking-wider bg-gradient-to-l from-gold-300 via-gold-500 to-gold-300 bg-clip-text text-transparent">
+                            VelvetParfums
+                        </span>
+                        <span class="text-[11px] text-gray-400 tracking-widest">فخامة العطور الشرقية والفرنسية</span>
+                    </div>
+                </a>
+
+                <!-- روابط التنقل للشاشات الكبيرة -->
+                <nav class="hidden md:flex items-center gap-8 text-sm font-semibold">
+                    <a href="#home" class="text-gold-400 hover:text-gold-300 transition-colors">الرئيسية</a>
+                    <a href="#collection" class="text-gray-300 hover:text-gold-400 transition-colors">تشكيلة العطور</a>
+                    <a href="#scent-finder" class="text-gray-300 hover:text-gold-400 transition-colors">اكتشف عطرك</a>
+                    <a href="#about" class="text-gray-300 hover:text-gold-400 transition-colors">قصتنا</a>
+                </nav>
+
+                <!-- أزرار التفاعل (السلة والقائمة) -->
+                <div class="flex items-center gap-3">
+                    <!-- زر السلة -->
+                    <button type="button" onclick="toggleCart()" class="relative p-3 rounded-xl bg-velvet-800/80 hover:bg-velvet-700 border border-gold-500/30 text-gold-400 transition-all flex items-center gap-2">
+                        <i class="fa-solid fa-bag-shopping text-lg"></i>
+                        <span class="hidden sm:inline text-xs font-bold text-gray-200">السلة</span>
+                        <span id="cart-badge" class="absolute -top-2 -left-2 bg-gold-500 text-velvet-950 text-xs font-extrabold w-5 h-5 rounded-full flex items-center justify-center shadow-md">
+                            0
+                        </span>
+                    </button>
+
+                    <!-- زر القائمة للهواتف -->
+                    <button type="button" onclick="toggleMobileMenu()" class="md:hidden p-3 rounded-xl bg-velvet-800/80 border border-gold-500/30 text-gold-400">
+                        <i class="fa-solid fa-bars text-lg"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- القائمة المنسدلة للهواتف -->
+        <div id="mobile-menu" class="hidden md:hidden bg-velvet-900 border-b border-gold-500/20 px-4 pt-2 pb-6 space-y-2">
+            <a href="#home" onclick="toggleMobileMenu()" class="block px-4 py-3 rounded-xl bg-velvet-800/50 text-gold-400 font-semibold">الرئيسية</a>
+            <a href="#collection" onclick="toggleMobileMenu()" class="block px-4 py-3 rounded-xl hover:bg-velvet-800/50 text-gray-200">تشكيلة العطور</a>
+            <a href="#scent-finder" onclick="toggleMobileMenu()" class="block px-4 py-3 rounded-xl hover:bg-velvet-800/50 text-gray-200">اكتشف عطرك</a>
+            <a href="#about" onclick="toggleMobileMenu()" class="block px-4 py-3 rounded-xl hover:bg-velvet-800/50 text-gray-200">قصتنا</a>
         </div>
     </header>
 
-    <!-- شريط الأيقونات والمميزات -->
-    <div class="features-bar">
-        <div class="feature-item">
-            <span>🚚</span> توصيل مجاني داخل طرابلس
-        </div>
-        <div class="feature-item">
-            <span>✨</span> عطور أصلية 100%
-        </div>
-    </div>
+    <!-- ==================== القسم الترحيبي (Hero Section) ==================== -->
+    <section id="home" class="relative pt-28 pb-20 lg:pt-36 lg:pb-28 overflow-hidden">
+        <!-- خلفيات جمالية متوهجة -->
+        <div class="absolute top-20 right-10 w-72 h-72 bg-gold-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute bottom-10 left-10 w-96 h-96 bg-purple-900/20 rounded-full blur-3xl pointer-events-none"></div>
 
-    <div class="container">
-
-        <!-- لوحة الإدارة -->
-        <div class="admin-banner" id="admin-panel">
-            <h3>✨ لوحة الإدارة السريعة</h3>
-
-            <!-- قسم إحصائيات الزوار (سري للمشرف فقط) -->
-            <div class="stats-dashboard">
-                <div class="stat-card">
-                    <span class="stat-label">👥 زوار اليوم</span>
-                    <span class="stat-number" id="today-visitors-count">0</span>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-label">🌍 إجمالي الزيارات الكلي</span>
-                    <span class="stat-number" id="total-visitors-count">0</span>
-                </div>
-                <div class="stat-date-note" id="stats-today-date">تاريخ اليوم: --</div>
-            </div>
-
-            <div class="admin-form-grid">
-                <input type="text" id="new-name" placeholder="اسم العطر الجديد (مثال: Sauvage Elixir)">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
                 
-                <div class="admin-row-2">
-                    <input type="text" id="new-brand" list="brands-datalist" placeholder="الشركة (مثال: Dior)">
-                    <datalist id="brands-datalist"></datalist>
-                    <input type="text" id="new-size" placeholder="الحجم بالملي (مثال: 100 مل)">
+                <!-- النص التعريفي -->
+                <div class="lg:col-span-7 text-center lg:text-right space-y-6">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-velvet-800/80 border border-gold-500/30 text-gold-400 text-xs sm:text-sm font-semibold">
+                        <i class="fa-solid fa-sparkles"></i>
+                        <span>الإصدار الملكي الجديد لعام 2026</span>
+                    </div>
+                    
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold leading-tight text-white">
+                        حيث يلتقي سحر <span class="text-gold-400">المخمل</span> بأرقى نفحات العطور
+                    </h1>
+                    
+                    <p class="text-gray-300 text-base sm:text-lg max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                        في <strong class="text-gold-400">VelvetParfums</strong>، نصنع لك أكثر من مجرد عطر؛ نصمم لك بصمة عطرية لا تُنسى تمزج بين عراقة العود الشرقي وأناقة الزهور الفرنسية النادرة.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+                        <a href="#collection" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-l from-gold-500 to-gold-400 text-velvet-950 font-bold text-base shadow-lg shadow-gold-500/25 hover:shadow-gold-500/40 transform hover:-translate-y-0.5 transition-all text-center">
+                            تسوق المجموعة الآن
+                        </a>
+                        <a href="#scent-finder" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-velvet-800/80 hover:bg-velvet-700 border border-gold-500/30 text-gold-300 font-semibold text-base transition-all text-center">
+                            اكتشف عطرك المثالي
+                        </a>
+                    </div>
+
+                    <!-- إحصائيات سريعة كما في التصميم الأول -->
+                    <div class="grid grid-cols-3 gap-4 pt-8 border-t border-velvet-800 max-w-lg mx-auto lg:mx-0">
+                        <div>
+                            <div class="text-2xl font-bold text-gold-400">+100%</div>
+                            <div class="text-xs text-gray-400">زيوت عطرية نقية</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold text-gold-400">48 ساعة</div>
+                            <div class="text-xs text-gray-400">ثبات وفوحان عالي</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold text-gold-400">+25</div>
+                            <div class="text-xs text-gray-400">توليفة حصرية</div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="admin-row-2">
-                    <input type="number" id="new-price" placeholder="السعر (د.ل)">
-                    <select id="new-cat">
-                        <option value="شرقي">شرقي</option>
-                        <option value="رجالي">رجالي</option>
-                        <option value="نسائي">نسائي</option>
-                        <option value="نيش">نيش</option>
-                    </select>
+                <!-- بطاقة العرض البصري الفاخرة -->
+                <div class="lg:col-span-5 relative">
+                    <div class="relative rounded-3xl overflow-hidden border border-gold-500/30 bg-gradient-to-b from-velvet-800 to-velvet-900 p-4 shadow-2xl">
+                        <img src="https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=800&q=80" 
+                             onerror="this.src='https://placehold.co/600x750/1f1c26/d4af37?text=Velvet+Royal+Oud'"
+                             alt="عطر فيلفيت الملكي" 
+                             class="w-full h-[420px] sm:h-[480px] object-cover rounded-2xl">
+                        
+                        <!-- بطاقة عائمة فوق الصورة -->
+                        <div class="absolute bottom-8 inset-x-8 bg-velvet-950/90 backdrop-blur-md border border-gold-500/30 p-4 rounded-2xl flex items-center justify-between">
+                            <div>
+                                <span class="text-xs text-gold-400 font-semibold">الأكثر مبيعاً</span>
+                                <h3 class="text-lg font-bold text-white">عطر فيلفيت رويال عود</h3>
+                                <p class="text-xs text-gray-400">عود كمبودي • عنبر • زعفران</p>
+                            </div>
+                            <button type="button" onclick="addToCart(1)" class="px-4 py-2.5 rounded-xl bg-gold-500 text-velvet-950 font-bold text-sm hover:bg-gold-400 transition-colors">
+                                450 د.ل
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
-                <input type="text" id="new-notes" placeholder="النوتات (برغموت، عود)">
-                <textarea id="new-desc" placeholder="الوصف..."></textarea>
-                
-                <div class="file-input-wrapper">
-                    <label style="display: block; font-weight: bold; color: var(--accent-gold-dark); font-size: 12px;">📷 اختر صورة العطر</label>
-                    <input type="file" id="new-img-file" accept="image/*" style="margin-top: 5px;">
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== قسم المميزات (Features) ==================== -->
+    <section class="py-12 bg-velvet-900/50 border-y border-velvet-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="p-6 rounded-2xl bg-velvet-800/40 border border-velvet-700/50 flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-gold-500/10 text-gold-400 flex items-center justify-center shrink-0 text-xl">
+                        <i class="fa-solid fa-gem"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-1">مكونات نادرة</h4>
+                        <p class="text-xs text-gray-400 leading-relaxed">نستخلص عطورنا من أندر الزهور والأخشاب العطرية حول العالم.</p>
+                    </div>
+                </div>
+                <div class="p-6 rounded-2xl bg-velvet-800/40 border border-velvet-700/50 flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-gold-500/10 text-gold-400 flex items-center justify-center shrink-0 text-xl">
+                        <i class="fa-solid fa-truck-fast"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-1">توصيل سريع وآمن</h4>
+                        <p class="text-xs text-gray-400 leading-relaxed">تغليف مخملي فاخر يحفظ العطر ويصلك لباب منزلك بأسرع وقت.</p>
+                    </div>
+                </div>
+                <div class="p-6 rounded-2xl bg-velvet-800/40 border border-velvet-700/50 flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-gold-500/10 text-gold-400 flex items-center justify-center shrink-0 text-xl">
+                        <i class="fa-solid fa-certificate"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-1">ضمان الأصالة والثبات</h4>
+                        <p class="text-xs text-gray-400 leading-relaxed">تركيز Extrait de Parfum يضمن لك ثباتاً يدوم لأكثر من 48 ساعة.</p>
+                    </div>
+                </div>
+                <div class="p-6 rounded-2xl bg-velvet-800/40 border border-velvet-700/50 flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-gold-500/10 text-gold-400 flex items-center justify-center shrink-0 text-xl">
+                        <i class="fa-solid fa-gift"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-1">عينات مجانية</h4>
+                        <p class="text-xs text-gray-400 leading-relaxed">احصل على عينتين مجانيتين من إصداراتنا الجديدة مع كل طلب.</p>
+                    </div>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <!-- ==================== قسم تشكيلة العطور (Products Catalog) ==================== -->
+    <section id="collection" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
-            <button class="btn-update-live" onclick="addNewPerfumeCloud()">🚀 نشر مباشر في المتجر</button>
-        </div>
-
-        <!-- شريط البحث السريع + قائمة الشركات + زر طلب عطر خاص -->
-        <div class="search-filter-row">
-            <div class="search-box">
-                <input type="text" id="search-input" class="search-input" placeholder="🔍 ابحث بالاسم، الشركة، الحجم، أو النوتات..." oninput="filterPerfumes()">
-            </div>
-            <div class="brand-select-box">
-                <select id="brand-select-dropdown" class="brand-select" onchange="setBrandFromDropdown(this.value)">
-                    <option value="الكل">🏢 كل الشركات</option>
-                </select>
-            </div>
-            <button class="btn-custom-perfume-top" onclick="openCustomPerfumeModal()">✨ طلب عطر خاص</button>
-        </div>
-
-        <!-- تصنيف حسب النوع -->
-        <span class="filter-section-label">التصنيف:</span>
-        <div class="categories-nav">
-            <button class="cat-btn active" onclick="setCategory('الكل', this)">الكل</button>
-            <button class="cat-btn" onclick="setCategory('شرقي', this)">شرقي</button>
-            <button class="cat-btn" onclick="setCategory('رجالي', this)">رجالي</button>
-            <button class="cat-btn" onclick="setCategory('نسائي', this)">نسائي</button>
-            <button class="cat-btn" onclick="setCategory('نيش', this)">نيش</button>
-        </div>
-
-        <!-- تصنيف سريع حسب الشركات (يتحدث تلقائياً) -->
-        <span class="filter-section-label">تصفح حسب الشركة (الماركة):</span>
-        <div class="brands-nav" id="brands-nav-container"></div>
-
-        <div class="products-grid" id="products-container"></div>
-
-    </div>
-
-    <!-- نافذة طلب عطر خاص غير متوفر -->
-    <div class="custom-req-modal" id="custom-req-modal">
-        <div class="modal-content">
-            <h3>✨ طلب توفير عطر خاص</h3>
-            <p style="font-size: 12px; color: var(--text-muted); text-align: center; margin-bottom: 12px;">
-                أرسل لنا بيانات وصورة العطر الذي تبحث عنه وسنوفره لك بأفضل سعر في طرابلس.
-            </p>
-
-            <div class="checkout-form-group">
-                <label>اسم العطر المطلوب: *</label>
-                <input type="text" id="req-perfume-name" placeholder="مثال: Dior Homme Intense">
+            <!-- عنوان القسم -->
+            <div class="text-center max-w-2xl mx-auto mb-12 space-y-3">
+                <span class="text-gold-400 text-sm font-bold tracking-wider">مجموعتنا الحصرية</span>
+                <h2 class="text-3xl sm:text-4xl font-serif font-bold text-white">تشكيلة عطور VelvetParfums</h2>
+                <p class="text-gray-400 text-sm sm:text-base">اختر من بين أرقى التركيبات العطرية المصممة بعناية لتناسب ذوقك الرفيع</p>
             </div>
 
-            <div class="checkout-form-group">
-                <label>الحجم بالملي (ml): *</label>
-                <input type="text" id="req-perfume-size" placeholder="مثال: 100 مل أو 50 مل">
-            </div>
+            <!-- أزرار الفلترة والبحث -->
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-10">
+                <!-- أزرار التصنيف -->
+                <div class="flex flex-wrap justify-center gap-2" id="category-filters">
+                    <button type="button" onclick="filterProducts('all')" class="filter-btn active px-5 py-2.5 rounded-xl text-sm font-bold bg-gold-500 text-velvet-950 transition-all">الكل</button>
+                    <button type="button" onclick="filterProducts('men')" class="filter-btn px-5 py-2.5 rounded-xl text-sm font-semibold bg-velvet-800 text-gray-300 hover:bg-velvet-700 transition-all">رجالي</button>
+                    <button type="button" onclick="filterProducts('women')" class="filter-btn px-5 py-2.5 rounded-xl text-sm font-semibold bg-velvet-800 text-gray-300 hover:bg-velvet-700 transition-all">نسائي</button>
+                    <button type="button" onclick="filterProducts('unisex')" class="filter-btn px-5 py-2.5 rounded-xl text-sm font-semibold bg-velvet-800 text-gray-300 hover:bg-velvet-700 transition-all"> للجنسين (Unisex)</button>
+                    <button type="button" onclick="filterProducts('oud')" class="filter-btn px-5 py-2.5 rounded-xl text-sm font-semibold bg-velvet-800 text-gray-300 hover:bg-velvet-700 transition-all">عود وبخور</button>
+                </div>
 
-            <div class="checkout-form-group">
-                <label>📷 صورة العطر (اختياري - تسهل علينا المطابقة):</label>
-                <div class="file-input-wrapper" style="padding: 8px;">
-                    <input type="file" id="req-perfume-img" accept="image/*" onchange="previewCustomImage(this)">
-                    <img id="custom-img-preview" class="preview-custom-img" alt="معاينة العطر">
+                <!-- حقل البحث -->
+                <div class="relative w-full md:w-72">
+                    <input type="text" id="search-input" onkeyup="searchProducts()" placeholder="ابحث عن عطر أو مكون..." 
+                           class="w-full bg-velvet-800/80 border border-velvet-700 focus:border-gold-500 rounded-xl py-2.5 pr-10 pl-4 text-sm text-white placeholder-gray-400 focus:outline-none">
+                    <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-3 text-gray-400 text-sm"></i>
                 </div>
             </div>
 
-            <div class="checkout-form-group">
-                <label>اسمك ورقم هاتفك (للتواصل معك عند التوفير): *</label>
-                <input type="text" id="req-cust-contact" placeholder="الاسم - 091XXXXXXX">
-            </div>
-
-            <div style="display: flex; gap: 8px; margin-top: 10px;">
-                <button class="btn-update-live" id="btn-submit-custom" style="margin-top:0; background: var(--success-color);" onclick="submitCustomPerfumeRequest()">📤 إرسال الطلب عبر الماسنجر</button>
-                <button class="btn-update-live" style="margin-top:0; background: #95a5a6;" onclick="closeCustomPerfumeModal()">إلغاء</button>
+            <!-- شبكة عرض المنتجات -->
+            <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- سيتم حقن المنتجات هنا عبر JavaScript -->
             </div>
         </div>
-    </div>
+    </section>
 
-    <div class="cart-bar" onclick="openCartModal()">
-        <span>🛒 سلة الطلبات</span>
-        <div class="cart-count" id="cart-count">0</div>
-    </div>
+    <!-- ==================== قسم مكتشف العطور التفاعلي (Scent Finder) ==================== -->
+    <section id="scent-finder" class="py-20 bg-gradient-to-b from-velvet-900 to-velvet-950 border-t border-gold-500/20">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="rounded-3xl bg-velvet-800/60 border border-gold-500/30 p-6 sm:p-10 text-center space-y-6 shadow-2xl">
+                <div class="w-16 h-16 rounded-2xl bg-gold-500/10 text-gold-400 flex items-center justify-center mx-auto text-2xl border border-gold-500/30">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                </div>
+                <h2 class="text-2xl sm:text-3xl font-serif font-bold text-white">محتار في اختيار عطرك؟</h2>
+                <p class="text-gray-300 text-sm sm:text-base max-w-xl mx-auto">
+                    اختر الأجواء التي تفضلها وسيرشح لك خبير <span class="text-gold-400 font-bold">VelvetParfums</span> العطر المثالي لشخصيتك فوراً!
+                </p>
 
-    <div class="cart-modal" id="cart-modal">
-        <div class="modal-content">
-            <h3>🛍️ مراجعة سلة العطور</h3>
-            <div class="cart-items-list" id="cart-items-list"></div>
-            <div class="cart-summary-box" id="cart-summary-box">الإجمالي: 0 د.ل</div>
-            <div style="display: flex; gap: 8px;">
-                <button class="btn-update-live" style="margin-top:0; background: var(--success-color);" onclick="proceedToCheckout()">إتمام الطلب</button>
-                <button class="btn-update-live" style="margin-top:0; background: #95a5a6;" onclick="closeCartModal()">إغلاق</button>
+                <!-- خيارات التفضيل -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
+                    <button type="button" onclick="recommendScent('woody')" class="p-4 rounded-2xl bg-velvet-900/90 hover:bg-velvet-700 border border-velvet-700 hover:border-gold-500 transition-all text-center group">
+                        <i class="fa-solid fa-fire text-2xl text-gold-400 mb-2 group-hover:scale-110 transition-transform"></i>
+                        <div class="font-bold text-white text-sm">دافئ وشرقي</div>
+                        <div class="text-xs text-gray-400 mt-1">عود، عنبر، فانيليا</div>
+                    </button>
+                    <button type="button" onclick="recommendScent('floral')" class="p-4 rounded-2xl bg-velvet-900/90 hover:bg-velvet-700 border border-velvet-700 hover:border-gold-500 transition-all text-center group">
+                        <i class="fa-solid fa-spa text-2xl text-gold-400 mb-2 group-hover:scale-110 transition-transform"></i>
+                        <div class="font-bold text-white text-sm">ناعم وزهري</div>
+                        <div class="text-xs text-gray-400 mt-1">ياسمين، ورد طائفي، مسك</div>
+                    </button>
+                    <button type="button" onclick="recommendScent('fresh')" class="p-4 rounded-2xl bg-velvet-900/90 hover:bg-velvet-700 border border-velvet-700 hover:border-gold-500 transition-all text-center group">
+                        <i class="fa-solid fa-wind text-2xl text-gold-400 mb-2 group-hover:scale-110 transition-transform"></i>
+                        <div class="font-bold text-white text-sm">منعش وحيوي</div>
+                        <div class="text-xs text-gray-400 mt-1">برغموت، حمضيات، أخشاب</div>
+                    </button>
+                </div>
+
+                <!-- نتيجة الترشيح -->
+                <div id="scent-result" class="hidden mt-6 p-6 rounded-2xl bg-velvet-950/80 border border-gold-500/40 text-right">
+                    <!-- يملأ ديناميكياً -->
+                </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <div class="checkout-modal" id="checkout-modal">
-        <div class="modal-content">
-            <h3>📍 بيانات التوصيل والدفع</h3>
-            <div class="checkout-form-group">
-                <label>الاسم:</label>
-                <input type="text" id="cust-name" placeholder="اسمك الكريم">
-            </div>
-            <div class="checkout-form-group">
-                <label>رقم الهاتف:</label>
-                <input type="tel" id="cust-phone" placeholder="091XXXXXXX">
-            </div>
-            <div class="checkout-form-group">
-                <label>العنوان:</label>
-                <textarea id="cust-address" placeholder="المنطقة والشارع..." style="height: 45px;"></textarea>
-            </div>
-            <div class="checkout-form-group">
-                <label>طريقة الدفع:</label>
-                <select id="payment-method">
-                    <option value="كاش عند الاستلام">💵 كاش عند الاستلام</option>
-                    <option value="حوالة مصرفية">🏦 حوالة مصرفية</option>
-                </select>
-            </div>
-            <div style="display: flex; gap: 8px; margin-top: 10px;">
-                <button class="btn-update-live" style="margin-top:0; background: var(--success-color);" onclick="submitOrderToMessenger()">إرسال للماسنجر</button>
-                <button class="btn-update-live" style="margin-top:0; background: #95a5a6;" onclick="closeCheckoutModal()">السابق</button>
+    <!-- ==================== قسم قصتنا (About) ==================== -->
+    <section id="about" class="py-20 border-t border-velvet-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6">
+                    <span class="text-gold-400 text-sm font-bold">عن علامتنا التجارية</span>
+                    <h2 class="text-3xl sm:text-4xl font-serif font-bold text-white">قصة شغف اسمها VelvetParfums</h2>
+                    <p class="text-gray-300 leading-relaxed">
+                        انطلقت <span class="text-gold-400 font-semibold">VelvetParfums</span> من رؤية واضحة: تقديم تجربة عطرية تلامس الحواس بنعومة المخمل وقوة الحضور. نؤمن بأن العطر هو توقيعك غير المرئي، لذا نحرص على تعتيق زيوتنا العطرية لفترات طويلة لضمان نقاء الرائحة وثباتها الاستثنائي.
+                    </p>
+                    <div class="flex items-center gap-4 pt-2">
+                        <div class="p-4 rounded-2xl bg-velvet-800 border border-velvet-700">
+                            <div class="text-gold-400 font-bold text-lg">صناعة حرفية</div>
+                            <div class="text-xs text-gray-400">تعبئة وتغليف يدوي فائق الدقة</div>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-velvet-800 border border-velvet-700">
+                            <div class="text-gold-400 font-bold text-lg">مكونات آمنة</div>
+                            <div class="text-xs text-gray-400">مطابقة لأعلى معايير الجودة العالمية</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <img src="https://images.unsplash.com/photo-1615634260167-c8cdede054de?auto=format&fit=crop&w=500&q=80" 
+                         onerror="this.src='https://placehold.co/400x500/1f1c26/d4af37?text=Velvet+Essence'"
+                         alt="صناعة العطور" class="rounded-2xl h-64 w-full object-cover border border-gold-500/20">
+                    <img src="https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=500&q=80" 
+                         onerror="this.src='https://placehold.co/400x500/1f1c26/d4af37?text=Luxury+Bottle'"
+                         alt="زجاجات عطور فاخرة" class="rounded-2xl h-64 w-full object-cover mt-8 border border-gold-500/20">
+                </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <footer>
-        <p>© VELVET PARFUMS | طرابلس، ليبيا</p>
+    <!-- ==================== التذييل (Footer) ==================== -->
+    <footer class="bg-velvet-900 border-t border-gold-500/20 pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 pb-12 border-b border-velvet-800">
+                <!-- معلومات المتجر والشعار -->
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-velvet-950 border border-gold-500/40 flex items-center justify-center text-gold-400 font-serif font-bold text-xl">
+                            V
+                        </div>
+                        <span class="text-2xl font-serif font-bold text-gold-400">VelvetParfums</span>
+                    </div>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        وجهتك الأولى لعالم العطور النيش والفاخرة. نجمع لك بين أصالة الشرق وسحر الغرب في زجاجة واحدة.
+                    </p>
+                    <div class="flex gap-3 pt-2">
+                        <a href="#" class="w-10 h-10 rounded-xl bg-velvet-800 hover:bg-gold-500 hover:text-velvet-950 text-gold-400 flex items-center justify-center transition-colors"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-xl bg-velvet-800 hover:bg-gold-500 hover:text-velvet-950 text-gold-400 flex items-center justify-center transition-colors"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-xl bg-velvet-800 hover:bg-gold-500 hover:text-velvet-950 text-gold-400 flex items-center justify-center transition-colors"><i class="fa-brands fa-whatsapp"></i></a>
+                    </div>
+                </div>
+
+                <!-- روابط سريعة -->
+                <div>
+                    <h4 class="text-white font-bold mb-4">روابط سريعة</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#home" class="hover:text-gold-400 transition-colors">الرئيسية</a></li>
+                        <li><a href="#collection" class="hover:text-gold-400 transition-colors">جميع العطور</a></li>
+                        <li><a href="#scent-finder" class="hover:text-gold-400 transition-colors">اختبار اختيار العطر</a></li>
+                        <li><a href="#about" class="hover:text-gold-400 transition-colors">من نحن</a></li>
+                    </ul>
+                </div>
+
+                <!-- النشرة البريدية -->
+                <div>
+                    <h4 class="text-white font-bold mb-4">انضم لنادي كبار الشخصيات</h4>
+                    <p class="text-gray-400 text-sm mb-4">اشترك للحصول على خصم 15% على طلبك الأول وأحدث الإصدارات الحصرية.</p>
+                    <form onsubmit="subscribeNewsletter(event)" class="flex gap-2">
+                        <input type="email" required placeholder="بريدك الإلكتروني..." class="w-full bg-velvet-950 border border-velvet-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-gold-500">
+                        <button type="submit" class="px-5 py-2.5 rounded-xl bg-gold-500 text-velvet-950 font-bold text-sm hover:bg-gold-400 transition-colors shrink-0">
+                            اشتراك
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="pt-8 text-center text-xs text-gray-500">
+                <span>&copy; 2026 جميع الحقوق محفوظة لمتجر <span class="text-gold-400 font-semibold">VelvetParfums</span>.</span>
+            </div>
+        </div>
     </footer>
 
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyBGCBs9CheY0D01iimk6vKx03Fe91GbRuk",
-            authDomain: "velvetparfums-efe6f.firebaseapp.com",
-            databaseURL: "https://velvetparfums-efe6f-default-rtdb.firebaseio.com",
-            projectId: "velvetparfums-efe6f",
-            storageBucket: "velvetparfums-efe6f.firebasestorage.app",
-            messagingSenderId: "917308688157",
-            appId: "1:917308688157:web:5764ca98f2b62424a143f4",
-            measurementId: "G-Q2T103CHDC"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
+    <!-- زر الإدارة العائم في الزاوية السفلية اليسرى لسهولة الوصول السريع لصاحب المتجر -->
+    <button type="button" onclick="requestAdminAccess()" 
+            class="fixed bottom-5 left-5 z-40 w-11 h-11 rounded-2xl bg-velvet-900/90 hover:bg-velvet-800 border border-gold-500/30 hover:border-gold-400 text-gold-400 shadow-xl backdrop-blur-md flex items-center justify-center transition-all group"
+            title="إدارة المتجر (للمالك فقط)">
+        <i class="fa-solid fa-key text-sm group-hover:rotate-12 transition-transform"></i>
+    </button>
 
-        // === معالجة صفحة عرض الصورة المرسلة من الزبون ===
-        const urlParams = new URLSearchParams(window.location.search);
-        const viewCustomImgId = urlParams.get('custom_img');
-        if (viewCustomImgId) {
-            document.body.innerHTML = `<div style="display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100vh; background:#f9f7f2; padding:20px; text-align:center;">
-                <h2 style="color:#8c703b; margin-bottom:15px;">📷 صورة العطر المطلوب من الزبون</h2>
-                <div id="img-loader" style="color:#666;">جاري تحميل الصورة...</div>
-                <img id="shared-custom-img" style="max-width:100%; max-height:75vh; border-radius:12px; border:2px solid #b39359; box-shadow:0 8px 25px rgba(0,0,0,0.15); display:none;">
-                <a href="${window.location.pathname}" style="margin-top:20px; background:#b39359; color:white; padding:10px 25px; border-radius:25px; text-decoration:none; font-weight:bold;">العودة للمتجر</a>
-            </div>`;
-            db.ref('custom_requests/' + viewCustomImgId).once('value').then(snap => {
-                const data = snap.val();
-                if (data && data.img) {
-                    document.getElementById('img-loader').style.display = 'none';
-                    const imgEl = document.getElementById('shared-custom-img');
-                    imgEl.src = data.img;
-                    imgEl.style.display = 'block';
-                } else {
-                    document.getElementById('img-loader').innerText = 'عذراً، لم يتم العثور على الصورة.';
-                }
-            });
-        }
+    <!-- ==================== نافذة تفاصيل العطر (Product Modal) ==================== -->
+    <div id="product-modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-velvet-900 border border-gold-500/30 rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl relative">
+            <button type="button" onclick="closeProductModal()" class="absolute top-4 left-4 w-10 h-10 rounded-full bg-velvet-800 text-gray-300 hover:text-white flex items-center justify-center z-10">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div id="modal-content" class="grid grid-cols-1 md:grid-cols-2">
+                <!-- يملأ ديناميكياً -->
+            </div>
+        </div>
+    </div>
 
-        // === نظام تتبع الزوار السري (اليومي والكلي) ===
-        function getTodayKey() {
-            const now = new Date();
-            const y = now.getFullYear();
-            const m = String(now.getMonth() + 1).padStart(2, '0');
-            const d = String(now.getDate()).padStart(2, '0');
-            return `${y}-${m}-${d}`;
-        }
+    <!-- ==================== سلة التسوق الجانبية (Cart Drawer) ==================== -->
+    <div id="cart-drawer" class="fixed inset-0 z-50 hidden">
+        <!-- خلفية معتمة -->
+        <div onclick="toggleCart()" class="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
+        
+        <!-- محتوى السلة -->
+        <div class="absolute top-0 left-0 bottom-0 w-full max-w-md bg-velvet-900 border-r border-gold-500/30 flex flex-col shadow-2xl">
+            <div class="p-6 border-b border-velvet-800 flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-bag-shopping text-gold-400 text-xl"></i>
+                    <h3 class="text-lg font-bold text-white">سلة مشترياتك</h3>
+                </div>
+                <button type="button" onclick="toggleCart()" class="p-2 rounded-xl bg-velvet-800 text-gray-400 hover:text-white">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
 
-        function trackVisitorAnalytics() {
-            if (viewCustomImgId) return;
-            const todayKey = getTodayKey();
-            document.getElementById('stats-today-date').innerText = `إحصائيات اليوم (${todayKey})`;
+            <!-- قائمة المنتجات في السلة -->
+            <div id="cart-items" class="flex-1 overflow-y-auto p-6 space-y-4">
+                <!-- يملأ ديناميكياً -->
+            </div>
 
-            const visitedStorageKey = 'velvet_visited_' + todayKey;
-            if (!localStorage.getItem(visitedStorageKey)) {
-                localStorage.setItem(visitedStorageKey, 'true');
-
-                db.ref('analytics/daily/' + todayKey).transaction((current) => {
-                    return (current || 0) + 1;
-                });
-
-                db.ref('analytics/total').transaction((current) => {
-                    return (current || 0) + 1;
-                });
-            }
-
-            db.ref('analytics/daily/' + todayKey).on('value', (snap) => {
-                document.getElementById('today-visitors-count').innerText = snap.val() || 0;
-            });
-
-            db.ref('analytics/total').on('value', (snap) => {
-                document.getElementById('total-visitors-count').innerText = snap.val() || 0;
-            });
-        }
-
-        trackVisitorAnalytics();
-
-        const FB_PAGE_ID = "61596110442092";
-        let isAdminMode = false;
-        const ADMIN_SECRET = "velvet2026";
-        let clickCount = 0;
-        let clickTimer = null;
-        let currentFilter = 'الكل';
-        let currentBrandFilter = 'الكل';
-        let selectedCart = [];
-
-        const defaultPerfumes = [
-            { id: 1, name: "Baccarat Rouge 540", brand: "Maison Francis Kurkdjian", size: "70 مل", price: 0, category: "نيش", desc: "أيقونة النيش الفاخرة بنوتات الزعفران والياسمين الثابتة.", notes: "زعفران | لوز مر | ياسمين", img: "" },
-            { id: 2, name: "Parfums de Marly Layton", brand: "Parfums de Marly", size: "125 مل", price: 0, category: "نيش", desc: "توليفة ملكية دافئة تجمع التفاح واللافندر والفانيليا.", notes: "تفاح | لافندر | فانيليا", img: "" },
-            { id: 3, name: "Parfums de Marly Herod", brand: "Parfums de Marly", size: "125 مل", price: 0, category: "نيش", desc: "عطر التبغ الفاخر الممزوج بالقرفة والفانيليا الشرقية.", notes: "تبغ | قرفة | فانيليا", img: "" },
-            { id: 4, name: "Parfums de Marly Pegasus", brand: "Parfums de Marly", size: "125 مل", price: 0, category: "نيش", desc: "نفحات اللوز البودري والفانيليا لإطلالة نيش راقية.", notes: "لوز مر | فانيليا | خشب صندل", img: "" },
-            { id: 5, name: "Parfums de Marly Sedley", brand: "Parfums de Marly", size: "125 مل", price: 0, category: "نيش", desc: "انتعاش الحمضيات والنعناع الأخضر لأيام الصيف.", notes: "نعناع | حمضيات | خشب أرز", img: "" },
-            { id: 6, name: "Kilian Angel's Share", brand: "Kilian", size: "50 مل", price: 0, category: "نيش", desc: "رائحة الكونياك الفاخرة الممزوجة بالقرفة والبلوط.", notes: "كونياك | قرفة | بلوط", img: "" },
-            { id: 7, name: "Kilian Good Girl Gone Bad", brand: "Kilian", size: "50 مل", price: 0, category: "نيش", desc: "عاصفة زهرية بيضاء مغرية من الياسمين ومسك الروم.", notes: "ياسمين | مسك رومي | ورد", img: "" },
-            { id: 8, name: "Tom Ford Lost Cherry", brand: "Tom Ford", size: "50 مل", price: 0, category: "نيش", desc: "عبق الكرز الأسود الشهواني مع اللوز المر واللوز.", notes: "كرز أسود | لوز مر | حبوب تونس", img: "" },
-            { id: 9, name: "Tom Ford Tobacco Vanille", brand: "Tom Ford", size: "50 مل", price: 0, category: "نيش", desc: "دفء أوراق التبغ العتيقة مع فانيليا بوربون.", notes: "تبغ فاخر | فانيليا | أخشاب", img: "" },
-            { id: 10, name: "Tom Ford Oud Wood", brand: "Tom Ford", size: "50 مل", price: 0, category: "نيش", desc: "أفخم أخشاب العود المدخنة بلمسات الهيل والأرز.", notes: "عود | هيل | خشب أرز", img: "" },
-            { id: 11, name: "Tom Ford Bitter Peach", brand: "Tom Ford", size: "50 مل", price: 0, category: "نيش", desc: "خوخ غني وناضج بلمسات دافئة من الروم والباتشولي.", notes: "خوخ | برتقال دموي | باتشولي", img: "" },
-            { id: 12, name: "Xerjoff Erba Pura", brand: "Xerjoff", size: "100 مل", price: 0, category: "نيش", desc: "قنبلة الفواكه الاستوائية المنعشة مع المسك الأبيض.", notes: "فواكه استوائية | مسك أبيض", img: "" },
-            { id: 13, name: "Xerjoff Naxos", brand: "Xerjoff", size: "100 مل", price: 0, category: "نيش", desc: "لوحة فنية تجمع العسل الفاخر والتبغ واللافندر.", notes: "عسل | تبغ | لافندر | قرفة", img: "" },
-            { id: 14, name: "Xerjoff Accento", brand: "Xerjoff", size: "100 مل", price: 0, category: "نيش", desc: "أناقة الأناناس والصفير والمسك الثابت بالحيوية.", notes: "أناناس | صفير | مسك | فانيليا", img: "" },
-            { id: 15, name: "MFK Grand Soir", brand: "Maison Francis Kurkdjian", size: "70 مل", price: 0, category: "نيش", desc: "عنبر ملكي دافئ وفخم يناسب السهرات الباردة.", notes: "عنبر | فانيليا | لاباندا", img: "" },
-            { id: 16, name: "MFK Aqua Universalis", brand: "Maison Francis Kurkdjian", size: "70 مل", price: 0, category: "نيش", desc: "رائحة النظافة المطلقة والمنعشة كالقميص الأبيض.", notes: "حمضيات | زنابق الوادي | زهور", img: "" },
-            { id: 17, name: "Creed Silver Mountain", brand: "Creed", size: "100 مل", price: 0, category: "نيش", desc: "انتعاش الجبال الثلجية والشاي الأخضر والكشمش.", notes: "شاي أخضر | كشمش | مسك", img: "" },
-            { id: 18, name: "Creed Millesime Imperial", brand: "Creed", size: "100 مل", price: 0, category: "نيش", desc: "فخامة الفواكه البحرية المالحة والأخشاب المنعشة.", notes: "ملح بحري | فواكه | خشب صندل", img: "" },
-            { id: 19, name: "Creed Green Irish Tweed", brand: "Creed", size: "100 مل", price: 0, category: "نيش", desc: "كلاسيكية الريف الأخضر بنوتات الفريزيا والسوسن.", notes: "إريش | لويزة | خشب ساج", img: "" },
-            { id: 20, name: "Initio Oud for Greatness", brand: "Initio", size: "90 مل", price: 0, category: "نيش", desc: "قوة العود الطبيعي الممزوج بالزعفران وجوزة الطيب.", notes: "عود طبيعي | زعفران | جوزة الطيب", img: "" },
-            { id: 21, name: "Initio Side Effect", brand: "Initio", size: "90 مل", price: 0, category: "نيش", desc: "مزيج مسكر ومدمن من الروم والفانيليا والتبغ.", notes: "روم | فانيليا | تبغ | قرفة", img: "" },
-            { id: 22, name: "Byredo Gypsy Water", brand: "Byredo", size: "100 مل", price: 0, category: "نيش", desc: "روح الطبيعة الحرة بنوتات الصنوبر والفانيليا.", notes: "صنوبر | برغموت | فانيليا خشبية", img: "" },
-            { id: 23, name: "Byredo Bal d'Afrique", brand: "Byredo", size: "100 مل", price: 0, category: "نيش", desc: "لوحة عطرية دافئة تمزج زهر البرتقال بالأرز.", notes: "زهر برتقال | ليمون | عنبر", img: "" },
-            { id: 24, name: "Mancera Cedrat Boise", brand: "Mancera", size: "120 مل", price: 0, category: "نيش", desc: "انتعاش الليمون والحمضيات مع قاعدة خشبية.", notes: "ليمون | كشمش أسود | أخشاب", img: "" },
-            { id: 25, name: "Mancera Red Tobacco", brand: "Mancera", size: "120 مل", price: 0, category: "نيش", desc: "تبغ أحمر ناري قوي وثابت جداً مع التوابل.", notes: "تبغ | قرفة | العود الأبيض", img: "" },
-            { id: 26, name: "Montale Intense Cafe", brand: "Montale", size: "100 مل", price: 0, category: "نيش", desc: "قهوة عربية دافئة ممزوجة بعبق الورد التركي.", notes: "قهوة | ورد تركي | فانيليا مسك", img: "" },
-            { id: 27, name: "Orto Parisi Megamare", brand: "Orto Parisi", size: "50 مل", price: 0, category: "نيش", desc: "عطر بحري عميق ومالح ذو ثبات وفوحان خارق.", notes: "نوتات بحرية | طحالب | أعشاب", img: "" },
-            { id: 28, name: "Nasomatto Black Afgano", brand: "Nasomatto", size: "30 مل", price: 0, category: "نيش", desc: "الغموض الداكن بنوتات التبغ والأخشاب المدخنة.", notes: "تبغ فاخر | أخشاب العود", img: "" },
-            { id: 29, name: "Tiziana Terenzi Kirke", brand: "Tiziana Terenzi", size: "100 مل", price: 0, category: "نيش", desc: "فاكهة العاطفة الاستوائية الساحرة مع المسك.", notes: "فاكهة العاطفة | خوخ | مسك", img: "" },
-            { id: 30, name: "Amouage Interlude Man", brand: "Amouage", size: "100 مل", price: 0, category: "نيش", desc: "عطر الأساطير والدخان والبخور والأخشاب الشرقية.", notes: "بخور | عود | جلد", img: "" },
-            { id: 31, name: "Creed Aventus", brand: "Creed", size: "100 مل", price: 0, category: "رجالي", desc: "ملك العطور الرجالية بنوتات الأناناس والأخشاب.", notes: "أناناس | أخشاب الأرز | مسك", img: "" },
-            { id: 32, name: "Bleu de Chanel EDP", brand: "Chanel", size: "100 مل", price: 0, category: "رجالي", desc: "أناقة الحمضيات والبخور والأخشاب العطرية.", notes: "حمضيات | بخور | أخشاب صندل", img: "" },
-            { id: 33, name: "Dior Sauvage Elixir", brand: "Dior", size: "60 مل", price: 0, category: "رجالي", desc: "تركيز مكثف وتوابل حارة فاخرة مع الخزامى.", notes: "قرفة | جوزة الطيب | خزامى", img: "" },
-            { id: 34, name: "Dior Sauvage EDT", brand: "Dior", size: "100 مل", price: 0, category: "رجالي", desc: "البرغموت المنعش والأمبروكسان الجذاب لكل الأوقات.", notes: "برغموت | فلفل أسود | أمبروكسان", img: "" },
-            { id: 35, name: "Acqua Di Gio Parfum", brand: "Giorgio Armani", size: "100 مل", price: 0, category: "رجالي", desc: "انتعاش أمواج البحر العميقة مع البخور والأخشاب.", notes: "نوتات بحرية | إكليل الجبل | بخور", img: "" },
-            { id: 36, name: "Armani Code Parfum", brand: "Giorgio Armani", size: "125 مل", price: 0, category: "رجالي", desc: "فول التونكا الدافئ مع السوسن وأخشاب الأرز.", notes: "سوسن | فول تونكا | أخشاب أرز", img: "" },
-            { id: 37, name: "Versace Eros EDP", brand: "Versace", size: "100 مل", price: 0, category: "رجالي", desc: "نعناع منعش مع التفاح الفانيليا وحبوب التونكا.", notes: "نعناع | تفاح حامض | فانيليا", img: "" },
-            { id: 38, name: "Versace Dylan Blue", brand: "Versace", size: "100 مل", price: 0, category: "رجالي", desc: "حمضيات متوسطية منعشة مع البخور والمسك.", notes: "برغموت | جريب فروت | بخور", img: "" },
-            { id: 39, name: "1 Million Elixir", brand: "Paco Rabanne", size: "100 مل", price: 0, category: "رجالي", desc: "مزيج غني من الفانيليا والورد التركي والتونكا.", notes: "فانيليا | ورد تركي | تونكا", img: "" },
-            { id: 40, name: "Invictus Victory", brand: "Paco Rabanne", size: "100 مل", price: 0, category: "رجالي", desc: "انتعاش الليمون الحامض مع قوة الفانيليا والعنبر.", notes: "ليمون | فلفل وردي | فانيليا", img: "" },
-            { id: 41, name: "Le Male Le Parfum", brand: "Jean Paul Gaultier", size: "125 مل", price: 0, category: "رجالي", desc: "هال وهيل وزهور السوسن مع الفانيليا الشرقية.", notes: "هيل | لافندر | فانيليا شرقية", img: "" },
-            { id: 42, name: "Scandal Pour Homme", brand: "Jean Paul Gaultier", size: "100 مل", price: 0, category: "رجالي", desc: "كراميل حلو مع الميرمية والماندرين لإطلالة جريئة.", notes: "كراميل | ميرمية | نجيل الهند", img: "" },
-            { id: 43, name: "Tom Ford Ombre Leather", brand: "Tom Ford", size: "100 مل", price: 0, category: "رجالي", desc: "عبير الجلود الفاخرة النقية مع الهيل والياسمين.", notes: "جلد أسود | هيل | ياسمين", img: "" },
-            { id: 44, name: "Tom Ford Noir Extreme", brand: "Tom Ford", size: "100 مل", price: 0, category: "رجالي", desc: "توابل هندية وفانيليا غنية مع كولفي الحليب.", notes: "كولفي | توابل | فانيليا خشبية", img: "" },
-            { id: 45, name: "Terre d'Hermes", brand: "Hermes", size: "100 مل", price: 0, category: "رجالي", desc: "رائحة الأرض والمعادن وأشجار البرتقال والفلفل.", notes: "برتقال | فلفل | أخشاب الأرز", img: "" },
-            { id: 46, name: "Bleu de Chanel Parfum", brand: "Chanel", size: "100 مل", price: 0, category: "رجالي", desc: "أعلى درجات الفخامة الخشبية العطرية الناعمة.", notes: "قشر ليمون | خشب صندل | أرز", img: "" },
-            { id: 47, name: "YSL Y EDP", brand: "Yves Saint Laurent", size: "100 مل", price: 0, category: "رجالي", desc: "تفاح مقرمش مع الميرمية والزنجبيل لإطلالة شبابية.", notes: "تفاح | زنجبيل | ميرمية", img: "" },
-            { id: 48, name: "YSL La Nuit de L'Homme", brand: "Yves Saint Laurent", size: "100 مل", price: 0, category: "رجالي", desc: "عطر السهرات الرومانسي بالهيل واللافندر والأخشاب.", notes: "هيل | لافندر | خشب الأرز", img: "" },
-            { id: 49, name: "D&G The One EDP", brand: "Dolce & Gabbana", size: "100 مل", price: 0, category: "رجالي", desc: "دفء التبغ والعنبر والجريب فروت لإطلالة أنيقة.", notes: "جريب فروت | كزبرة | تبغ وعنبر", img: "" },
-            { id: 50, name: "D&G Light Blue Intense", brand: "Dolce & Gabbana", size: "100 مل", price: 0, category: "رجالي", desc: "انتعاش مياه البحر المتوسط الحامضة والمنعشة.", notes: "جريب فروت | مياه بحر | مسك", img: "" },
-            { id: 51, name: "Prada Luna Rossa Carbon", brand: "Prada", size: "100 مل", price: 0, category: "رجالي", desc: "معادن باردة ومعدنية مع اللافندر والخزامى.", notes: "لافندر | فلفل معدني | باتشولي", img: "" },
-            { id: 52, name: "Bvlgari Man In Black", brand: "Bvlgari", size: "100 مل", price: 0, category: "رجالي", desc: "توابل داكنة وجلود فاخرة مع الروم والعنبر.", notes: "روم | توابل | جلد وعنبر", img: "" },
-            { id: 53, name: "Montblanc Explorer", brand: "Montblanc", size: "100 مل", price: 0, category: "رجالي", desc: "برغموت إيطالي منعش مع نجيل الهند والأخشاب.", notes: "برغموت | نجيل الهند | جلد", img: "" },
-            { id: 54, name: "Azzaro Most Wanted", brand: "Azzaro", size: "100 مل", price: 0, category: "رجالي", desc: "زنجبيل حار مع الشوكولاتة والفانيليا البوربون.", notes: "زنجبيل | روائح خشبية | فانيليا", img: "" },
-            { id: 55, name: "Bad Boy Le Parfum", brand: "Carolina Herrera", size: "100 مل", price: 0, category: "رجالي", desc: "القنب والمريمية والجلود في توليفة عصرية.", notes: "قنب | مريمية | جلود سوداء", img: "" },
-            { id: 56, name: "Lalique Encre Noire", brand: "Lalique", size: "100 مل", price: 0, category: "رجالي", desc: "سيد النوتات الخشبية والنجيل الهند الداكن.", notes: "نجيل هندي | سرو | مسك", img: "" },
-            { id: 57, name: "Davidoff Cool Water", brand: "Davidoff", size: "125 مل", price: 0, category: "رجالي", desc: "الكلاسيكية المنعشة بنوتات النعناع ومياه البحر.", notes: "نعناع | ماء البحر | لافندر", img: "" },
-            { id: 58, name: "L'Eau d'Issey Pour Homme", brand: "Issey Miyake", size: "125 مل", price: 0, category: "رجالي", desc: "يوسوكي ياباني وحمضيات خفيفة مع نوتات خشبية.", notes: "يوسو | ليمون | توابل مائية", img: "" },
-            { id: 59, name: "Burberry Hero EDP", brand: "Burberry", size: "100 مل", price: 0, category: "رجالي", desc: "أرز أطلسي دافئ مع إبرة الصقنوبر والجاوي.", notes: "أرز الأطلس | صنوبر | جاوي", img: "" },
-            { id: 60, name: "Polo Blue Parfum", brand: "Ralph Lauren", size: "125 مل", price: 0, category: "رجالي", desc: "يوسفي ونوتات أكسجين بحرية مع نجيل الهند.", notes: "يوسفي | مريمية | نجيل الهند", img: "" },
-            { id: 61, name: "Dior J'adore EDP", brand: "Dior", size: "100 مل", price: 0, category: "نسائي", desc: "باقة زهرية أنثوية خالدة من الياسمين والورد.", notes: "ياسمين | ورد جوري | كمثرى", img: "" },
-            { id: 62, name: "YSL Libre Intense", brand: "Yves Saint Laurent", size: "90 مل", price: 0, category: "نسائي", desc: "لافندر فرنسي ناعم مع أوركيد الفانيليا الدافئة.", notes: "لافندر | أوركيد | فانيليا", img: "" },
-            { id: 63, name: "Chanel Coco Mademoiselle", brand: "Chanel", size: "100 مل", price: 0, category: "نسائي", desc: "أناقة البرتقال المنعش مع الورد والباتشولي.", notes: "برتقال | ورد | باتشولي", img: "" },
-            { id: 64, name: "Chanel No. 5", brand: "Chanel", size: "100 مل", price: 0, category: "نسائي", desc: "عطر الأساطير الألدهيدي الزهري الخالد.", notes: "ألدهيدات | ياسمين | ورد | مسك", img: "" },
-            { id: 65, name: "Good Girl EDP", brand: "Carolina Herrera", size: "80 مل", price: 0, category: "نسائي", desc: "توليفة اللوز والقهوة ومسك الروم الأيقونية.", notes: "لوز | قهوة | مسك رومي | كاكاو", img: "" },
-            { id: 66, name: "Lancome La Vie Est Belle", brand: "Lancome", size: "100 مل", price: 0, category: "نسائي", desc: "سعادة السوسن والياسمين مع حلاوة الفانيليا.", notes: "سوسن | ياسمين | فانيليا", img: "" },
-            { id: 67, name: "Lancome Idole", brand: "Lancome", size: "100 مل", price: 0, category: "نسائي", desc: "ورد نقي مع الياسمين والكمثرى لإطلالة مشرقة.", notes: "ورد أخضر | ياسمين | كمثرى", img: "" },
-            { id: 68, name: "Armani My Way", brand: "Giorgio Armani", size: "90 مل", price: 0, category: "نسائي", desc: "زهر البرتقال ومسك الروم الهندي مع الفانيليا.", notes: "زهر برتقال | مسك رومي | فانيليا", img: "" },
-            { id: 69, name: "Armani Si EDP", brand: "Giorgio Armani", size: "100 مل", price: 0, category: "نسائي", desc: "رحيق الكشمش الأسود مع الورد وخشب الأرز.", notes: "كشمش أسود | ورد فريزيا | باتشولي", img: "" },
-            { id: 70, name: "Donna Born In Roma", brand: "Valentino", size: "100 مل", price: 0, category: "نسائي", desc: "ياسمين فاخر مع فانيليا دافئة ولمسات خشبية.", notes: "ياسمين | فانيليا | أخشاب", img: "" },
-            { id: 71, name: "Marc Jacobs Daisy", brand: "Marc Jacobs", size: "100 مل", price: 0, category: "نسائي", desc: "فراولة برية وفريزيا وبنفسج لعطر مرح ومنعش.", notes: "فراولة | بنفسج | ياسمين", img: "" },
-            { id: 72, name: "Gucci Bloom", brand: "Gucci", size: "100 مل", price: 0, category: "نسائي", desc: "حديقة أزهار بيضاء غنية بعبق مسك الروم والياسمين.", notes: "مسك رومي | ياسمين", img: "" },
-            { id: 73, name: "Gucci Flora Gardenia", brand: "Gucci", size: "100 مل", price: 0, category: "نسائي", desc: "زهرة الغاردينيا البيضاء مع زهر الكمثرى والسكر.", notes: "غاردينيا | زهر كمثرى | سكر بني", img: "" },
-            { id: 74, name: "Olympéa EDP", brand: "Paco Rabanne", size: "80 مل", price: 0, category: "نسائي", desc: "فانيليا مالحة فريدة مع زهر الياسمين واليوسفي.", notes: "فانيليا مالحة | ياسمين مائي", img: "" },
-            { id: 75, name: "Flowerbomb EDP", brand: "Viktor & Rolf", size: "100 مل", price: 0, category: "نسائي", desc: "قنبلة أزهار مذهلة من الشاي والياسمين والورد.", notes: "شاي | ياسمين | ورد | باتشولي", img: "" },
-            { id: 76, name: "Tom Ford Black Orchid", brand: "Tom Ford", size: "100 مل", price: 0, category: "نسائي", desc: "أوركيد سوداء داكنة مع الشوكولاتة والتوابل.", notes: "أوركيد سوداء | شوكولاتة | كمأة", img: "" },
-            { id: 77, name: "Tom Ford Velvet Orchid", brand: "Tom Ford", size: "100 مل", price: 0, category: "نسائي", desc: "زهور أوركيد مخملية مع العسل والروم والفانيليا.", notes: "عسل | روم | أوركيد مخملي", img: "" },
-            { id: 78, name: "Burberry Her EDP", brand: "Burberry", size: "100 مل", price: 0, category: "نسائي", desc: "توت بري وفراولة مقرمشة مع قاعدة مسكية.", notes: "توت بري | فراولة | مسك وعنبر", img: "" },
-            { id: 79, name: "Versace Bright Crystal", brand: "Versace", size: "90 مل", price: 0, category: "نسائي", desc: "رمان منعش مع زهر الياسمين والفاوانيا الصيفية.", notes: "رمان | فاوانيا | مسك وعنبر", img: "" },
-            { id: 80, name: "La Belle EDP", brand: "Jean Paul Gaultier", size: "100 مل", price: 0, category: "نسائي", desc: "كمثرى ناضجة وحسية مع فانيليا ونوتات دافئة.", notes: "كمثرى | نجيل الهند | فانيليا", img: "" },
-            { id: 81, name: "Prada Paradoxe", brand: "Prada", size: "90 مل", price: 0, category: "نسائي", desc: "زهر البرتقال والعنبر الأبيض في زجاجة عصرية.", notes: "زهر برتقال | عنبر أبيض | مسك", img: "" },
-            { id: 82, name: "Twilly d'Hermes", brand: "Hermes", size: "85 مل", price: 0, category: "نسائي", desc: "زنجبيل منعش مع مسك الروم وخشب الصندل.", notes: "زنجبيل | مسك رومي | خشب صندل", img: "" },
-            { id: 83, name: "Narciso Rodriguez For Her", brand: "Narciso Rodriguez", size: "100 مل", price: 0, category: "نسائي", desc: "مسك مصري ساحر مع زهر البرتقال الناعم.", notes: "مسك | زهر برتقال | أوسمانثوس", img: "" },
-            { id: 84, name: "CK Euphoria", brand: "Calvin Klein", size: "100 مل", price: 0, category: "نسائي", desc: "رمان وأوركيد أسود مع الماهوجني لإطلالة غامضة.", notes: "رمان | أوركيد أسود | ماهوجني", img: "" },
-            { id: 85, name: "Jo Malone English Pear", brand: "Jo Malone", size: "100 مل", price: 0, category: "نسائي", desc: "كمثرى إنجليزية ناضجة مع فريزيا بيضاء والأخشاب.", notes: "كمثرى | فريزيا | باتشولي", img: "" },
-            { id: 86, name: "Chloe EDP", brand: "Chloe", size: "75 مل", price: 0, category: "نسائي", desc: "ورد بلغاري فاخر وبودرة ناعمة مع الفاوانيا.", notes: "ورد بلغاري | فاوانيا | عسل", img: "" },
-            { id: 87, name: "DKNY Be Delicious", brand: "DKNY", size: "100 مل", price: 0, category: "نسائي", desc: "تفاح أخضر مقرمش ومنعش للغاية لأجواء الصيف.", notes: "تفاح أخضر | خيار | ماغنوليا", img: "" },
-            { id: 88, name: "Alien Mugler", brand: "Mugler", size: "90 مل", price: 0, category: "نسائي", desc: "ياسمين غامض وعميق مع أخشاب الكشمير والعنبر.", notes: "ياسمين | أخشاب كشمير | عنبر", img: "" },
-            { id: 89, name: "Angel Mugler", brand: "Mugler", size: "100 مل", price: 0, category: "نسائي", desc: "شوكولاتة داكنة وباتشولي وفواكه حمراء.", notes: "باتشولي | شوكولاتة | توت بري", img: "" },
-            { id: 90, name: "Signorina EDP", brand: "Salvatore Ferragamo", size: "100 مل", price: 0, category: "نسائي", desc: "توت وفلفل وردي مع الباناكوتا والمسك الناعم.", notes: "فلفل وردي | باناكوتا | باتشولي", img: "" },
-            { id: 91, name: "دهن العود المعتق الملكي", brand: "عطور شرقية", size: "تولة (12 مل)", price: 0, category: "شرقي", desc: "أصالة العود الكمبودي المعتق بثبات وفوحان عالي.", notes: "عود كمبودي | عنبر | خشب صندل", img: "" },
-            { id: 92, name: "مسك الختام الأبيض", brand: "عطور شرقية", size: "تولة (12 مل)", price: 0, category: "شرقي", desc: "مسك نقي وبودري مخملي يمنح شعور النظافة.", notes: "مسك أبيض | بودرة | ورد طائفي", img: "" },
-            { id: 93, name: "عنبر الملوك الخالص", brand: "عطور شرقية", size: "تولة (12 مل)", price: 0, category: "شرقي", desc: "دفء العنبر الشرقي الأصيل الممزوج بالتوابل.", notes: "عنبر دافئ | زعفران | هيل", img: "" },
-            { id: 94, name: "ورد طائفي معتق", brand: "عطور شرقية", size: "تولة (12 مل)", price: 0, category: "شرقي", desc: "عبير الورد الطائفي الفاخر المقطر بعناية.", notes: "ورد طائفي | دهن عود | مسك", img: "" },
-            { id: 95, name: "خلاصة العود الهندي", brand: "عطور شرقية", size: "تولة (12 مل)", price: 0, category: "شرقي", desc: "عبق أخشاب العود الهندي القديم للمجالس.", notes: "عود هندي معتق | بخور | جلد", img: "" },
-            { id: 96, name: "مسك العروس الفاخر", brand: "عطور شرقية", size: "تولة (12 مل)", price: 0, category: "شرقي", desc: "مزيج كريمي أنثوي من المسك والفانيليا.", notes: "مسك أبيض | فانيليا كريمية", img: "" },
-            { id: 97, name: "لبان الدكور العماني", brand: "عطور شرقية", size: "100 جرام", price: 0, category: "شرقي", desc: "بخور لبان الدكور الملكي المنقى لأجواء المنازل.", notes: "لبان عماني | صمغ | بخور", img: "" },
-            { id: 98, name: "مخلط الملك الفاخر", brand: "عطور شرقية", size: "50 مل", price: 0, category: "شرقي", desc: "توليفة تجمع الورد والزعفران والعود والعنبر.", notes: "زعفران | ورد | عود | عنبر", img: "" },
-            { id: 99, name: "مسك الرمان السحري", brand: "عطور شرقية", size: "تولة (12 مل)", price: 0, category: "شرقي", desc: "انتعاش الرمان الحلو الممزوج بعبق المسك.", notes: "رمان أحمر | مسك أبيض | توت", img: "" },
-            { id: 100, name: "توليفة فيلقيت الخاصة", brand: "Velvet Exclusive", size: "100 مل", price: 0, category: "شرقي", desc: "العطر الحصري والخاص بمتجرنا في طرابلس.", notes: "توليفة سرية | عود وخشب صندل", img: "" }
-        ];
-
-        function enrichPerfumeData(item) {
-            const defMatch = defaultPerfumes.find(d => d.id === item.id || d.name === item.name);
-            return {
-                ...item,
-                brand: item.brand || (defMatch ? defMatch.brand : "أخرى"),
-                size: item.size || (defMatch ? defMatch.size : "100 مل")
-            };
-        }
-
-        let perfumesList = defaultPerfumes.map(p => ({ firebaseKey: "local_" + p.id, ...p }));
-        if (!viewCustomImgId) {
-            updateBrandsUI(perfumesList);
-            displayPerfumes(perfumesList);
-        }
-
-        document.getElementById('logo-trigger')?.addEventListener('click', function() {
-            clickCount++;
-            if (clickCount === 1) {
-                clickTimer = setTimeout(() => { clickCount = 0; }, 700);
-            } else if (clickCount === 3) {
-                clearTimeout(clickTimer);
-                clickCount = 0;
-                const pass = prompt("كلمة مرور المشرف:");
-                if (pass === ADMIN_SECRET) {
-                    isAdminMode = !isAdminMode;
-                    document.getElementById('admin-panel').style.display = isAdminMode ? 'block' : 'none';
-                    displayPerfumes(perfumesList);
-                    alert(isAdminMode ? "تم تفعيل لوحة الإدارة!" : "تم الخروج.");
-                } else if (pass !== null) {
-                    alert("كلمة المرور خطأ!");
-                }
-            }
-        });
-
-        db.ref('perfumes').on('value', (snapshot) => {
-            if (viewCustomImgId) return;
-            const data = snapshot.val();
-            if (data) {
-                perfumesList = Object.keys(data).map(key => enrichPerfumeData({
-                    firebaseKey: key,
-                    ...data[key]
-                }));
-                perfumesList.sort((a, b) => (b.price || 0) - (a.price || 0));
-                updateBrandsUI(perfumesList);
-                displayPerfumes(perfumesList);
-            } else {
-                const updates = {};
-                defaultPerfumes.forEach(item => {
-                    const newKey = db.ref('perfumes').push().key;
-                    updates[newKey] = item;
-                });
-                db.ref('perfumes').set(updates);
-            }
-        }, (error) => {
-            console.warn("Firebase read warning:", error);
-        });
-
-        function updateBrandsUI(items) {
-            const brandsSet = new Set();
-            items.forEach(item => {
-                if (item.brand && item.brand.trim() !== "") {
-                    brandsSet.add(item.brand.trim());
-                }
-            });
-
-            const sortedBrands = Array.from(brandsSet).sort((a, b) => a.localeCompare(b));
-
-            const dropdown = document.getElementById('brand-select-dropdown');
-            const prevSelected = dropdown.value;
-            dropdown.innerHTML = `<option value="الكل">🏢 كل الشركات (${sortedBrands.length})</option>`;
-            sortedBrands.forEach(brand => {
-                const opt = document.createElement('option');
-                opt.value = brand;
-                opt.textContent = brand;
-                dropdown.appendChild(opt);
-            });
-            if (sortedBrands.includes(prevSelected) || prevSelected === 'الكل') {
-                dropdown.value = prevSelected;
-            }
-
-            const navContainer = document.getElementById('brands-nav-container');
-            navContainer.innerHTML = '';
-
-            const allBtn = document.createElement('button');
-            allBtn.className = 'brand-btn' + (currentBrandFilter === 'الكل' ? ' active' : '');
-            allBtn.textContent = 'كل الشركات';
-            allBtn.onclick = () => setBrand('الكل');
-            navContainer.appendChild(allBtn);
-
-            sortedBrands.forEach(brand => {
-                const btn = document.createElement('button');
-                btn.className = 'brand-btn' + (currentBrandFilter === brand ? ' active' : '');
-                btn.textContent = brand;
-                btn.onclick = () => setBrand(brand);
-                navContainer.appendChild(btn);
-            });
-
-            const datalist = document.getElementById('brands-datalist');
-            if (datalist) {
-                datalist.innerHTML = '';
-                sortedBrands.forEach(brand => {
-                    const opt = document.createElement('option');
-                    opt.value = brand;
-                    datalist.appendChild(opt);
-                });
-            }
-        }
-
-        function setBrand(brand) {
-            currentBrandFilter = brand;
-            document.getElementById('brand-select-dropdown').value = brand;
-            updateBrandsUI(perfumesList);
-            displayPerfumes(perfumesList);
-        }
-
-        function setBrandFromDropdown(brand) {
-            currentBrandFilter = brand;
-            updateBrandsUI(perfumesList);
-            displayPerfumes(perfumesList);
-        }
-
-        function displayPerfumes(items) {
-            const container = document.getElementById('products-container');
-            container.innerHTML = '';
-            
-            const rawSearchTerm = document.getElementById('search-input').value.trim();
-            const searchTerm = rawSearchTerm.toLowerCase();
-
-            let filtered = items.filter(item => {
-                const matchesCat = currentFilter === 'الكل' || item.category === currentFilter;
-                const matchesBrand = currentBrandFilter === 'الكل' || (item.brand && item.brand.toLowerCase() === currentBrandFilter.toLowerCase());
-                const matchesSearch = !searchTerm || 
-                    item.name.toLowerCase().includes(searchTerm) || 
-                    (item.brand && item.brand.toLowerCase().includes(searchTerm)) ||
-                    (item.size && item.size.toLowerCase().includes(searchTerm)) ||
-                    (item.desc && item.desc.toLowerCase().includes(searchTerm)) ||
-                    (item.notes && item.notes.toLowerCase().includes(searchTerm));
-                return matchesCat && matchesBrand && matchesSearch;
-            });
-
-            filtered.sort((a, b) => (b.price || 0) - (a.price || 0));
-
-            if (filtered.length === 0) {
-                container.innerHTML = `
-                    <div class="not-found-box">
-                        <h4>🔍 لم تجد العطر "${rawSearchTerm}" في القائمة؟</h4>
-                        <p>لا تقلق! نوفر لك أي عطر أصلي ترغب به حسب الطلب الخاص.</p>
-                        <button class="btn-update-live" style="max-width: 280px; margin: 0 auto;" onclick="openCustomPerfumeModal('${rawSearchTerm.replace(/'/g, "\\'")}')">
-                            ✨ اطلب هذا العطر الآن (ارسل اسمه وصورته)
-                        </button>
-                    </div>`;
-                return;
-            }
-
-            filtered.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'product-card';
-                const imgSrc = item.img ? item.img : 'https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=400';
-                const displaySize = item.size ? item.size : '100 مل';
-                const displayBrand = item.brand ? item.brand : '';
-
-                card.innerHTML = `
-                    <div class="product-badge">${item.category}</div>
-                    <div class="product-size-badge">${displaySize}</div>
-                    <img src="${imgSrc}" class="product-img" alt="${item.name}">
-                    
-                    <div class="img-update-box" style="display: ${isAdminMode ? 'block' : 'none'};">
-                        <label style="font-size: 10px; color: var(--accent-gold-dark); cursor: pointer; font-weight: bold;">
-                            📷 تغيير الصورة
-                            <input type="file" accept="image/*" style="display: none;" onchange="updateCloudImage('${item.firebaseKey}', this)">
+            <!-- ملخص الدفع وإتمام الطلب -->
+            <div class="p-6 border-t border-velvet-800 bg-velvet-950/60 space-y-4">
+                <!-- اختيار طريقة الدفع داخل السلة -->
+                <div class="space-y-2">
+                    <span class="block text-xs text-gray-400">طريقة الدفع المفضلة:</span>
+                    <div class="grid grid-cols-2 gap-2">
+                        <label class="cursor-pointer">
+                            <input type="radio" name="cart-payment" value="cash" checked onchange="syncPaymentMethod('cash')" class="peer sr-only">
+                            <div class="p-2.5 rounded-xl bg-velvet-900 border border-velvet-700 peer-checked:border-gold-500 peer-checked:bg-gold-500/10 text-center transition-all flex items-center justify-center gap-2 text-xs font-bold text-gray-300 peer-checked:text-gold-400">
+                                <i class="fa-solid fa-money-bill-wave"></i>
+                                <span>كاش</span>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="cart-payment" value="transfer" onchange="syncPaymentMethod('transfer')" class="peer sr-only">
+                            <div class="p-2.5 rounded-xl bg-velvet-900 border border-velvet-700 peer-checked:border-gold-500 peer-checked:bg-gold-500/10 text-center transition-all flex items-center justify-center gap-2 text-xs font-bold text-gray-300 peer-checked:text-gold-400">
+                                <i class="fa-solid fa-building-columns"></i>
+                                <span>حوالة مصرفية</span>
+                            </div>
                         </label>
                     </div>
+                </div>
 
-                    <div class="product-info">
-                        ${displayBrand ? `<div class="product-brand-tag">${displayBrand}</div>` : ''}
-                        <div class="product-title">${item.name}</div>
-                        <div class="product-desc">${item.desc}</div>
-                        <div class="product-notes">${item.notes}</div>
+                <div class="flex justify-between items-center text-sm pt-1 border-t border-velvet-800/80">
+                    <span class="text-gray-400">المجموع الفرعي:</span>
+                    <span id="cart-total" class="text-xl font-bold text-gold-400">0 د.ل</span>
+                </div>
+                <button type="button" onclick="checkout()" id="checkout-btn" class="w-full py-3.5 rounded-xl bg-gradient-to-l from-gold-500 to-gold-400 text-velvet-950 font-bold text-base shadow-lg hover:opacity-95 transition-all disabled:opacity-50">
+                    إتمام الطلب الآن
+                </button>
+            </div>
+        </div>
+    </div>
 
-                        <div class="admin-edit-fields" style="display: ${isAdminMode ? 'flex' : 'none'};">
-                            <input type="text" value="${displayBrand}" placeholder="الشركة" onchange="updateCloudField('${item.firebaseKey}', 'brand', this.value)">
-                            <input type="text" value="${displaySize}" placeholder="الحجم (مثال: 100 مل)" onchange="updateCloudField('${item.firebaseKey}', 'size', this.value)">
-                            <select onchange="updateCloudField('${item.firebaseKey}', 'category', this.value)">
-                                <option value="شرقي" ${item.category==='شرقي'?'selected':''}>شرقي</option>
-                                <option value="رجالي" ${item.category==='رجالي'?'selected':''}>رجالي</option>
-                                <option value="نسائي" ${item.category==='نسائي'?'selected':''}>نسائي</option>
-                                <option value="نيش" ${item.category==='نيش'?'selected':''}>نيش</option>
-                            </select>
-                        </div>
-                        
-                        <div class="product-footer">
-                            <div>
-                                <span class="product-price-display" style="display: ${isAdminMode ? 'none' : 'inline'};">${item.price} د.ل</span>
-                                <input type="number" class="product-price-input" style="display: ${isAdminMode ? 'inline-block' : 'none'};" value="${item.price}" onchange="updateCloudPrice('${item.firebaseKey}', this.value)">
-                                <span style="font-size: 10px; font-weight: bold; color: var(--accent-gold-dark); display: ${isAdminMode ? 'inline' : 'none'};">د.ل</span>
+    <!-- ==================== نافذة إتمام الطلب (Checkout Modal) ==================== -->
+    <div id="checkout-modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-velvet-900 border border-gold-500/30 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl relative my-8">
+            <button type="button" onclick="closeCheckoutModal()" class="absolute top-4 left-4 w-9 h-9 rounded-full bg-velvet-800 text-gray-400 hover:text-white flex items-center justify-center">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 class="text-2xl font-serif font-bold text-gold-400 mb-2">إتمام الطلب</h3>
+            <p class="text-xs text-gray-400 mb-6">أدخل بيانات التوصيل وسنقوم بتجهيز عطرك وتغليفه فوراً.</p>
+            
+            <form onsubmit="submitOrder(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs text-gray-300 mb-1">الاسم الكامل</label>
+                    <input type="text" required placeholder="مثال: أحمد محمد" class="w-full bg-velvet-950 border border-velvet-700 rounded-xl px-4 py-3 text-sm text-white focus:border-gold-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-300 mb-1">رقم الهاتف</label>
+                    <input type="tel" required placeholder="09X XXXXXXX" class="w-full bg-velvet-950 border border-velvet-700 rounded-xl px-4 py-3 text-sm text-white focus:border-gold-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-300 mb-1">المدينة والعنوان</label>
+                    <input type="text" required placeholder="طرابلس - حي الأندلس" class="w-full bg-velvet-950 border border-velvet-700 rounded-xl px-4 py-3 text-sm text-white focus:border-gold-500 focus:outline-none">
+                </div>
+
+                <!-- تأكيد طريقة الدفع في نافذة الطلب -->
+                <div>
+                    <label class="block text-xs text-gray-300 mb-1.5">طريقة الدفع</label>
+                    <div class="grid grid-cols-2 gap-2.5">
+                        <label class="cursor-pointer">
+                            <input type="radio" name="modal-payment" value="cash" checked onchange="syncPaymentMethod('cash')" class="peer sr-only">
+                            <div class="p-3 rounded-xl bg-velvet-950 border border-velvet-700 peer-checked:border-gold-500 peer-checked:bg-gold-500/10 text-center transition-all flex items-center justify-center gap-2 text-xs font-bold text-gray-300 peer-checked:text-gold-400">
+                                <i class="fa-solid fa-money-bill-wave"></i>
+                                <span>كاش عند الاستلام</span>
                             </div>
-                            <div style="display:flex; gap:4px;">
-                                <button class="btn-order" onclick="addToCart('${item.firebaseKey}')">+ طلب</button>
-                                <button class="btn-delete" style="display: ${isAdminMode ? 'block' : 'none'};" onclick="deleteCloudItem('${item.firebaseKey}')">حذف</button>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="modal-payment" value="transfer" onchange="syncPaymentMethod('transfer')" class="peer sr-only">
+                            <div class="p-3 rounded-xl bg-velvet-950 border border-velvet-700 peer-checked:border-gold-500 peer-checked:bg-gold-500/10 text-center transition-all flex items-center justify-center gap-2 text-xs font-bold text-gray-300 peer-checked:text-gold-400">
+                                <i class="fa-solid fa-building-columns"></i>
+                                <span>حوالة مصرفية</span>
                             </div>
-                        </div>
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" id="submit-order-btn" class="w-full py-3.5 rounded-xl bg-gradient-to-l from-gold-500 to-gold-400 text-velvet-950 font-bold text-base shadow-lg hover:opacity-95 transition-all mt-2">
+                    تأكيد الطلب (دفع كاش عند الاستلام)
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== نافذة كلمة مرور المدير (Admin Login Modal) ==================== -->
+    <div id="admin-login-modal" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-velvet-900 border border-gold-500/40 rounded-3xl max-w-sm w-full p-6 shadow-2xl relative text-center">
+            <button type="button" onclick="closeAdminLoginModal()" class="absolute top-4 left-4 w-8 h-8 rounded-full bg-velvet-800 text-gray-400 hover:text-white flex items-center justify-center">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="w-12 h-12 rounded-2xl bg-gold-500/10 text-gold-400 flex items-center justify-center mx-auto mb-3 border border-gold-500/30 text-xl">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <h3 class="text-lg font-serif font-bold text-gold-400 mb-1">منطقة صاحب المتجر</h3>
+            <p class="text-xs text-gray-400 mb-4">أدخل الرمز السري لإضافة أو حذف العطور</p>
+            <form onsubmit="verifyAdminPin(event)" class="space-y-3">
+                <input type="password" id="admin-pin-input" required placeholder="أدخل الرمز السري..." class="w-full text-center tracking-widest bg-velvet-950 border border-velvet-700 rounded-xl px-4 py-2.5 text-sm text-white focus:border-gold-500 focus:outline-none">
+                <button type="submit" class="w-full py-2.5 rounded-xl bg-gold-500 text-velvet-950 font-bold text-sm hover:bg-gold-400 transition-colors">
+                    دخول
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== نافذة إضافة وحذف العطور (Admin Modal) ==================== -->
+    <div id="admin-modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-velvet-900 border border-gold-500/40 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative my-8">
+            <button type="button" onclick="closeAdminModal()" class="absolute top-4 left-4 w-9 h-9 rounded-full bg-velvet-800 text-gray-400 hover:text-white flex items-center justify-center">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            
+            <div class="flex items-center gap-3 mb-2">
+                <div class="w-10 h-10 rounded-xl bg-gold-500/10 text-gold-400 flex items-center justify-center border border-gold-500/30">
+                    <i class="fa-solid fa-spray-can-sparkles"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-serif font-bold text-gold-400">لوحة إدارة صاحب المتجر</h3>
+                    <p class="text-xs text-gray-400">إحصائيات الزوار الخاصة بك وإدارة العطور</p>
+                </div>
+            </div>
+
+            <!-- ملخص إحصائيات الزوار الخاصة بصاحب المتجر فقط -->
+            <div class="grid grid-cols-2 gap-3 my-4 p-3.5 rounded-2xl bg-velvet-950/90 border border-gold-500/30">
+                <div class="text-center border-l border-velvet-800">
+                    <span class="text-[11px] text-gray-400 flex items-center justify-center gap-1.5 mb-1">
+                        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                        <span>زوار المتجر اليوم</span>
+                    </span>
+                    <span id="admin-today-visitors" class="text-xl font-extrabold text-green-400">124</span>
+                </div>
+                <div class="text-center">
+                    <span class="text-[11px] text-gray-400 block mb-1">العدد الإجمالي للزوار</span>
+                    <span id="admin-total-visitors" class="text-xl font-extrabold text-gold-400">5,480</span>
+                </div>
+            </div>
+            
+            <form onsubmit="addNewPerfume(event)" class="space-y-4 mt-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs text-gray-300 mb-1">اسم العطر (بالعربي) *</label>
+                        <input type="text" id="new-name" required placeholder="مثال: مسك الليل" class="w-full bg-velvet-950 border border-velvet-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-gold-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-300 mb-1">الاسم الإنجليزي *</label>
+                        <input type="text" id="new-subtitle" required placeholder="مثال: Night Musk" class="w-full bg-velvet-950 border border-velvet-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-gold-500 focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-xs text-gray-300 mb-1">السعر (د.ل) *</label>
+                        <input type="number" id="new-price" required min="1" placeholder="350" class="w-full bg-velvet-950 border border-velvet-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-gold-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-300 mb-1">الحجم *</label>
+                        <input type="text" id="new-size" required value="100 مل" placeholder="100 مل" class="w-full bg-velvet-950 border border-velvet-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-gold-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-300 mb-1">التصنيف *</label>
+                        <select id="new-category" class="w-full bg-velvet-950 border border-velvet-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-gold-500 focus:outline-none">
+                            <option value="men">رجالي</option>
+                            <option value="women">نسائي</option>
+                            <option value="unisex">للجنسين</option>
+                            <option value="oud">عود وبخور</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs text-gray-300 mb-1">رابط صورة العطر (اختياري)</label>
+                    <input type="url" id="new-image" placeholder="https://example.com/perfume.jpg" class="w-full bg-velvet-950 border border-velvet-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-gold-500 focus:outline-none">
+                    <span class="text-[11px] text-gray-500">إذا تركته فارغاً سيتم وضع صورة زجاجة عطر فاخرة تلقائياً.</span>
+                </div>
+
+                <div>
+                    <label class="block text-xs text-gray-300 mb-1">مكونات العطر (النوتات العطرية) *</label>
+                    <input type="text" id="new-notes" required placeholder="مثال: زعفران، ورد طائفي، عود كمبودي، مسك" class="w-full bg-velvet-950 border border-velvet-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-gold-500 focus:outline-none">
+                </div>
+
+                <div>
+                    <label class="block text-xs text-gray-300 mb-1">وصف قصير للعطر *</label>
+                    <textarea id="new-desc" required rows="2" placeholder="اكتب وصفاً جذاباً يوضح فخامة العطر وثباته..." class="w-full bg-velvet-950 border border-velvet-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-gold-500 focus:outline-none"></textarea>
+                </div>
+
+                <div class="flex gap-3 pt-2">
+                    <button type="submit" class="flex-1 py-3 rounded-xl bg-gradient-to-l from-gold-500 to-gold-400 text-velvet-950 font-bold text-sm hover:opacity-95 transition-all">
+                        <i class="fa-solid fa-check ml-1"></i> نشر العطر في المتجر
+                    </button>
+                    <button type="button" onclick="logoutAdmin()" class="px-4 py-3 rounded-xl bg-velvet-800 hover:bg-red-900/50 text-gray-300 hover:text-red-300 text-xs font-semibold transition-colors" title="قفل وضع الإدارة">
+                        <i class="fa-solid fa-lock"></i> قفل
+                    </button>
+                </div>
+            </form>
+
+            <!-- قائمة العطور الحالية في المتجر للحذف السريع -->
+            <div class="mt-6 pt-5 border-t border-velvet-800">
+                <h4 class="text-xs font-bold text-gray-300 mb-3 flex items-center justify-between">
+                    <span>العطور الموجودة حالياً في المتجر (اضغط مسح لإزالة أي عطر):</span>
+                    <span id="admin-perfumes-count" class="text-gold-400">0</span>
+                </h4>
+                <div id="admin-perfumes-list" class="max-h-48 overflow-y-auto space-y-2 pr-1">
+                    <!-- يتم تعبئتها ديناميكياً -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== إشعار منبثق (Toast Notification) ==================== -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 bg-velvet-800 border border-gold-500 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3">
+        <i class="fa-solid fa-circle-check text-gold-400 text-lg"></i>
+        <span id="toast-msg" class="text-sm font-semibold">تمت الإضافة للسلة بنجاح</span>
+    </div>
+
+    <!-- ==================== كود JavaScript الكامل للتفاعلية وإدارة المتجر ==================== -->
+    <script>
+        // قاعدة بيانات العطور الافتراضية الخاصة بمتجر VelvetParfums
+        const defaultPerfumes = [
+            {
+                id: 1,
+                name: "فيلفيت رويال عود",
+                subtitle: "Velvet Royal Oud",
+                category: "oud",
+                categoryLabel: "عود فاخر",
+                scentType: "woody",
+                price: 450,
+                size: "100 مل",
+                image: "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=600&q=80",
+                notes: {
+                    top: "الزعفران، جوزة الطيب",
+                    heart: "العود الكمبودي المعتق، الورد الدمشقي",
+                    base: "العنبر الملكي، المسك الأسود، خشب الصندل"
+                },
+                description: "عطر ملكي يجسد الفخامة الشرقية الأصيلة بلمسة مخملية ناعمة تدوم لساعات طويلة وتترك أثراً لا يُقاوم."
+            },
+            {
+                id: 2,
+                name: "نوار دي فيلفيت",
+                subtitle: "Noir de Velvet",
+                category: "men",
+                categoryLabel: "رجالي",
+                scentType: "woody",
+                price: 380,
+                size: "100 مل",
+                image: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&w=600&q=80",
+                notes: {
+                    top: "البرغموت الإيطالي، الفلفل الأسود",
+                    heart: "الجلود الفاخرة، الباتشولي، البخور",
+                    base: "نجيل الهند، التونكا، الفانيليا الداكنة"
+                },
+                description: "عطر رجالي غامض وجريء مصمم للرجل الواثق في الأمسيات الخاصة والمناسبات الرسمية."
+            },
+            {
+                id: 3,
+                name: "فيلفيت روز إمبريال",
+                subtitle: "Velvet Rose Impériale",
+                category: "women",
+                categoryLabel: "نسائي",
+                scentType: "floral",
+                price: 410,
+                size: "100 مل",
+                image: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=600&q=80",
+                notes: {
+                    top: "الليتشي، الكمثرى، الفلفل الوردي",
+                    heart: "الورد الطائفي، الفاوانيا، الياسمين",
+                    base: "المسك الأبيض، الكشمير، الفانيليا"
+                },
+                description: "باقة زهرية ساحرة تفيض بالأنوثة والرقي، تمنحك إحساساً بالنعومة والجاذبية في كل لحظة."
+            },
+            {
+                id: 4,
+                name: "عنبر سيلك",
+                subtitle: "Amber Silk",
+                category: "unisex",
+                categoryLabel: "للجنسين",
+                scentType: "woody",
+                price: 430,
+                size: "100 مل",
+                image: "https://images.unsplash.com/photo-1587017539504-67cfbddac569?auto=format&fit=crop&w=600&q=80",
+                notes: {
+                    top: "الماندرين، الهيل",
+                    heart: "العنبر الذهبي، السوسن",
+                    base: "خشب الأرز، البنزوين، المسك"
+                },
+                description: "توازن مثالي بين دفء العنبر ونعومة الحرير، يناسب الرجال والنساء الباحثين عن التميز."
+            },
+            {
+                id: 5,
+                name: "بريز دي فيلفيت",
+                subtitle: "Brise de Velvet",
+                category: "unisex",
+                categoryLabel: "للجنسين",
+                scentType: "fresh",
+                price: 340,
+                size: "100 مل",
+                image: "https://images.unsplash.com/photo-1595425970377-c9703cf48b6d?auto=format&fit=crop&w=600&q=80",
+                notes: {
+                    top: "الليمون الصقلي، الجريب فروت، النعناع",
+                    heart: "زهر البرتقال، الشاي الأخضر",
+                    base: "المسك النظيف، خشب الأرز الأبيض"
+                },
+                description: "انتعاش صباحي نقي يمنحك طاقة وحيوية طوال اليوم، مثالي للأجواء الدافئة والعمل."
+            },
+            {
+                id: 6,
+                name: "سلطان المسك",
+                subtitle: "Sultan Al Musk",
+                category: "oud",
+                categoryLabel: "عود وبخور",
+                scentType: "floral",
+                price: 470,
+                size: "100 مل",
+                image: "https://images.unsplash.com/photo-1585386959984-a4155224a1ad?auto=format&fit=crop&w=600&q=80",
+                notes: {
+                    top: "المسك الغزالي النقي، الزعفران",
+                    heart: "دهن العود الهندي، الورد",
+                    base: "خشب الصندل، البخور الملكي"
+                },
+                description: "توليفة شرقية فاخرة لعشاق المسك والعود الأصيل بتركيز عالٍ وثبات يدوم لأيام."
+            }
+        ];
+
+        // تحميل العطور المحفوظة أو استخدام الافتراضية
+        let perfumes = JSON.parse(localStorage.getItem('velvet_perfumes')) || [...defaultPerfumes];
+
+        // حالة السلة والتصفية وصلاحية المدير وطريقة الدفع
+        let cart = [];
+        let currentCategory = 'all';
+        let isAdminAuthenticated = false;
+        let selectedPaymentMethod = 'cash';
+        const ADMIN_SECRET_PIN = "2026"; // الرمز السري لصاحب المتجر
+
+        // نظام حساب عدد زوار اليوم والعدد الإجمالي (خاص بالمدير فقط)
+        function initVisitorStats() {
+            try {
+                const todayDate = new Date().toISOString().split('T')[0];
+                let stats = JSON.parse(localStorage.getItem('velvet_visitor_stats'));
+
+                if (!stats) {
+                    stats = {
+                        date: todayDate,
+                        today: 124,
+                        total: 5480
+                    };
+                } else if (stats.date !== todayDate) {
+                    stats.date = todayDate;
+                    stats.today = 1;
+                    stats.total += 1;
+                } else {
+                    stats.today += 1;
+                    stats.total += 1;
+                }
+
+                localStorage.setItem('velvet_visitor_stats', JSON.stringify(stats));
+
+                const todayEl = document.getElementById('admin-today-visitors');
+                const totalEl = document.getElementById('admin-total-visitors');
+                if (todayEl) todayEl.textContent = stats.today.toLocaleString();
+                if (totalEl) totalEl.textContent = stats.total.toLocaleString();
+            } catch (e) {
+                console.error("Error updating visitor stats:", e);
+            }
+        }
+
+        // طلب الدخول للوحة الإدارة
+        function requestAdminAccess() {
+            if (isAdminAuthenticated) {
+                openAdminModal();
+            } else {
+                document.getElementById('admin-login-modal').classList.remove('hidden');
+                setTimeout(() => {
+                    const pinInput = document.getElementById('admin-pin-input');
+                    if (pinInput) pinInput.focus();
+                }, 100);
+            }
+        }
+
+        function closeAdminLoginModal() {
+            document.getElementById('admin-login-modal').classList.add('hidden');
+            document.getElementById('admin-pin-input').value = '';
+        }
+
+        function verifyAdminPin(e) {
+            e.preventDefault();
+            const enteredPin = document.getElementById('admin-pin-input').value;
+            if (enteredPin === ADMIN_SECRET_PIN) {
+                isAdminAuthenticated = true;
+                closeAdminLoginModal();
+                renderProducts(perfumes);
+                openAdminModal();
+                showToast("مرحباً بك في وضع إدارة المتجر!");
+            } else {
+                showToast("الرمز السري غير صحيح!");
+                document.getElementById('admin-pin-input').value = '';
+            }
+        }
+
+        function logoutAdmin() {
+            isAdminAuthenticated = false;
+            closeAdminModal();
+            renderProducts(perfumes);
+            showToast("تم قفل وضع الإدارة.");
+        }
+
+        // مزامنة اختيار طريقة الدفع (كاش أم حوالة) بين السلة ونافذة إتمام الطلب
+        function syncPaymentMethod(method) {
+            selectedPaymentMethod = method;
+            
+            document.querySelectorAll(`input[name="cart-payment"][value="${method}"]`).forEach(el => el.checked = true);
+            document.querySelectorAll(`input[name="modal-payment"][value="${method}"]`).forEach(el => el.checked = true);
+
+            const submitBtn = document.getElementById('submit-order-btn');
+            if (submitBtn) {
+                submitBtn.textContent = method === 'transfer' 
+                    ? 'تأكيد الطلب (الدفع عبر حوالة مصرفية)' 
+                    : 'تأكيد الطلب (دفع كاش عند الاستلام)';
+            }
+        }
+
+        // عرض العطور في الشبكة
+        function renderProducts(list) {
+            const grid = document.getElementById('products-grid');
+            if (!grid) return;
+
+            if (list.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full text-center py-12 text-gray-400">
+                        <i class="fa-solid fa-spray-can-sparkles text-4xl text-gold-500/40 mb-3"></i>
+                        <p>لم يتم العثور على عطور تطابق بحثك الحالي.</p>
                     </div>
                 `;
-                container.appendChild(card);
-            });
-        }
-
-        function setCategory(cat, btn) {
-            currentFilter = cat;
-            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            displayPerfumes(perfumesList);
-        }
-
-        function filterPerfumes() {
-            displayPerfumes(perfumesList);
-        }
-
-        // === دوال طلب العطر الخاص ===
-        function openCustomPerfumeModal(prefillName = '') {
-            const nameInput = document.getElementById('req-perfume-name');
-            if (prefillName) {
-                nameInput.value = prefillName;
-            } else {
-                const searchVal = document.getElementById('search-input').value.trim();
-                nameInput.value = searchVal;
-            }
-            document.getElementById('custom-req-modal').style.display = 'flex';
-        }
-
-        function closeCustomPerfumeModal() {
-            document.getElementById('custom-req-modal').style.display = 'none';
-        }
-
-        function previewCustomImage(input) {
-            const preview = document.getElementById('custom-img-preview');
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    preview.src = e.target.result;
-                    preview.style.display = 'block';
-                };
-                reader.readAsDataURL(input.files[0]);
-            } else {
-                preview.style.display = 'none';
-            }
-        }
-
-        function compressCustomImg(file, cb) {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = e => {
-                const img = new Image();
-                img.src = e.target.result;
-                img.onload = () => {
-                    const canvas = document.createElement('canvas');
-                    const maxW = 500;
-                    const scale = img.width > maxW ? (maxW / img.width) : 1;
-                    canvas.width = img.width * scale;
-                    canvas.height = img.height * scale;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                    cb(canvas.toDataURL('image/jpeg', 0.6));
-                }
-            }
-        }
-
-        function submitCustomPerfumeRequest() {
-            const pName = document.getElementById('req-perfume-name').value.trim();
-            const pSize = document.getElementById('req-perfume-size').value.trim();
-            const contact = document.getElementById('req-cust-contact').value.trim();
-            const fileInput = document.getElementById('req-perfume-img');
-            const submitBtn = document.getElementById('btn-submit-custom');
-
-            if (!pName || !pSize || !contact) {
-                alert('الرجاء كتابة اسم العطر، الحجم بالملي، وبيانات التواصل معك.');
                 return;
             }
 
-            submitBtn.disabled = true;
-            submitBtn.innerText = '⏳ جاري تجهيز الطلب...';
+            grid.innerHTML = list.map(perfume => `
+                <div class="group rounded-3xl bg-velvet-900 border border-velvet-800 hover:border-gold-500/40 overflow-hidden transition-all duration-300 flex flex-col justify-between shadow-lg hover:shadow-gold-500/10">
+                    <div>
+                        <!-- صورة العطر -->
+                        <div class="relative h-72 overflow-hidden bg-velvet-950">
+                            <img src="${perfume.image}" 
+                                 onerror="this.src='https://placehold.co/600x600/141218/d4af37?text=${encodeURIComponent(perfume.subtitle)}'"
+                                 alt="${perfume.name}" 
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            
+                            <!-- شارة التصنيف -->
+                            <span class="absolute top-4 right-4 px-3 py-1 rounded-full bg-velvet-950/85 backdrop-blur-md border border-gold-500/30 text-gold-400 text-xs font-bold">
+                                ${perfume.categoryLabel}
+                            </span>
 
-            const sendToMessengerWithLink = (imageLink) => {
-                let msg = `أهلاً VELVET PARFUMS 👋 ، أرغب في توفير عطر خاص غير موجود في القائمة:\n\n`;
-                msg += `🌸 اسم العطر: ${pName}\n`;
-                msg += `📏 الحجم المطلوب: ${pSize}\n`;
-                msg += `👤 بيانات الزبون: ${contact}\n`;
-                if (imageLink) {
-                    msg += `📷 رابط صورة العطر: ${imageLink}\n`;
-                } else {
-                    msg += `📷 الصورة: لم يتم إرفاق صورة\n`;
-                }
+                            <!-- زر حذف العطر (يظهر فقط للمدير) -->
+                            ${isAdminAuthenticated ? `
+                                <button type="button" onclick="deletePerfume(${perfume.id})" class="absolute top-4 left-4 w-8 h-8 rounded-full bg-red-600/90 hover:bg-red-500 text-white flex items-center justify-center shadow-lg transition-colors" title="حذف العطر">
+                                    <i class="fa-solid fa-trash-can text-xs"></i>
+                                </button>
+                            ` : ''}
 
-                submitBtn.disabled = false;
-                submitBtn.innerText = '📤 إرسال الطلب عبر الماسنجر';
-                closeCustomPerfumeModal();
+                            <!-- زر معاينة سريعة -->
+                            <button type="button" onclick="openProductModal(${perfume.id})" class="absolute bottom-4 left-4 px-3.5 py-2 rounded-xl bg-velvet-950/85 hover:bg-gold-500 hover:text-velvet-950 text-white text-xs font-semibold backdrop-blur-md border border-white/10 transition-colors flex items-center gap-1.5">
+                                <i class="fa-solid fa-eye"></i>
+                                <span>المكونات</span>
+                            </button>
+                        </div>
 
-                window.open(`https://m.me/${FB_PAGE_ID}?text=${encodeURIComponent(msg)}`, '_blank');
-            };
+                        <!-- تفاصيل البطاقة -->
+                        <div class="p-6 space-y-2">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h3 class="text-xl font-bold text-white group-hover:text-gold-400 transition-colors">${perfume.name}</h3>
+                                    <span class="text-xs text-gray-500 font-serif tracking-wider">${perfume.subtitle}</span>
+                                </div>
+                                <span class="text-xs text-gray-400 bg-velvet-800 px-2.5 py-1 rounded-lg">${perfume.size}</span>
+                            </div>
+                            <p class="text-gray-400 text-xs leading-relaxed line-clamp-2 pt-1">
+                                ${perfume.description}
+                            </p>
+                        </div>
+                    </div>
 
-            if (fileInput.files && fileInput.files[0]) {
-                compressCustomImg(fileInput.files[0], (base64Img) => {
-                    const newReqRef = db.ref('custom_requests').push();
-                    newReqRef.set({
-                        name: pName,
-                        size: pSize,
-                        contact: contact,
-                        img: base64Img,
-                        date: new Date().toISOString()
-                    }, (err) => {
-                        if (!err) {
-                            const baseUrl = window.location.origin + window.location.pathname;
-                            const fullImgUrl = `${baseUrl}?custom_img=${newReqRef.key}`;
-                            sendToMessengerWithLink(fullImgUrl);
-                        } else {
-                            sendToMessengerWithLink('');
-                        }
-                    });
-                });
-            } else {
-                sendToMessengerWithLink('');
-            }
+                    <!-- السعر وزر الإضافة للسلة -->
+                    <div class="px-6 pb-6 pt-2 flex items-center justify-between border-t border-velvet-800/60 mt-2">
+                        <div>
+                            <span class="text-xs text-gray-400 block">السعر</span>
+                            <span class="text-xl font-extrabold text-gold-400">${perfume.price} د.ل</span>
+                        </div>
+                        <button type="button" onclick="addToCart(${perfume.id})" class="px-5 py-3 rounded-xl bg-velvet-800 hover:bg-gold-500 text-gold-400 hover:text-velvet-950 border border-gold-500/30 font-bold text-sm transition-all flex items-center gap-2">
+                            <i class="fa-solid fa-cart-plus"></i>
+                            <span>أضف للسلة</span>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
         }
 
-        function compressImg(file, cb) {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = e => {
-                const img = new Image();
-                img.src = e.target.result;
-                img.onload = () => {
-                    const canvas = document.createElement('canvas');
-                    const W = 220;
-                    canvas.width = W;
-                    canvas.height = img.height * (W / img.width);
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                    cb(canvas.toDataURL('image/jpeg', 0.4));
-                }
+        // تصفية العطور حسب الفئة
+        function filterProducts(category) {
+            currentCategory = category;
+            
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('bg-gold-500', 'text-velvet-950', 'font-bold');
+                btn.classList.add('bg-velvet-800', 'text-gray-300', 'font-semibold');
+            });
+            if (event && event.target) {
+                event.target.classList.remove('bg-velvet-800', 'text-gray-300', 'font-semibold');
+                event.target.classList.add('bg-gold-500', 'text-velvet-950', 'font-bold');
             }
+
+            applyFilters();
         }
 
-        function addNewPerfumeCloud() {
+        // البحث بالاسم أو المكونات
+        function searchProducts() {
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const query = document.getElementById('search-input').value.trim().toLowerCase();
+            const filtered = perfumes.filter(p => {
+                const matchCategory = currentCategory === 'all' || p.category === currentCategory;
+                const matchSearch = p.name.toLowerCase().includes(query) || 
+                                    p.subtitle.toLowerCase().includes(query) ||
+                                    p.description.toLowerCase().includes(query) ||
+                                    p.notes.top.toLowerCase().includes(query) ||
+                                    p.notes.heart.toLowerCase().includes(query) ||
+                                    p.notes.base.toLowerCase().includes(query);
+                return matchCategory && matchSearch;
+            });
+            renderProducts(filtered);
+        }
+
+        // فتح نافذة تفاصيل العطر
+        function openProductModal(id) {
+            const perfume = perfumes.find(p => p.id === id);
+            if (!perfume) return;
+
+            const content = document.getElementById('modal-content');
+            content.innerHTML = `
+                <div class="h-64 md:h-full bg-velvet-950">
+                    <img src="${perfume.image}" 
+                         onerror="this.src='https://placehold.co/500x600/141218/d4af37?text=${encodeURIComponent(perfume.subtitle)}'"
+                         alt="${perfume.name}" class="w-full h-full object-cover">
+                </div>
+                <div class="p-6 sm:p-8 flex flex-col justify-between space-y-6">
+                    <div class="space-y-4">
+                        <div>
+                            <span class="text-xs text-gold-400 font-bold">${perfume.categoryLabel} • ${perfume.size}</span>
+                            <h3 class="text-2xl font-serif font-bold text-white mt-1">${perfume.name}</h3>
+                            <p class="text-xs text-gray-400 font-serif">${perfume.subtitle}</p>
+                        </div>
+                        <p class="text-gray-300 text-sm leading-relaxed">${perfume.description}</p>
+                        
+                        <!-- الهرم العطري -->
+                        <div class="space-y-2.5 pt-2 border-t border-velvet-800">
+                            <h4 class="text-xs font-bold text-gold-400">الهرم العطري:</h4>
+                            <div class="text-xs text-gray-300"><strong class="text-white">افتتاحية العطر:</strong> ${perfume.notes.top}</div>
+                            <div class="text-xs text-gray-300"><strong class="text-white">قلب العطر:</strong> ${perfume.notes.heart}</div>
+                            <div class="text-xs text-gray-300"><strong class="text-white">قاعدة العطر:</strong> ${perfume.notes.base}</div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between pt-4 border-t border-velvet-800">
+                        <span class="text-2xl font-extrabold text-gold-400">${perfume.price} د.ل</span>
+                        <button type="button" onclick="addToCart(${perfume.id}); closeProductModal();" class="px-6 py-3 rounded-xl bg-gold-500 text-velvet-950 font-bold text-sm hover:bg-gold-400 transition-colors">
+                            أضف للسلة
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('product-modal').classList.remove('hidden');
+        }
+
+        function closeProductModal() {
+            document.getElementById('product-modal').classList.add('hidden');
+        }
+
+        // ترشيح عطر حسب ذوق المستخدم
+        function recommendScent(type) {
+            const matches = perfumes.filter(p => p.scentType === type);
+            const chosen = matches.length > 0 ? matches[0] : perfumes[0];
+            if (!chosen) return;
+
+            const resultBox = document.getElementById('scent-result');
+            resultBox.classList.remove('hidden');
+            resultBox.innerHTML = `
+                <div class="flex flex-col sm:flex-row items-center gap-4">
+                    <img src="${chosen.image}" onerror="this.src='https://placehold.co/150x150/141218/d4af37?text=Velvet'" class="w-24 h-24 rounded-2xl object-cover border border-gold-500/40 shrink-0">
+                    <div class="flex-1 text-center sm:text-right space-y-1">
+                        <span class="text-xs text-gold-400 font-bold">الترشيح المثالي لك:</span>
+                        <h4 class="text-xl font-bold text-white">${chosen.name} (${chosen.subtitle})</h4>
+                        <p class="text-xs text-gray-300">${chosen.description}</p>
+                    </div>
+                    <button type="button" onclick="addToCart(${chosen.id})" class="px-5 py-3 rounded-xl bg-gold-500 text-velvet-950 font-bold text-sm hover:bg-gold-400 transition-colors shrink-0">
+                        أضف للسلة (${chosen.price} د.ل)
+                    </button>
+                </div>
+            `;
+        }
+
+        // حذف عطر من المتجر (للمالك فقط)
+        function deletePerfume(id) {
+            if (!isAdminAuthenticated) return;
+            perfumes = perfumes.filter(p => p.id !== id);
+            localStorage.setItem('velvet_perfumes', JSON.stringify(perfumes));
+            renderProducts(perfumes);
+            renderAdminPerfumesList();
+            showToast("تم حذف العطر من المتجر.");
+        }
+
+        // عرض قائمة العطور داخل لوحة الإدارة لسهولة الحذف
+        function renderAdminPerfumesList() {
+            const listContainer = document.getElementById('admin-perfumes-list');
+            const countBadge = document.getElementById('admin-perfumes-count');
+            if (!listContainer || !countBadge) return;
+
+            countBadge.textContent = `${perfumes.length} عطور`;
+
+            if (perfumes.length === 0) {
+                listContainer.innerHTML = `<p class="text-xs text-gray-500 text-center py-3">لا توجد عطور مضافة حالياً.</p>`;
+                return;
+            }
+
+            listContainer.innerHTML = perfumes.map(p => `
+                <div class="flex items-center justify-between p-2.5 rounded-xl bg-velvet-950/90 border border-velvet-800">
+                    <div class="flex items-center gap-2.5">
+                        <img src="${p.image}" onerror="this.src='https://placehold.co/40x40/141218/d4af37?text=V'" class="w-9 h-9 rounded-lg object-cover">
+                        <div>
+                            <div class="text-xs font-bold text-white">${p.name}</div>
+                            <div class="text-[11px] text-gold-400">${p.price} د.ل • ${p.categoryLabel}</div>
+                        </div>
+                    </div>
+                    <button type="button" onclick="deletePerfume(${p.id})" class="px-3 py-1.5 rounded-lg bg-red-600/20 hover:bg-red-600 text-red-400 hover:text-white text-xs font-bold transition-colors flex items-center gap-1">
+                        <i class="fa-solid fa-trash-can"></i>
+                        <span>مسح</span>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // دوال إدارة إضافة العطور (Admin Panel)
+        function openAdminModal() {
+            if (!isAdminAuthenticated) return requestAdminAccess();
+            renderAdminPerfumesList();
+            document.getElementById('admin-modal').classList.remove('hidden');
+        }
+
+        function closeAdminModal() {
+            document.getElementById('admin-modal').classList.add('hidden');
+        }
+
+        function addNewPerfume(e) {
+            e.preventDefault();
+            if (!isAdminAuthenticated) return;
+
             const name = document.getElementById('new-name').value.trim();
-            const brand = document.getElementById('new-brand').value.trim() || "أخرى";
-            const size = document.getElementById('new-size').value.trim() || "100 مل";
-            const price = document.getElementById('new-price').value.trim() || 0;
-            const cat = document.getElementById('new-cat').value;
-            const notes = document.getElementById('new-notes').value.trim() || "تركيبة مميزة";
-            const desc = document.getElementById('new-desc').value.trim() || "عطر فاخر.";
-            const fileInput = document.getElementById('new-img-file');
+            const subtitle = document.getElementById('new-subtitle').value.trim();
+            const price = parseFloat(document.getElementById('new-price').value);
+            const size = document.getElementById('new-size').value.trim();
+            const category = document.getElementById('new-category').value;
+            const imageInput = document.getElementById('new-image').value.trim();
+            const notesInput = document.getElementById('new-notes').value.trim();
+            const description = document.getElementById('new-desc').value.trim();
 
-            if(!name) { alert('أدخل اسم العطر'); return; }
-
-            if(fileInput.files && fileInput.files[0]) {
-                compressImg(fileInput.files[0], imgUrl => saveToCloud(name, brand, size, price, cat, notes, desc, imgUrl));
-            } else {
-                saveToCloud(name, brand, size, price, cat, notes, desc, "");
-            }
-        }
-
-        function saveToCloud(name, brand, size, price, cat, notes, desc, imgUrl) {
-            const newItem = {
-                id: Date.now(),
-                name,
-                brand,
-                size,
-                price: parseFloat(price),
-                category: cat,
-                desc,
-                notes,
-                img: imgUrl
+            const categoryLabels = {
+                men: "رجالي",
+                women: "نسائي",
+                unisex: "للجنسين",
+                oud: "عود وبخور"
             };
-            db.ref('perfumes').push(newItem, (error) => {
-                if (!error) {
-                    alert(`✅ تم نشر "${name}" بنجاح!`);
-                    document.getElementById('new-name').value = '';
-                    document.getElementById('new-brand').value = '';
-                    document.getElementById('new-size').value = '';
-                    document.getElementById('new-price').value = '';
-                    document.getElementById('new-notes').value = '';
-                    document.getElementById('new-desc').value = '';
-                    document.getElementById('new-img-file').value = '';
-                    document.getElementById('admin-panel').style.display = 'none';
-                    isAdminMode = false;
-                } else {
-                    alert("⚠️ تعذر الحفظ في السحابة.");
-                }
-            });
+
+            const defaultImg = "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=600&q=80";
+
+            const newPerfume = {
+                id: Date.now(),
+                name: name,
+                subtitle: subtitle,
+                category: category,
+                categoryLabel: categoryLabels[category] || "حصري",
+                scentType: category === 'oud' ? 'woody' : (category === 'women' ? 'floral' : 'fresh'),
+                price: price,
+                size: size,
+                image: imageInput || defaultImg,
+                notes: {
+                    top: notesInput,
+                    heart: "توليفة فيلفيت الخاصة",
+                    base: "مسك وعنبر فاخر"
+                },
+                description: description
+            };
+
+            perfumes.unshift(newPerfume);
+            localStorage.setItem('velvet_perfumes', JSON.stringify(perfumes));
+
+            renderProducts(perfumes);
+            renderAdminPerfumesList();
+            e.target.reset();
+            closeAdminModal();
+            showToast(`تم نشر عطر "${name}" بسعر ${price} د.ل بنجاح!`);
         }
 
-        function updateCloudPrice(firebaseKey, val) {
-            if (firebaseKey.startsWith('local_')) return;
-            db.ref('perfumes/' + firebaseKey).update({ price: parseFloat(val) || 0 });
-        }
+        // إدارة سلة التسوق
+        function addToCart(id) {
+            const perfume = perfumes.find(p => p.id === id);
+            if (!perfume) return;
 
-        function updateCloudField(firebaseKey, field, val) {
-            if (firebaseKey.startsWith('local_')) return;
-            db.ref('perfumes/' + firebaseKey).update({ [field]: val.trim() });
-        }
-
-        function updateCloudImage(firebaseKey, input) {
-            if (firebaseKey.startsWith('local_')) return;
-            if(input.files && input.files[0]) {
-                compressImg(input.files[0], url => {
-                    db.ref('perfumes/' + firebaseKey).update({ img: url });
-                });
+            const existingItem = cart.find(item => item.id === id);
+            if (existingItem) {
+                existingItem.qty += 1;
+            } else {
+                cart.push({ ...perfume, qty: 1 });
             }
+
+            updateCartUI();
+            showToast(`تمت إضافة "${perfume.name}" إلى السلة`);
         }
 
-        function deleteCloudItem(firebaseKey) {
-            if (firebaseKey.startsWith('local_')) return;
-            if(confirm('تأكيد حذف هذا العطر من المتجر؟')) {
-                db.ref('perfumes/' + firebaseKey).remove();
+        function updateQty(id, delta) {
+            const item = cart.find(i => i.id === id);
+            if (!item) return;
+
+            item.qty += delta;
+            if (item.qty <= 0) {
+                cart = cart.filter(i => i.id !== id);
             }
-        }
-
-        function addToCart(firebaseKey) {
-            const item = perfumesList.find(x => x.firebaseKey === firebaseKey);
-            if(item) {
-                selectedCart.push({
-                    cartId: Date.now() + Math.random(),
-                    name: item.name,
-                    brand: item.brand || '',
-                    size: item.size || '100 مل',
-                    price: item.price
-                });
-                updateCartUI();
-            }
-        }
-
-        function updateCartUI() {
-            document.getElementById('cart-count').innerText = selectedCart.length;
-            const list = document.getElementById('cart-items-list');
-            list.innerHTML = '';
-            if(selectedCart.length === 0) {
-                list.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:10px;">السلة فارغة.</p>`;
-                document.getElementById('cart-summary-box').innerHTML = "مجموع العطور: 0 د.ل<br>التوصيل (داخل طرابلس): مجاني<br><b>الإجمالي النهائي: 0 د.ل</b>";
-                return;
-            }
-            let subtotal = 0;
-            selectedCart.forEach((i, idx) => {
-                subtotal += i.price;
-                list.innerHTML += `<div class="cart-item-row"><span>${idx+1}. ${i.name} <small style="color:var(--text-muted);">(${i.size})</small></span> <span style="color:var(--accent-gold-dark); font-weight:bold;">${i.price} د.ل</span> <button class="btn-remove-item" onclick="removeFromCart('${i.cartId}')">حذف</button></div>`;
-            });
-
-            document.getElementById('cart-summary-box').innerHTML = `مجموع العطور: ${subtotal} د.ل<br>التوصيل (داخل طرابلس): <span style="color:var(--success-color);">مجاني 🎉</span><br><span style="font-size:15px; color:var(--accent-gold-dark);">الإجمالي النهائي: ${subtotal} د.ل</span>`;
-        }
-
-        function removeFromCart(id) {
-            selectedCart = selectedCart.filter(x => x.cartId != id);
             updateCartUI();
         }
 
-        function openCartModal() { updateCartUI(); document.getElementById('cart-modal').style.display = 'flex'; }
-        function closeCartModal() { document.getElementById('cart-modal').style.display = 'none'; }
-        function proceedToCheckout() { if(selectedCart.length===0){alert('السلة فارغة');return;} closeCartModal(); document.getElementById('checkout-modal').style.display='flex'; }
-        function closeCheckoutModal() { document.getElementById('checkout-modal').style.display='none'; openCartModal(); }
+        function updateCartUI() {
+            const badge = document.getElementById('cart-badge');
+            const itemsContainer = document.getElementById('cart-items');
+            const totalEl = document.getElementById('cart-total');
+            const checkoutBtn = document.getElementById('checkout-btn');
 
-        function submitOrderToMessenger() {
-            const name = document.getElementById('cust-name').value.trim();
-            const phone = document.getElementById('cust-phone').value.trim();
-            const address = document.getElementById('cust-address').value.trim();
-            const payment = document.getElementById('payment-method').value;
+            const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
 
-            if(!name || !phone || !address) { alert('الرجاء تعبئة بيانات التوصيل'); return; }
-            
-            let subtotal = 0;
-            selectedCart.forEach(i => { subtotal += i.price; });
+            if (badge) badge.textContent = totalQty;
+            if (totalEl) totalEl.textContent = `${totalPrice} د.ل`;
+            if (checkoutBtn) checkoutBtn.disabled = cart.length === 0;
 
-            let txt = `أهلاً VELVET PARFUMS 👋 ، طلب جديد:\n👤 الاسم: ${name}\n📞 الهاتف: ${phone}\n📍 العنوان: ${address}\n💳 طريقة الدفع: ${payment}\n\n--- تفاصيل الطلب --- \n`;
-            selectedCart.forEach((i, idx) => { txt += `${idx+1}. ${i.name} (${i.brand} - ${i.size}) - ${i.price} د.ل\n`; });
-            txt += `\nمجموع العطور: ${subtotal} د.ل`;
-            txt += `\nالتوصيل (داخل طرابلس): مجاني`;
-            txt += `\nالإجمالي النهائي: ${subtotal} د.ل`;
+            if (!itemsContainer) return;
 
-            window.open(`https://m.me/${FB_PAGE_ID}?text=${encodeURIComponent(txt)}`, '_blank');
-            document.getElementById('checkout-modal').style.display='none';
+            if (cart.length === 0) {
+                itemsContainer.innerHTML = `
+                    <div class="text-center py-16 space-y-3 text-gray-400">
+                        <i class="fa-solid fa-bag-shopping text-4xl text-velvet-700"></i>
+                        <p class="text-sm">سلة التسوق فارغة حالياً</p>
+                    </div>
+                `;
+                return;
+            }
+
+            itemsContainer.innerHTML = cart.map(item => `
+                <div class="flex items-center gap-3 p-3 rounded-2xl bg-velvet-950/70 border border-velvet-800">
+                    <img src="${item.image}" onerror="this.src='https://placehold.co/80x80/141218/d4af37?text=V'" class="w-16 h-16 rounded-xl object-cover shrink-0">
+                    <div class="flex-1">
+                        <h4 class="text-sm font-bold text-white">${item.name}</h4>
+                        <span class="text-xs text-gold-400 font-semibold">${item.price} د.ل</span>
+                    </div>
+                    <div class="flex items-center gap-2 bg-velvet-800 rounded-xl p-1">
+                        <button type="button" onclick="updateQty(${item.id}, -1)" class="w-7 h-7 rounded-lg hover:bg-velvet-700 text-gray-300 flex items-center justify-center text-xs">-</button>
+                        <span class="text-xs font-bold w-4 text-center">${item.qty}</span>
+                        <button type="button" onclick="updateQty(${item.id}, 1)" class="w-7 h-7 rounded-lg hover:bg-velvet-700 text-gray-300 flex items-center justify-center text-xs">+</button>
+                    </div>
+                </div>
+            `).join('');
         }
+
+        function toggleCart() {
+            const drawer = document.getElementById('cart-drawer');
+            drawer.classList.toggle('hidden');
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // إتمام الطلب
+        function checkout() {
+            if (cart.length === 0) return;
+            toggleCart();
+            syncPaymentMethod(selectedPaymentMethod);
+            document.getElementById('checkout-modal').classList.remove('hidden');
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('checkout-modal').classList.add('hidden');
+        }
+
+        function submitOrder(e) {
+            e.preventDefault();
+            const paymentText = selectedPaymentMethod === 'transfer' ? 'عبر حوالة مصرفية' : 'كاش عند الاستلام';
+            cart = [];
+            updateCartUI();
+            closeCheckoutModal();
+            showToast(`تم استلام طلبك بنجاح (الدفع ${paymentText})! سنتواصل معك قريباً.`);
+        }
+
+        function subscribeNewsletter(e) {
+            e.preventDefault();
+            e.target.reset();
+            showToast("شكراً لانضمامك لنادي VelvetParfums! كود الخصم: VELVET15");
+        }
+
+        // عرض الإشعارات المنبثقة
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const msgEl = document.getElementById('toast-msg');
+            if (!toast || !msgEl) return;
+
+            msgEl.textContent = message;
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 3500);
+        }
+
+        // تهيئة المتجر عند تحميل الصفحة
+        window.addEventListener('DOMContentLoaded', () => {
+            initVisitorStats();
+            renderProducts(perfumes);
+            updateCartUI();
+        });
     </script>
 </body>
 </html>
